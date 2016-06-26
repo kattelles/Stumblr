@@ -1,18 +1,6 @@
 # Flux Cycles
 
-Flux loops are organized by data type. Under each data type, there may
-be sub-categories, and each action is listed with the sequence of events
-that result from its invocation, ending with the API or store. Finally,
-store listeners are listed at the end.
-
-You should be able to use this document trace an **action** starting
-with where it was invoked, through the **API**/**store** involved, and
-finally to the **components** that update as a result. This is important
-because once you start implementing your flux loops, that's precisely
-what you'll need to do.
-
-
-## POST CYCLES
+## Post Cycles
 
 ### Posts API Request Actions
 
@@ -67,9 +55,8 @@ what you'll need to do.
 
 Note: Likes data will be fetched when necessary by fetchSinglePost and be stored in Post Store. Follow data will be fetched separately and stored in Follow Store.
 
--------------------------------------------------------------------------
 
-## FOLLOW CYCLES
+## Follow Cycles
 
 ### Follows API Request Actions
 
@@ -90,17 +77,17 @@ Note: Likes data will be fetched when necessary by fetchSinglePost and be stored
 
 ### Likes API Response Actions
 
-    * `receiveAllFollows`
-      0. invoked from an API callback
-      0. FollowStore resets follow and emits change.
+  * `receiveAllFollows`
+    0. invoked from an API callback
+    0. FollowStore resets follow and emits change.
 
-    * `receiveFollow`
-      0. invoked from an API callback.
-      0. FollowStore receives a follow and emits change.
+  * `receiveFollow`
+    0. invoked from an API callback.
+    0. FollowStore receives a follow and emits change.
 
-    * `removeFollow`
-      0. invoked from an API callback.
-      0. FollowStore removes a follow and emits change.
+  * `removeFollow`
+    0. invoked from an API callback.
+    0. FollowStore removes a follow and emits change.
 
 ### Store Listeners
 
@@ -108,7 +95,6 @@ Note: Likes data will be fetched when necessary by fetchSinglePost and be stored
   * `ExploreFollow` component listens to the Follow Store.
   * `AccountDropdown` component listens to the Follow Store.
 
-----------------------------------------------------------------------------
 
 ## SearchBar Cycles
 

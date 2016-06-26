@@ -77,7 +77,7 @@ the API. Post components and flux loop are built out.
 **Objective:** Posts can be viewed on Blog Show page.
 
 - [ ] setup React Router
-- implement each Blog component, building out the flux loop as needed.
+- [ ] implement each Blog component, building out the flux loop as needed.
   - [ ] BlogHeader
   - [ ] BlogFeed
 
@@ -88,8 +88,8 @@ the API. Post components and flux loop are built out.
 
 **Objective:** Posts can be liked and unliked. Posts display their numLikes.
 
-- create 'Like' model and join table
-- implement each Like component, building out the flux loop as needed.
+- [ ] create 'Like' model and join table
+- [ ] implement each Like component, building out the flux loop as needed.
   - [ ] LikeForm
   - [ ] LikesDisplay
 
@@ -120,7 +120,7 @@ the API. Post components and flux loop are built out.
 
 **objective:** Provide deep and lush seed data for application.
 
-- [ ] ...
+- [ ] get seed data
 
 ### Weekend: Dashboard and Styling Cleanup (2 days, W2 Sun 6pm)
 
