@@ -1,4 +1,4 @@
-# Phase 2: Post Model, JSON API, Flux Architecture and Post CRUD (1.5 days)
+# Phase 2: Post Model, JSON API, Flux Architecture, Post Form, Post Feed (2 days)
 
 ## Rails
 ### Models
@@ -14,9 +14,9 @@
 ### Views (React Components)
 * Dashboard
   * PostsFeed
-    * Post
+    * PostForm
+    * PostFeedItem
       * PostDetail
-  * PostForm
 
 ### Stores
 * Post

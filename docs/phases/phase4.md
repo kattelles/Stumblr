@@ -1,23 +1,18 @@
-# Phase 4: Likes (1.5 days)
+# Phase 4: Likes (1 days)
 
 ## Rails
 ### Models
 * Like
-* Liking
 
 ### Controllers
-* FollowsController (create, new, destroy)
+* LikesController (create, destroy)
 
 ### Views
 
 ## Flux
 ### Views (React Components)
-* FeedPostLikes
-* BlogShowPostLikes
 
 ### Stores
-
-Listens to the Post store.
 
 ### Actions
 

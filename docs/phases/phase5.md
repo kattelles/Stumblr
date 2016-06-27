@@ -1,18 +1,16 @@
-# Phase 5: Follows (1.5 days)
+# Phase 5: Follows (1 days)
 
 ## Rails
 ### Models
 * Follow
-* Following
 
 ### Controllers
+* FollowsController (create, destroy)
 
 ### Views
 
-
 ## Flux
 ### Views (React Components)
-* BlogShowFollow
 
 ### Stores
 * Follow

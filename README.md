@@ -55,10 +55,10 @@ Stumblr is a web application inspired by Tumblr that will be built using Ruby on
 - [ ] create `Blog` model
 - [ ] create BlogsController (create, show)
 
-### Phase 2: Post Model, JSON API, Post CRUD and Flux Architecture (1.5 days, W1 Th 6pm)
+### Phase 2: Post Model, JSON API, Flux Architecture, Post Form, Post Feed  (2 days, W1 Fr 12pm)
 
 **Objective:** Posts can be created, edited and destroyed through
-the API. Post components and flux loop are built out.
+the API. Post components and flux loop are built out. Finish postForm and postFeed.
 
 - [ ] create `Post` model
 - [ ] jBuilder views for posts
@@ -68,11 +68,13 @@ the API. Post components and flux loop are built out.
 - [ ] test out API interaction in the console.
 - [ ] implement each Blog component, building out the flux loop as needed.
   - [ ] PostFeed
-    - [ ] Post
+    - [ ] PostFeedItem
       - [ ] Post Detail
   - [ ] Post Form
 
-### Phase 3: Blog Show (1 day, W1 F 6pm)
+### Weekend: Finish anything left from phase 1-2. Focus on the completion of postForm and postFeed. (2 day, W1 Sun 6pm)
+
+### Phase 3: Blog Show (1 day, W2 M 6pm)
 
 **Objective:** Posts can be viewed on Blog Show page.
 
@@ -81,10 +83,7 @@ the API. Post components and flux loop are built out.
   - [ ] BlogHeader
   - [ ] BlogFeed
 
-
-### Weekend: Finish anything left from phase 1-3. Focus on the completion of post and blogShow features. (2 day, W1 Sun 6pm)
-
-### Phase 4: Likes (1 days, W2 Tu 12pm)
+### Phase 4: Likes (1 day, W2 Tu 6pm)
 
 **Objective:** Posts can be liked and unliked. Posts display their numLikes.
 
@@ -93,7 +92,7 @@ the API. Post components and flux loop are built out.
   - [ ] LikeForm
   - [ ] LikesDisplay
 
-### Phase 5: Follows (1.5 days, W2 Wed 6pm)
+### Phase 5: Follows (1 day, W2 Wed 6pm)
 
 **Objective:** Users can follow and unfollow blogs. Blogs display numFollowers.
 
@@ -105,7 +104,7 @@ the API. Post components and flux loop are built out.
   - [ ] Build out follow component
     - [ ] BlogShowFollow
 
-### Phase 6: Search (1 day, W2 Th pm)
+### Phase 6: Search (1 day, W2 Th 6pm)
 
 **Objective:** Posts and blogs can be searched by post title or blog title.
 
@@ -116,21 +115,22 @@ the API. Post components and flux loop are built out.
   - [ ] make Search Store
   - [ ] Build out SearchBar component
 
-### Phase 7: Seeding (1 day, W2 Fri 6pm)
+### Phase 7: Seeding (1 day, W2 Fr 6pm)
 
 **objective:** Provide deep and lush seed data for application.
 
 - [ ] get seed data
 
-### Weekend: Dashboard and Styling Cleanup (2 days, W2 Sun 6pm)
+### Weekend: Styling Cleanup (2 days, W2 Sun 6pm)
 
 **objective:** Make the site feel more cohesive and awesome.
 
-- [ ] Make Dashboard Component and integrate into flux loop as needed.
 - [ ] Improve HTML and CSS.
 - [ ] Add modals, transitions, and other styling flourishes.
 
 ### Bonus Features (TBD)
+- [ ] Recommended Blogs Sidebar
+- [ ] Reblog Feature
 - [ ] Explore Page
 - [ ] Taggings
 
@@ -139,3 +139,5 @@ the API. Post components and flux loop are built out.
 [phase-three]: docs/phases/phase3.md
 [phase-four]: docs/phases/phase4.md
 [phase-five]: docs/phases/phase5.md
+[phase-six]: docs/phases/phase6.md
+[phase-seven]: docs/phases/phase7.md

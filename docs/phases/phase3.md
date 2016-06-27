@@ -1,4 +1,4 @@
-# Phase 3: Blog Show (1 day)
+# Phase 3: Blog Show (1.5 day)
 
 ## Rails
 ### Models
@@ -9,15 +9,13 @@
 
 ## Flux
 ### Views (React Components)
-* Blog
+* BlogShow
   * BlogHeader
   * BlogFeed
-    * BlogPost
-      * Blog Post Detail
+    * BlogFeedItem
+      * BlogPostDetail
 
 ### Stores
-
-Listens to the PostStore.
 
 ### Actions
 

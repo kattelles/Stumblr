@@ -12,11 +12,11 @@
 ## PostForm
 ![post-form]
 
-## ExploreFeed
-![explore-feed]
-
 ## BlogShow
 ![blog-show]
+
+## ExploreFeed
+![explore-feed]
 
 [new-user]: ./wireframes/new_user.png
 [new-session]: ./wireframes/new_session.png

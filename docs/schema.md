@@ -13,8 +13,11 @@ blog_id         | integer   | not null, indexed, unique
 column name | data type | details
 ------------|-----------|-----------------------
 id          | integer   | not null, primary key
-title       | string    | not null
-author_id   | integer   | not null, foreign key (references users), indexed
+owner_id    | integer   | not null, foreign key (references users), indexed
+title       | string    |
+description | text      |
+profile_pic | text      |
+
 
 ## posts
 column name | data type | details
@@ -30,23 +33,10 @@ column name   | data type | details
 --------------|-----------|-----------------------
 id            | integer   | not null, primary key
 user_id       | integer   | not null, foreign key (references users), indexed
-following_id  | integer   | not null, foreign key (references blogs), indexed
-
-## followings
-column name   | data type | details
---------------|-----------|-----------------------
-id            | integer   | not null, primary key
-user_id       | integer   | not null, foreign key (references users), indexed
 blog_id       | integer   | not null, foreign key (references blogs), indexed
 
-## likes
-column name   | data type | details
---------------|-----------|-----------------------
-id            | integer   | not null, primary key
-user_id       | integer   | not null, foreign key (references users), indexed
-liking_id     | integer   | not null, foreign key (references posts), indexed
 
-## likings
+## likes
 column name   | data type | details
 --------------|-----------|-----------------------
 id            | integer   | not null, primary key

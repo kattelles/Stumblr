@@ -5,7 +5,7 @@
 ### Posts API Request Actions
 
 * `fetchAllPosts`
-  0. invoked from `PostsFeed` `didMount`/`willReceiveProps`
+  0. invoked from `PostFeed` `didMount`/`willReceiveProps`
   0. `GET /api/notes` is called.
   0. `receiveAllPosts` is set as the callback.
 
@@ -45,15 +45,9 @@
 
 ### Store Listeners
 
-* `PostFeed` component listens to `Post` store.
-* `PostDetail` component listens to `Post` store.
-* `BlogFeed` component listens to `Post` store.
-* `ExploreFeed` component listens to `Post` store.
-* `FeedPostLikes` component listens to the `Post` Store.
-* `BlogShowPostLikes` component listens to the `Post` Store.
+* `PostFeed`, `PostFeedItem`, & `PostDetail` components listens to `Post` store.
+* `BlogFeed`, `BlogFeedItem`, & `BlogPostDetail` components listens to `Post` store.
 * `AccountDropdown` component listens to the `Post` Store.
-
-Note: Likes data will be fetched when necessary by fetchSinglePost and be stored in Post Store. Follow data will be fetched separately and stored in Follow Store.
 
 
 ## Follow Cycles
@@ -91,8 +85,8 @@ Note: Likes data will be fetched when necessary by fetchSinglePost and be stored
 
 ### Store Listeners
 
-  * `BlogShowFollow` component listens to the Follow Store.
-  * `ExploreFollow` component listens to the Follow Store.
+  * `PostDetail` component listens to the Follow Store.
+  * `BlogPostDetail` component listens to the Follow Store.
   * `AccountDropdown` component listens to the Follow Store.
 
 

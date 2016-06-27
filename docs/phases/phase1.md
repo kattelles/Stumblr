@@ -4,7 +4,6 @@
 ### Models
 * User
 * Blog
-* Post
 
 ### Controllers
 * UsersController (create, new)
