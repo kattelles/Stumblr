@@ -1,8 +1,8 @@
 # Stumblr
 
-[Heroku link][heroku] coming soon...
+[Live App][heroku] 
 
-[heroku]: http://www.herokuapp.com
+[heroku]: https://stumblrr.herokuapp.com/
 
 ## Minimum Viable Product
 
