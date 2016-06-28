@@ -10,7 +10,7 @@ const Dashboard = React.createClass({
 
   render() {
     return (
-      <div>
+      <div className="dashboard">
         Welcome to the Dashboard!
         <button onClick={this.handleClick}>Logout</button>
       </div>);

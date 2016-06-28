@@ -20,13 +20,16 @@ html {
   font-family: 'Source Sans Pro', sans-serif;
 }
 
-.splash {
-  background-image: url("http://res.cloudinary.com/kattelles/image/upload/v1467067423/splash_lebsi9.jpg");
-  color: white;
-}
 
 .dashboard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
   background-color: #36465d;
+  color: white;
 }
 
 .blog-show {

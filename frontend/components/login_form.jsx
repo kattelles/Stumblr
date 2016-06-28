@@ -13,8 +13,8 @@ const LoginForm = React.createClass({
 
   getInitialState() {
     return {
-      username: "",
-      password: ""
+      username: "Username",
+      password: "Password"
     };
   },
 
@@ -43,7 +43,7 @@ const LoginForm = React.createClass({
 		};
 
     if (this.props.location.pathname === "/login") {
-      // SessionActions.logIn(formData);
+      SessionActions.logIn(formData);
     } else {
       SessionActions.signUp(formData);
     }
@@ -79,34 +79,41 @@ const LoginForm = React.createClass({
     }
 
 		return (
-			<div className="login-form-container">
-				<form onSubmit={this.handleSubmit} className="login-form-box">
+			<div className="splash">
 
-					Please { this.formType() } or { navLink }
 
-	        { this.fieldErrors("base") }
-					<div className="login-form">
-		        <br />
-						<label> Username:
-		          { this.fieldErrors("username") }
-							<input type="text"
-		            value={this.state.username}
-		            onChange={this.update("username")}
-								className="login-input" />
-						</label>
+				<form onSubmit={this.handleSubmit} className="login-form">
 
-		        <br />
-						<label> Password:
-		          { this.fieldErrors("password") }
-		          <input type="password"
-		            value={this.state.password}
-		            onChange={this.update("password")}
-								className="login-input" />
-						</label>
-
-		        <br />
-						<input type="submit" value="Submit" />
+					<div>
+					<img src="http://res.cloudinary.com/kattelles/image/upload/v1467145360/Stumblr.-logo_yb0fzm.png"/>
 					</div>
+
+					<div className="login-errors">
+	        	{ this.fieldErrors("base") }
+					</div>
+
+						<div className="login-input">
+			        <br />
+			          { this.fieldErrors("username") }
+								<input type="text"
+			            value={this.state.username}
+			            onChange={this.update("username")} />
+			        <br />
+			          { this.fieldErrors("password") }
+			          <input type="password"
+			            value={this.state.password}
+			            onChange={this.update("password")}/>
+						</div>
+						<input className="login-submit"
+							type="submit"
+							value="Submit" />
+						<br/>
+
+						<div className="login-toggle">
+						Please { this.formType() } or { navLink }
+						</div>
+
+						<br />
 				</form>
 			</div>
 		);
