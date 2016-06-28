@@ -68,7 +68,7 @@ the API. Post components and flux loop are built out. Finish postForm and postFe
 - [ ] test out API interaction in the console.
 - [ ] implement each Blog component, building out the flux loop as needed.
   - [ ] PostFeed
-    - [ ] PostFeedItem
+    - [ ] PostFeedItem  
       - [ ] Post Detail
   - [ ] Post Form
 
