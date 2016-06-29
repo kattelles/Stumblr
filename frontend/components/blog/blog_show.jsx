@@ -10,10 +10,15 @@ const BlogShow = React.createClass({
   },
 
   componentDidMount() {
-    BlogStore.addListener(this._onChange);
+    this.listener = BlogStore.addListener(this._onChange);
     let currentUser = SessionStore.currentUser();
     BlogActions.getBlog(currentUser.id);
   },
+
+    componentWillUnmount() {
+      this.listener.remove();
+    },
+
 
   _onChange() {
     this.setState({blog: BlogStore.getBlog()});
@@ -29,18 +34,19 @@ const BlogShow = React.createClass({
   },
 
   render() {
+    let avatar = SessionStore.currentUser().avatar;
     return(
-      <div className="blog-show-outer">
         <div className="blog-show">
-          <h1> My Blog </h1>
-          <p> title: {this.state.blog.title} </p>
-          <p> description: {this.state.blog.description} </p>
-          <p> id: {this.state.blog.id} </p>
-          <p> owner_id: {this.state.blog.owner_id} </p>
-          <button onClick={this.backToDashboard}>Back to Dashboard</button>
-          <button onClick={this.editBlog}>Edit Blog</button>
+          <img className="cover-photo" src={this.state.blog.cover_photo}/>
+          <div id="blog-nav-bar">
+            <button onClick={this.backToDashboard}>Back to Dashboard</button>
+            <button onClick={this.editBlog}>Edit Blog</button>
+          </div>
+          <img className="avatar" src={avatar}/>
+          <h1 className='blog-title'>{this.state.blog.title} </h1>
+          <p className="blog-desc">{this.state.blog.description}</p>
         </div>
-      </div>
+
     );
   }
 

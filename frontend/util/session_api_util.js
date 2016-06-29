@@ -38,16 +38,16 @@ const SessionApiUtil = {
 		});
 	},
 
-	fetchCurrentUser(success, complete) {
+	fetchCurrentUser(cb, cb2) {
 		$.ajax({
 			url: '/api/session',
 			method: 'GET',
-			success,
+			success: (user) => {
+				cb(user);
+				cb2(user);
+			},
 			error: function (xhr) {
 			  console.log("Error in SessionApiUtil#fetchCurrentUser");
-			},
-      complete: function(){
-				complete();
 			}
 		});
 	}

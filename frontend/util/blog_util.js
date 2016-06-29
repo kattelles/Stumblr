@@ -8,16 +8,18 @@ const BlogApiUtil = {
     });
   },
 
-  updateBlog(data, cb) {
+  updateBlog(data, cb, cb2) {
     $.ajax({
       url: `api/users/${data.user_id}/blog`,
       method: "PATCH",
       data: {blog: {
-        title: data.title,
         id: data.id,
-        description: data.description}},
+        title: data.title,
+        description: data.description,
+        cover_photo: data.cover_photo}},
       success: (blog) => {
         cb(blog);
+        cb2();
       }
     });
   }

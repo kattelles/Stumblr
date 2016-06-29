@@ -9,8 +9,12 @@ const NavBar = React.createClass({
   },
 
   componentDidMount() {
-    SessionStore.addListener(this.onChange);
+    this.listener = SessionStore.addListener(this.onChange);
     this.setState({currentUser: SessionStore.currentUser()});
+  },
+
+  componentWillUnmount() {
+    this.listener.remove();
   },
 
   onChange() {

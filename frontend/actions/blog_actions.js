@@ -7,8 +7,8 @@ const BlogActions = {
     BlogApiUtil.getBlog(id, this.receiveBlog);
   },
 
-  updateBlog(data) {
-    BlogApiUtil.updateBlog(data, this.receiveBlog);
+  updateBlog(data, cb) {
+    BlogApiUtil.updateBlog(data, this.receiveBlog, cb);
   },
 
   receiveBlog(blog) {

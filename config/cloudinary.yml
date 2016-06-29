@@ -1,0 +1,19 @@
+---
+development:
+  cloud_name: kattelles
+  api_key: '955567394326616'
+  api_secret: sOUEIbmAL_3pKDp3sRIIo0HSTKI
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: kattelles
+  api_key: '955567394326616'
+  api_secret: sOUEIbmAL_3pKDp3sRIIo0HSTKI
+  enhance_image_tag: true
+  static_image_support: true
+test:
+  cloud_name: kattelles
+  api_key: '955567394326616'
+  api_secret: sOUEIbmAL_3pKDp3sRIIo0HSTKI
+  enhance_image_tag: true
+  static_image_support: false

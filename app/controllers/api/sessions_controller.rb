@@ -19,6 +19,22 @@ class Api::SessionsController < ApplicationController
 		end
 	end
 
+	def show
+		@user = current_user
+    if @user
+			render "api/users/show"
+		else
+			render(
+        json: {
+          base: ["Invalid username/password."]
+        },
+        status: 401
+      )
+		end
+
+	end
+
+
 	def destroy
 		@user = current_user
 		if @user

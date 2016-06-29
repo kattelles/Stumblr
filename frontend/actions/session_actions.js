@@ -25,9 +25,9 @@ const SessionActions = {
 
   },
 
-  fetchCurrentUser(complete){
+  fetchCurrentUser(cb){
     SessionApiUtil.fetchCurrentUser(
-      SessionActions.receiveCurrentUser, complete);
+      SessionActions.receiveCurrentUser, cb);
   },
 
   receiveCurrentUser(currentUser) {

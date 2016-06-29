@@ -15,7 +15,7 @@ const LoginForm = require('./components/login_form');
 const Dashboard = require("./components/dashboard/dashboard");
 const BlogShow = require("./components/blog/blog_show");
 const BlogEdit = require("./components/blog/blog_edit");
-const UserEdit = require("./components/user_edit");
+const UserEdit = require("./components/dashboard/user_edit");
 
 // Auth
 const SessionStore = require('./stores/session_store');
@@ -49,4 +49,4 @@ document.addEventListener("DOMContentLoaded", () =>{
   ReactDOM.render(appRouter, content);
 });
 
-window.SessionStore = SessionStore;
+window.BlogStore = require("./stores/blog_store");
