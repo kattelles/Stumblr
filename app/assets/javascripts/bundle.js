@@ -33347,7 +33347,7 @@
 	        " "
 	      ),
 	      React.createElement(
-	        "p",
+	        "h3",
 	        { className: "blog-desc" },
 	        this.state.blog.description
 	      )

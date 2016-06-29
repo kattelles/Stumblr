@@ -44,7 +44,7 @@ const BlogShow = React.createClass({
           </div>
           <img className="avatar" src={avatar}/>
           <h1 className='blog-title'>{this.state.blog.title} </h1>
-          <p className="blog-desc">{this.state.blog.description}</p>
+          <h3 className="blog-desc">{this.state.blog.description}</h3>
         </div>
 
     );
