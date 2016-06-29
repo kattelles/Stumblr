@@ -18,6 +18,9 @@ const _logout = function() {
   _currentUserHasBeenFetched = true;
 };
 
+SessionStore.currentUser = function() {
+  return _currentUser;
+};
 
 SessionStore.__onDispatch = payload => {
   switch(payload.actionType) {

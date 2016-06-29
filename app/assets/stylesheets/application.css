@@ -19,19 +19,3 @@
 html {
   font-family: 'Source Sans Pro', sans-serif;
 }
-
-
-.dashboard {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  overflow: auto;
-  background-color: #36465d;
-  color: white;
-}
-
-.blog-show {
-
-}

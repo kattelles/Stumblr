@@ -12,7 +12,10 @@ const hashHistory = ReactRouter.hashHistory;
 // Components
 const App = require('./components/app');
 const LoginForm = require('./components/login_form');
-const Dashboard = require("./components/dashboard");
+const Dashboard = require("./components/dashboard/dashboard");
+const BlogShow = require("./components/blog/blog_show");
+const BlogEdit = require("./components/blog/blog_edit");
+const UserEdit = require("./components/user_edit");
 
 // Auth
 const SessionStore = require('./stores/session_store');
@@ -24,6 +27,9 @@ const appRouter = (
       <IndexRoute component={Dashboard} onEnter={_ensureLoggedIn}/>
       <Route path="login" component={ LoginForm } />
       <Route path="signup" component={ LoginForm } />
+      <Route path="settings/:userId" component={UserEdit}/>
+      <Route path="blogs/:userId" component={BlogShow}/>
+      <Route path="blog/:userId/edit" component={BlogEdit}/>
     </Route>
   </Router>
 );
@@ -42,3 +48,5 @@ document.addEventListener("DOMContentLoaded", () =>{
   let content = document.getElementById('content');
   ReactDOM.render(appRouter, content);
 });
+
+window.SessionStore = SessionStore;

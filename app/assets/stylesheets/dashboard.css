@@ -1,0 +1,21 @@
+.dashboard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: auto;
+  background-color: #36465d;
+  color: white;
+}
+
+.navbar {
+  padding: 10px;
+  float: right;
+}
+
+#small-logo {
+  padding: 10px;
+  display: inline;
+  float: left;
+}

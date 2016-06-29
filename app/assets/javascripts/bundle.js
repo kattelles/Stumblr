@@ -60,7 +60,10 @@
 	// Components
 	var App = __webpack_require__(230);
 	var LoginForm = __webpack_require__(231);
-	var Dashboard = __webpack_require__(260);
+	var Dashboard = __webpack_require__(262);
+	var BlogShow = __webpack_require__(263);
+	var BlogEdit = __webpack_require__(268);
+	var UserEdit = __webpack_require__(269);
 	
 	// Auth
 	var SessionStore = __webpack_require__(241);
@@ -74,7 +77,10 @@
 	    { path: "/", component: App },
 	    React.createElement(IndexRoute, { component: Dashboard, onEnter: _ensureLoggedIn }),
 	    React.createElement(Route, { path: "login", component: LoginForm }),
-	    React.createElement(Route, { path: "signup", component: LoginForm })
+	    React.createElement(Route, { path: "signup", component: LoginForm }),
+	    React.createElement(Route, { path: "settings/:userId", component: UserEdit }),
+	    React.createElement(Route, { path: "blogs/:userId", component: BlogShow }),
+	    React.createElement(Route, { path: "blog/:userId/edit", component: BlogEdit })
 	  )
 	);
 	
@@ -92,6 +98,8 @@
 	  var content = document.getElementById('content');
 	  ReactDOM.render(appRouter, content);
 	});
+	
+	window.SessionStore = SessionStore;
 
 /***/ },
 /* 1 */
@@ -26538,7 +26546,7 @@
 		},
 		signUp: function signUp(user, success, _error2) {
 			$.ajax({
-				url: '/api/user',
+				url: '/api/users',
 				type: 'POST',
 				dataType: 'json',
 				data: { user: user },
@@ -26628,6 +26636,10 @@
 	var _logout = function _logout() {
 	  _currentUser = {};
 	  _currentUserHasBeenFetched = true;
+	};
+	
+	SessionStore.currentUser = function () {
+	  return _currentUser;
 	};
 	
 	SessionStore.__onDispatch = function (payload) {
@@ -33159,36 +33171,347 @@
 	module.exports = ErrorStore;
 
 /***/ },
-/* 260 */
+/* 260 */,
+/* 261 */,
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var SessionActions = __webpack_require__(232);
-	var hashHistory = __webpack_require__(168).hashHistory;
+	var NavBar = __webpack_require__(270);
 	
 	var Dashboard = React.createClass({
 	  displayName: "Dashboard",
-	  handleClick: function handleClick() {
-	    SessionActions.logOut();
-	    hashHistory.push("/");
-	  },
 	  render: function render() {
 	    return React.createElement(
 	      "div",
 	      { className: "dashboard" },
-	      "Welcome to the Dashboard!",
 	      React.createElement(
-	        "button",
-	        { onClick: this.handleClick },
-	        "Logout"
-	      )
+	        "div",
+	        { id: "small-logo" },
+	        React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png",
+	          width: "150" })
+	      ),
+	      React.createElement(NavBar, null)
 	    );
 	  }
 	});
 	
 	module.exports = Dashboard;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var BlogStore = __webpack_require__(264);
+	var SessionStore = __webpack_require__(241);
+	var BlogActions = __webpack_require__(266);
+	var hashHistory = __webpack_require__(168).hashHistory;
+	
+	var BlogShow = React.createClass({
+	  displayName: "BlogShow",
+	  getInitialState: function getInitialState() {
+	    return { blog: {} };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    BlogStore.addListener(this._onChange);
+	    var currentUser = SessionStore.currentUser();
+	    BlogActions.getBlog(currentUser.id);
+	  },
+	  _onChange: function _onChange() {
+	    this.setState({ blog: BlogStore.getBlog() });
+	  },
+	  backToDashboard: function backToDashboard() {
+	    hashHistory.push("/");
+	  },
+	  editBlog: function editBlog() {
+	    var url = "blog/" + this.props.params.userId + "/edit";
+	    hashHistory.push(url);
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "blog-show-outer" },
+	      React.createElement(
+	        "div",
+	        { className: "blog-show" },
+	        React.createElement(
+	          "h1",
+	          null,
+	          " My Blog "
+	        ),
+	        React.createElement(
+	          "p",
+	          null,
+	          " title: ",
+	          this.state.blog.title,
+	          " "
+	        ),
+	        React.createElement(
+	          "p",
+	          null,
+	          " description: ",
+	          this.state.blog.description,
+	          " "
+	        ),
+	        React.createElement(
+	          "p",
+	          null,
+	          " id: ",
+	          this.state.blog.id,
+	          " "
+	        ),
+	        React.createElement(
+	          "p",
+	          null,
+	          " owner_id: ",
+	          this.state.blog.owner_id,
+	          " "
+	        ),
+	        React.createElement(
+	          "button",
+	          { onClick: this.backToDashboard },
+	          "Back to Dashboard"
+	        ),
+	        React.createElement(
+	          "button",
+	          { onClick: this.editBlog },
+	          "Edit Blog"
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = BlogShow;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Store = __webpack_require__(242).Store;
+	var Dispatcher = __webpack_require__(233);
+	var BlogConstants = __webpack_require__(265);
+	
+	var BlogStore = new Store(Dispatcher);
+	
+	var _blog = {};
+	
+	BlogStore.getBlog = function () {
+	  return _blog;
+	};
+	
+	BlogStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case BlogConstants.BLOG_RECEIVED:
+	      _blog = payload.blog;
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = BlogStore;
+
+/***/ },
+/* 265 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  BLOG_RECEIVED: "BLOG_RECEIVED"
+	};
+
+/***/ },
+/* 266 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var BlogApiUtil = __webpack_require__(267);
+	var Dispatcher = __webpack_require__(233);
+	var BlogConstants = __webpack_require__(265);
+	
+	var BlogActions = {
+	  getBlog: function getBlog(id) {
+	    BlogApiUtil.getBlog(id, this.receiveBlog);
+	  },
+	  updateBlog: function updateBlog(data) {
+	    BlogApiUtil.updateBlog(data, this.receiveBlog);
+	  },
+	  receiveBlog: function receiveBlog(blog) {
+	    Dispatcher.dispatch({
+	      actionType: BlogConstants.BLOG_RECEIVED,
+	      blog: blog
+	    });
+	  }
+	};
+	
+	module.exports = BlogActions;
+
+/***/ },
+/* 267 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	var BlogApiUtil = {
+	  getBlog: function getBlog(userId, cb) {
+	    $.ajax({
+	      url: "api/users/" + userId + "/blog",
+	      success: function success(blog) {
+	        cb(blog);
+	      }
+	    });
+	  },
+	  updateBlog: function updateBlog(data, cb) {
+	    $.ajax({
+	      url: "api/users/" + data.user_id + "/blog",
+	      method: "PATCH",
+	      data: { blog: {
+	          title: data.title,
+	          id: data.id,
+	          description: data.description } },
+	      success: function success(blog) {
+	        cb(blog);
+	      }
+	    });
+	  }
+	};
+	
+	module.exports = BlogApiUtil;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var BlogStore = __webpack_require__(264);
+	var BlogActions = __webpack_require__(266);
+	
+	var BlogEdit = React.createClass({
+	  displayName: "BlogEdit",
+	  getInitialState: function getInitialState() {
+	    return { blog: {} };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    BlogStore.addListener(this._onChange);
+	    BlogActions.getBlog(this.props.params.userId);
+	  },
+	  _onChange: function _onChange() {
+	    this.setState({ blog: BlogStore.getBlog() });
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "form",
+	        { onSubmit: this.handleSubmit },
+	        React.createElement(
+	          "h2",
+	          null,
+	          "Blog Settings"
+	        ),
+	        React.createElement("input", { type: "submit", value: "Save Changes" })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = BlogEdit;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	
+	var UserEdit = React.createClass({
+	  displayName: "UserEdit",
+	  getInitialState: function getInitialState() {
+	    return { user: {} };
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      "Account Settings coming soon..."
+	    );
+	  }
+	});
+	
+	module.exports = UserEdit;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(168).hashHistory;
+	var SessionActions = __webpack_require__(232);
+	var SessionStore = __webpack_require__(241);
+	
+	var NavBar = React.createClass({
+	  displayName: "NavBar",
+	  getInitialState: function getInitialState() {
+	    return { currentUser: SessionStore.currentUser() };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    SessionStore.addListener(this.onChange);
+	    this.setState({ currentUser: SessionStore.currentUser() });
+	  },
+	  onChange: function onChange() {
+	    this.setState({ currentUser: SessionStore.currentUser() });
+	  },
+	  logOut: function logOut() {
+	    SessionActions.logOut();
+	    hashHistory.push("/");
+	  },
+	  goToMyBlog: function goToMyBlog() {
+	    var url = "/blogs/" + this.state.currentUser.id;
+	    hashHistory.push(url);
+	  },
+	  goToSettings: function goToSettings() {
+	    var url = "settings/" + this.state.currentUser.id;
+	    hashHistory.push(url);
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { className: "navbar" },
+	      React.createElement(
+	        "button",
+	        { onClick: this.goToMyBlog },
+	        "My Blog"
+	      ),
+	      React.createElement(
+	        "button",
+	        { onClick: this.logOut },
+	        "Logout"
+	      ),
+	      React.createElement(
+	        "button",
+	        { onClick: this.goToSettings },
+	        "Settings"
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
 
 /***/ }
 /******/ ]);

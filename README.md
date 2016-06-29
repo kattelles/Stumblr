@@ -1,6 +1,6 @@
 # Stumblr
 
-[Live App][heroku] 
+[Live App][heroku]
 
 [heroku]: https://stumblrr.herokuapp.com/
 
@@ -47,11 +47,11 @@ Stumblr is a web application inspired by Tumblr that will be built using Ruby on
 
 **Objective:** Functioning rails project with Authentication and basic Blog model.
 
-- [ ] Deploy to Heroku
-- [ ] create `User` model
-- [ ] authentication
-- [ ] user signup/sign-in pages
-- [ ] blank landing page after sign-in
+- [x] Deploy to Heroku
+- [x] create `User` model
+- [x] authentication
+- [x] user signup/sign-in pages
+- [x] blank landing page after sign-in
 - [ ] create `Blog` model
 - [ ] create BlogsController (create, show)
 

@@ -1,6 +1,16 @@
 class User < ActiveRecord::Base
 	attr_reader :password
 
+	has_one(
+		:blog,
+		:class_name => Blog,
+		:foreign_key => :owner_id,
+		:primary_key => :id
+	)
+
+	after_create :create_blog
+
+
 	validates :username, :password_digest, :session_token, presence: true
 	validates :username, uniqueness: true
 	validates :password, length: {minimum: 6}, allow_nil: :true
