@@ -33195,6 +33195,7 @@
 	
 	var React = __webpack_require__(1);
 	var NavBar = __webpack_require__(261);
+	var PostForm = __webpack_require__(273);
 	
 	var Dashboard = React.createClass({
 	  displayName: "Dashboard",
@@ -33204,11 +33205,16 @@
 	      { className: "dashboard" },
 	      React.createElement(
 	        "div",
-	        { id: "small-logo" },
-	        React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png",
-	          width: "150" })
+	        { id: "dash-header" },
+	        React.createElement(
+	          "div",
+	          { id: "small-logo" },
+	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png",
+	            width: "150" })
+	        ),
+	        React.createElement(NavBar, null)
 	      ),
-	      React.createElement(NavBar, null)
+	      React.createElement(PostForm, null)
 	    );
 	  }
 	});
@@ -33646,7 +33652,7 @@
 	          "Avatar: "
 	        ),
 	        React.createElement("br", null),
-	        React.createElement("img", { className: "avatar", src: this.state.avatar }),
+	        React.createElement("img", { className: "user-edit-avatar", src: this.state.avatar }),
 	        React.createElement("br", null),
 	        React.createElement(
 	          "button",
@@ -33720,6 +33726,83 @@
 	module.exports = {
 	  USER_RECEIVED: "USER_RECEIVED"
 	};
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var SessionStore = __webpack_require__(241);
+	
+	var PostForm = React.createClass({
+	  displayName: "PostForm",
+	  getInitialState: function getInitialState() {
+	    return { user: {} };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.listener = SessionStore.addListener(this._onChange);
+	    this.setState({ user: SessionStore.currentUser() });
+	  },
+	  _onChange: function _onChange() {
+	    this.setState({ user: SessionStore.currentUser() });
+	  },
+	  render: function render() {
+	    var avatar = this.state.user.avatar;
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        { className: "post-form" },
+	        React.createElement(
+	          "div",
+	          { id: "new-post-label" },
+	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png" }),
+	          React.createElement(
+	            "p",
+	            null,
+	            "Text"
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "new-post-label" },
+	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png" }),
+	          React.createElement(
+	            "p",
+	            null,
+	            "Image"
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "new-post-label" },
+	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png" }),
+	          React.createElement(
+	            "p",
+	            null,
+	            "Quote"
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "new-post-label" },
+	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png" }),
+	          React.createElement(
+	            "p",
+	            null,
+	            "Link"
+	          )
+	        )
+	      ),
+	      React.createElement("img", { id: "post-form-avatar", src: avatar })
+	    );
+	  }
+	});
+	
+	module.exports = PostForm;
 
 /***/ }
 /******/ ]);

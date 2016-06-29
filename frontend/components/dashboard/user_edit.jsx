@@ -62,7 +62,7 @@ const UserEdit = React.createClass({
         <br/>
         <label>Avatar: </label>
         <br/>
-        <img className="avatar" src={this.state.avatar}/>
+        <img className="user-edit-avatar" src={this.state.avatar}/>
         <br/>
         <button onClick={this.avatarChange}>Upload Image</button>
         <br/>

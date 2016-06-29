@@ -1,0 +1,11 @@
+
+.navbar {
+  padding: 15px;
+  float: right;
+}
+
+#small-logo {
+  padding: 10px;
+  display: inline;
+  float: left;
+}

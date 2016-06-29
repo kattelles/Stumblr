@@ -6,16 +6,52 @@
   right: 0;
   overflow: auto;
   background-color: #36465d;
-  color: white;
 }
 
-.navbar {
-  padding: 10px;
-  float: right;
+#dash-header {
+  height: 65px;
+  border-bottom: .75px solid grey;
 }
 
-#small-logo {
+.post-form {
+  display: flex;
+  height: 120px;
+  width: 445px;
+  background-color: white;
+  border-radius: 3px;
+}
+
+.post-form div {
+  border-right: 1px solid beige;
+  padding: 5px;
+}
+
+.post-form div:last-child {
+  border-right: 0;
+}
+
+.post-form p {
+  margin: 0;
+  padding-top: 0px;
+  color: grey;
+  text-align: center;
+}
+
+#post-form-avatar {
+  border-radius: 3px;
+  border: 3px solid white;
+  height: 80px;
+  width: 80px;
+}
+
+.post-form img {
+  width: 80px;
+  height: 75px;
   padding: 10px;
-  display: inline;
-  float: left;
+  padding-bottom: 0;
+}
+
+#new-post-label {
+  width: 100px;
+  height: 100px;
 }
