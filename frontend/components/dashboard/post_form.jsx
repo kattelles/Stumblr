@@ -25,22 +25,22 @@ const PostForm = React.createClass({
       <div>
       <div className="post-form">
       <div id="new-post-label">
-        <img src="http://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png"/>
+        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png"/>
         <p>Text</p>
       </div>
 
       <div id="new-post-label">
-        <img src="http://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png"/>
+        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png"/>
         <p>Image</p>
     </div>
 
       <div id="new-post-label">
-        <img src="http://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png"/>
+        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png"/>
         <p>Quote</p>
     </div>
 
       <div id="new-post-label">
-        <img src="http://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png"/>
+        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png"/>
         <p>Link</p>
     </div>
 

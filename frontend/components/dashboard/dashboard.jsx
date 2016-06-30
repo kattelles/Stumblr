@@ -8,7 +8,7 @@ const Dashboard = React.createClass({
       <div className="dashboard">
         <div id="dash-header">
           <div id="small-logo">
-          <img src="http://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png"
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png"
             width="150" />
           </div>
           <NavBar/>

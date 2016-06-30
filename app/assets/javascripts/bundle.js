@@ -26120,7 +26120,7 @@
 	        React.createElement(
 	          'div',
 	          null,
-	          React.createElement('img', { src: 'http://res.cloudinary.com/kattelles/image/upload/v1467145360/Stumblr.-logo_yb0fzm.png' })
+	          React.createElement('img', { src: 'https://res.cloudinary.com/kattelles/image/upload/v1467145360/Stumblr.-logo_yb0fzm.png' })
 	        ),
 	        React.createElement(
 	          'div',
@@ -33220,7 +33220,7 @@
 	        React.createElement(
 	          "div",
 	          { id: "small-logo" },
-	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png",
+	          React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467158741/Stumblr.-logo_2_g9xsbd.png",
 	            width: "150" })
 	        ),
 	        React.createElement(NavBar, null)
@@ -33773,7 +33773,7 @@
 	        React.createElement(
 	          "div",
 	          { id: "new-post-label" },
-	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png" }),
+	          React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png" }),
 	          React.createElement(
 	            "p",
 	            null,
@@ -33783,7 +33783,7 @@
 	        React.createElement(
 	          "div",
 	          { id: "new-post-label" },
-	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png" }),
+	          React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png" }),
 	          React.createElement(
 	            "p",
 	            null,
@@ -33793,7 +33793,7 @@
 	        React.createElement(
 	          "div",
 	          { id: "new-post-label" },
-	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png" }),
+	          React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png" }),
 	          React.createElement(
 	            "p",
 	            null,
@@ -33803,7 +33803,7 @@
 	        React.createElement(
 	          "div",
 	          { id: "new-post-label" },
-	          React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png" }),
+	          React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png" }),
 	          React.createElement(
 	            "p",
 	            null,
