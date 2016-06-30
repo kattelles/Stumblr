@@ -25977,13 +25977,25 @@
 	var React = __webpack_require__(1);
 	var SessionActions = __webpack_require__(232);
 	var BlogActions = __webpack_require__(265);
+	var SessionStore = __webpack_require__(241);
+	var BlogStore = __webpack_require__(263);
 	
 	var App = React.createClass({
 	  displayName: "App",
 	  componentDidMount: function componentDidMount() {
-	    SessionActions.fetchCurrentUser(function (user) {
-	      BlogActions.getBlog(user.id);
-	    });
+	    this.sessionListener = SessionStore.addListener(this._sessionChange);
+	    SessionActions.fetchCurrentUser();
+	    // this.blogListener = BlogStore.addListener(this._blogChange);
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.sessionListener.remove();
+	    // this.blogListener.remove();
+	  },
+	  _sessionChange: function _sessionChange() {
+	    // debugger
+	    if (SessionStore.currentUser().id) {
+	      BlogActions.getBlog(SessionStore.currentUser().id);
+	    }
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -26171,8 +26183,8 @@
 	  logOut: function logOut() {
 	    SessionApiUtil.logOut(SessionActions.removeCurrentUser);
 	  },
-	  fetchCurrentUser: function fetchCurrentUser(cb) {
-	    SessionApiUtil.fetchCurrentUser(SessionActions.receiveCurrentUser, cb);
+	  fetchCurrentUser: function fetchCurrentUser() {
+	    SessionApiUtil.fetchCurrentUser(SessionActions.receiveCurrentUser);
 	  },
 	  receiveCurrentUser: function receiveCurrentUser(currentUser) {
 	    AppDispatcher.dispatch({
@@ -26564,13 +26576,12 @@
 				}
 			});
 		},
-		fetchCurrentUser: function fetchCurrentUser(cb, cb2) {
+		fetchCurrentUser: function fetchCurrentUser(cb) {
 			$.ajax({
 				url: '/api/session',
 				method: 'GET',
 				success: function success(user) {
 					cb(user);
-					cb2(user);
 				},
 				error: function error(xhr) {
 					console.log("Error in SessionApiUtil#fetchCurrentUser");

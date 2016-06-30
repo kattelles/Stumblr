@@ -1,13 +1,26 @@
 const React = require("react");
 const SessionActions = require("../actions/session_actions");
 const BlogActions = require("../actions/blog_actions");
+const SessionStore = require("../stores/session_store");
+const BlogStore = require("../stores/blog_store");
 
 const App = React.createClass({
   componentDidMount() {
-    SessionActions.fetchCurrentUser( (user) => {
-      BlogActions.getBlog(user.id);
-    } );
+    this.sessionListener = SessionStore.addListener(this._sessionChange);
+    SessionActions.fetchCurrentUser();
+    // this.blogListener = BlogStore.addListener(this._blogChange);
+  },
 
+  componentWillUnmount() {
+    this.sessionListener.remove();
+    // this.blogListener.remove();
+  },
+
+  _sessionChange(){
+    // debugger
+    if (SessionStore.currentUser().id) {
+      BlogActions.getBlog(SessionStore.currentUser().id);
+    }
   },
 
   render() {
