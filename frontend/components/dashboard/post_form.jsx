@@ -1,5 +1,6 @@
 const React = require('react');
 const SessionStore = require("../../stores/session_store");
+const hashHistory = require("react-router").hashHistory;
 
 const PostForm = React.createClass({
   getInitialState() {
@@ -19,34 +20,40 @@ const PostForm = React.createClass({
     this.setState({user: SessionStore.currentUser()});
   },
 
+  avatarClick() {
+    let cu = SessionStore.currentUser();
+    let url = "blogs/" + cu.id;
+    hashHistory.push(url);
+  },
+
   render() {
     let avatar = this.state.user.avatar;
     return (
-      <div>
+      <div className="feed-form">
+
+        <img id="post-form-avatar" onClick={this.avatarClick} src={avatar}/>
       <div className="post-form">
-      <div id="new-post-label">
-        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png"/>
-        <p>Text</p>
+      <div id="new-post-label-text">
+        <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png"/>
+
       </div>
 
-      <div id="new-post-label">
-        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png"/>
-        <p>Image</p>
-    </div>
-
-      <div id="new-post-label">
-        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png"/>
-        <p>Quote</p>
-    </div>
-
-      <div id="new-post-label">
-        <img src="https://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png"/>
-        <p>Link</p>
-    </div>
+      <div id="new-post-label-photo">
+        <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png"/>
 
     </div>
 
-    <img id="post-form-avatar" src={avatar}/>
+      <div id="new-post-label-quote">
+        <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png"/>
+
+    </div>
+
+      <div id="new-post-label-link">
+        <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png"/>
+
+    </div>
+
+    </div>
     </div>
     );
   }

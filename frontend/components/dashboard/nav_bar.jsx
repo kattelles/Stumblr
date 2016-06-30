@@ -40,9 +40,18 @@ const NavBar = React.createClass({
   render() {
     return (
       <div className="navbar">
-        <button onClick={this.goToMyBlog}>My Blog</button>
-        <button onClick={this.logOut}>Logout</button>
-        <button onClick={this.goToSettings}>Settings</button>
+
+        <div onClick={this.goToMyBlog}>
+            <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321692/user_istndw.png" />
+        </div>
+
+        <div onClick={this.goToSettings}>
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321639/settings-4-32_mb8oty.png" />
+        </div>
+
+        <div onClick={this.logOut}>
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321963/logout-32_k9us73.png" />
+        </div>
       </div>
     );
   }

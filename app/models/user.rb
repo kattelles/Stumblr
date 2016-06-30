@@ -8,6 +8,12 @@ class User < ActiveRecord::Base
 		:primary_key => :id
 	)
 
+	has_many :follows
+
+	has_many :followed_blogs,
+		through: :follows,
+		source: :blog
+
 	after_create :create_blog
 
 	validates :username, :password_digest, :session_token, presence: true

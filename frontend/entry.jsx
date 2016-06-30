@@ -48,5 +48,3 @@ document.addEventListener("DOMContentLoaded", () =>{
   let content = document.getElementById('content');
   ReactDOM.render(appRouter, content);
 });
-
-window.BlogStore = require("./stores/blog_store");

@@ -8,6 +8,12 @@ class Blog < ActiveRecord::Base
     :primary_key => :id
   )
 
+  has_many :follows
+
+  has_many :followers,
+    through: :follows,
+    source: :user
+
 	after_initialize :default_values
 
   private
