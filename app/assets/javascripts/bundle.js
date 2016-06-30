@@ -26023,140 +26023,148 @@
 	var ErrorStore = __webpack_require__(259);
 	
 	var LoginForm = React.createClass({
-	  displayName: 'LoginForm',
+			displayName: 'LoginForm',
 	
 	
-	  contextTypes: {
-	    router: React.PropTypes.object.isRequired
-	  },
+			contextTypes: {
+					router: React.PropTypes.object.isRequired
+			},
 	
-	  getInitialState: function getInitialState() {
-	    return {
-	      username: "Username",
-	      password: "Password"
-	    };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    this.errorListener = ErrorStore.addListener(this.forceUpdate.bind(this));
-	    this.sessionListener = SessionStore.addListener(this.redirectIfLoggedIn);
-	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.errorListener.remove();
-	    this.sessionListener.remove();
-	  },
-	  redirectIfLoggedIn: function redirectIfLoggedIn() {
-	    if (SessionStore.isUserLoggedIn()) {
-	      this.context.router.push("/");
-	    }
-	  },
-	  handleSubmit: function handleSubmit(e) {
-	    e.preventDefault();
+			getInitialState: function getInitialState() {
+					return {
+							username: "",
+							password: ""
+					};
+			},
+			componentDidMount: function componentDidMount() {
+					this.errorListener = ErrorStore.addListener(this.forceUpdate.bind(this));
+					this.sessionListener = SessionStore.addListener(this.redirectIfLoggedIn);
+			},
+			componentWillUnmount: function componentWillUnmount() {
+					this.errorListener.remove();
+					this.sessionListener.remove();
+			},
+			redirectIfLoggedIn: function redirectIfLoggedIn() {
+					if (SessionStore.isUserLoggedIn()) {
+							this.context.router.push("/");
+					}
+			},
+			handleSubmit: function handleSubmit(e) {
+					e.preventDefault();
 	
-	    var formData = {
-	      username: this.state.username,
-	      password: this.state.password
-	    };
+					var formData = {
+							username: this.state.username,
+							password: this.state.password
+					};
 	
-	    if (this.props.location.pathname === "/login") {
-	      SessionActions.logIn(formData);
-	    } else {
-	      SessionActions.signUp(formData);
-	    }
-	  },
-	  fieldErrors: function fieldErrors(field) {
-	    var errors = ErrorStore.formErrors(this.formType());
+					if (this.props.location.pathname === "/login") {
+							SessionActions.logIn(formData);
+					} else {
+							SessionActions.signUp(formData);
+					}
+			},
+			fieldErrors: function fieldErrors(field) {
+					var errors = ErrorStore.formErrors(this.formType());
 	
-	    if (!errors[field]) {
-	      return;
-	    }
+					if (!errors[field]) {
+							return;
+					}
 	
-	    var messages = errors[field].map(function (errorMsg, i) {
-	      return React.createElement(
-	        'li',
-	        { key: i },
-	        errorMsg
-	      );
-	    });
+					var messages = errors[field].map(function (errorMsg, i) {
+							return React.createElement(
+									'li',
+									{ key: i },
+									errorMsg
+							);
+					});
 	
-	    return React.createElement(
-	      'ul',
-	      null,
-	      messages
-	    );
-	  },
-	  formType: function formType() {
-	    return this.props.location.pathname.slice(1);
-	  },
-	  update: function update(property) {
-	    var _this = this;
+					return React.createElement(
+							'ul',
+							null,
+							messages
+					);
+			},
+			formType: function formType() {
+					return this.props.location.pathname.slice(1);
+			},
+			update: function update(property) {
+					var _this = this;
 	
-	    return function (e) {
-	      return _this.setState(_defineProperty({}, property, e.target.value));
-	    };
-	  },
-	  render: function render() {
+					return function (e) {
+							return _this.setState(_defineProperty({}, property, e.target.value));
+					};
+			},
+			render: function render() {
 	
-	    var navLink = void 0;
-	    if (this.formType() === "login") {
-	      navLink = React.createElement(
-	        Link,
-	        { to: '/signup' },
-	        'sign up instead'
-	      );
-	    } else {
-	      navLink = React.createElement(
-	        Link,
-	        { to: '/login' },
-	        'log in instead'
-	      );
-	    }
+					var navLink = void 0,
+					    buttonText = void 0,
+					    question = void 0;
+					if (this.formType() === "login") {
+							navLink = React.createElement(
+									Link,
+									{ to: '/signup' },
+									'Sign up'
+							);
+							buttonText = "Login";
+							question = "Don't have an account? ";
+					} else {
+							navLink = React.createElement(
+									Link,
+									{ to: '/login' },
+									'Log in'
+							);
+							buttonText = "Sign up";
+							question = "Already a member? ";
+					}
 	
-	    return React.createElement(
-	      'div',
-	      { className: 'splash' },
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.handleSubmit, className: 'login-form' },
-	        React.createElement(
-	          'div',
-	          null,
-	          React.createElement('img', { src: 'https://res.cloudinary.com/kattelles/image/upload/v1467145360/Stumblr.-logo_yb0fzm.png' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'login-errors' },
-	          this.fieldErrors("base")
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'login-input' },
-	          React.createElement('br', null),
-	          this.fieldErrors("username"),
-	          React.createElement('input', { type: 'text',
-	            value: this.state.username,
-	            onChange: this.update("username") }),
-	          React.createElement('br', null),
-	          this.fieldErrors("password"),
-	          React.createElement('input', { type: 'password',
-	            value: this.state.password,
-	            onChange: this.update("password") })
-	        ),
-	        React.createElement('input', { className: 'login-submit',
-	          type: 'submit',
-	          value: 'Submit' }),
-	        React.createElement('br', null),
-	        React.createElement(
-	          'div',
-	          { className: 'login-toggle' },
-	          'Please ',
-	          this.formType(),
-	          ' or ',
-	          navLink
-	        ),
-	        React.createElement('br', null)
-	      )
-	    );
-	  }
+					return React.createElement(
+							'div',
+							{ className: 'splash' },
+							React.createElement(
+									'form',
+									{ onSubmit: this.handleSubmit, className: 'login-form' },
+									React.createElement(
+											'div',
+											null,
+											React.createElement('img', { src: 'https://res.cloudinary.com/kattelles/image/upload/v1467145360/Stumblr.-logo_yb0fzm.png' })
+									),
+									React.createElement(
+											'div',
+											{ className: 'login-errors' },
+											this.fieldErrors("base")
+									),
+									React.createElement(
+											'div',
+											{ className: 'login-input' },
+											React.createElement('br', null),
+											this.fieldErrors("username"),
+											React.createElement('input', { type: 'text',
+													placeholder: 'Username',
+													value: this.state.username,
+													onChange: this.update("username") }),
+											React.createElement('br', null),
+											this.fieldErrors("password"),
+											React.createElement('input', { type: 'password',
+													placeholder: 'Password',
+													value: this.state.password,
+													onChange: this.update("password") })
+									),
+									React.createElement('input', { className: 'login-submit',
+											type: 'submit',
+											value: buttonText }),
+									React.createElement('br', null),
+									React.createElement('br', null),
+									React.createElement(
+											'div',
+											{ className: 'login-toggle' },
+											question,
+											'  ',
+											navLink
+									),
+									React.createElement('br', null)
+							)
+					);
+			}
 	});
 	
 	module.exports = LoginForm;

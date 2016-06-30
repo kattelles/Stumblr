@@ -8,4 +8,12 @@ class Blog < ActiveRecord::Base
     :primary_key => :id
   )
 
+	after_initialize :default_values
+
+  private
+
+  def default_values
+    self.title ||= "untitled"
+    self.cover_photo ||= "https://res.cloudinary.com/kattelles/image/upload/v1467249835/elusive_pineapples_msnx7m.png"
+  end
 end

@@ -13,8 +13,8 @@ const LoginForm = React.createClass({
 
   getInitialState() {
     return {
-      username: "Username",
-      password: "Password"
+      username: "",
+      password: ""
     };
   },
 
@@ -71,11 +71,15 @@ const LoginForm = React.createClass({
 
 	render() {
 
-    let navLink;
+    let navLink, buttonText, question;
     if (this.formType() === "login") {
-      navLink = <Link to="/signup">sign up instead</Link>;
+      navLink = <Link to="/signup">Sign up</Link>;
+			buttonText = "Login";
+			question = "Don't have an account? ";
     } else {
-      navLink = <Link to="/login">log in instead</Link>;
+      navLink = <Link to="/login">Log in</Link>;
+			buttonText = "Sign up";
+			question = "Already a member? ";
     }
 
 		return (
@@ -96,22 +100,30 @@ const LoginForm = React.createClass({
 			        <br />
 			          { this.fieldErrors("username") }
 								<input type="text"
+									placeholder="Username"
 			            value={this.state.username}
 			            onChange={this.update("username")} />
 			        <br />
 			          { this.fieldErrors("password") }
 			          <input type="password"
+									placeholder="Password"
 			            value={this.state.password}
 			            onChange={this.update("password")}/>
 						</div>
+
+
 						<input className="login-submit"
 							type="submit"
-							value="Submit" />
+							value={buttonText} />
 						<br/>
 
+
+
+						<br/>
 						<div className="login-toggle">
-						Please { this.formType() } or { navLink }
+							{ question }  { navLink }
 						</div>
+			
 
 						<br />
 				</form>

@@ -10,12 +10,12 @@ class User < ActiveRecord::Base
 
 	after_create :create_blog
 
-
 	validates :username, :password_digest, :session_token, presence: true
 	validates :username, uniqueness: true
 	validates :password, length: {minimum: 6}, allow_nil: :true
 
 	after_initialize :ensure_session_token
+	after_initialize :default_values
 	# before_validation :ensure_session_token_uniqueness
 
   def self.find_by_credentials username, password
@@ -54,5 +54,9 @@ class User < ActiveRecord::Base
 	# 		self.session_token = new_session_token
 	# 	end
 	# end
+
+	def default_values
+		self.avatar ||= "https://res.cloudinary.com/kattelles/image/upload/v1467250036/tumblr_o51oavbMDx1ugpbmuo7_500_2_rpuo6x.png"
+	end
 
 end
