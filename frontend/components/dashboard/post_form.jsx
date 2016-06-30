@@ -11,6 +11,10 @@ const PostForm = React.createClass({
     this.setState({user: SessionStore.currentUser()});
   },
 
+  componentWillUnmount() {
+    this.listener.remove();
+  },
+
   _onChange() {
     this.setState({user: SessionStore.currentUser()});
   },

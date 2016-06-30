@@ -33745,6 +33745,9 @@
 	    this.listener = SessionStore.addListener(this._onChange);
 	    this.setState({ user: SessionStore.currentUser() });
 	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
 	  _onChange: function _onChange() {
 	    this.setState({ user: SessionStore.currentUser() });
 	  },
