@@ -5,7 +5,7 @@ const hashHistory = require("react-router").hashHistory;
 
 const BlogEdit = React.createClass({
   getInitialState() {
-    let blog = BlogStore.getBlog();
+    let blog = this.props.blog;
     let title = blog.title ? blog.title : "";
     let description = blog.description ? blog.description : "";
     let coverPhoto = blog.cover_photo ? blog.cover_photo : "";
@@ -18,7 +18,6 @@ const BlogEdit = React.createClass({
 
   componentDidMount() {
     this.listener = BlogStore.addListener(this._onChange);
-    BlogActions.getBlog(this.props.params.userId);
   },
 
   componentWillUnmount() {
@@ -55,8 +54,7 @@ const BlogEdit = React.createClass({
   },
 
   updateSuccess(){
-    let url = "/blogs/" + BlogStore.getBlog().owner_id;
-    hashHistory.push(url);
+    this.props.close();
   },
 
   handleSubmit() {

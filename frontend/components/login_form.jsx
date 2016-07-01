@@ -89,7 +89,7 @@ const LoginForm = React.createClass({
 				<form onSubmit={this.handleSubmit} className="login-form">
 
 					<div>
-					<img src="https://res.cloudinary.com/kattelles/image/upload/v1467145360/Stumblr.-logo_yb0fzm.png"/>
+					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1467393972/Stumblr-logo_1_v8yl01.png"/>
 					</div>
 
 					<div className="login-errors">
@@ -123,7 +123,7 @@ const LoginForm = React.createClass({
 						<div className="login-toggle">
 							{ question }  { navLink }
 						</div>
-			
+
 
 						<br />
 				</form>

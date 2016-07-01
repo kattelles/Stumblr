@@ -2,10 +2,14 @@ const React = require("react");
 const hashHistory = require('react-router').hashHistory;
 const SessionActions = require("../../actions/session_actions");
 const SessionStore = require("../../stores/session_store");
+const Modal = require("react-modal");
+const ModalStyle = require("../modals/accountSettingsModal");
+const UserEdit = require("./user_edit");
+
 
 const NavBar = React.createClass({
   getInitialState() {
-    return({currentUser: SessionStore.currentUser()});
+    return({currentUser: SessionStore.currentUser(), modalOpen: false});
   },
 
   componentDidMount() {
@@ -32,10 +36,19 @@ const NavBar = React.createClass({
   },
 
   goToSettings() {
-    let url = `settings/${this.state.currentUser.id}`;
-    hashHistory.push(url);
+    // let url = `settings/${this.state.currentUser.id}`;
+    // hashHistory.push(url);
+    this.setState({modalOpen: true});
   },
 
+  onModalClose() {
+    this.setState({modalOpen: false});
+    ModalStyle.content.opacity = 0;
+  },
+
+  onModalOpen(){
+    ModalStyle.content.opacity = 100;
+  },
 
   render() {
     return (
@@ -52,6 +65,16 @@ const NavBar = React.createClass({
         <div onClick={this.logOut}>
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321963/logout-32_k9us73.png" />
         </div>
+
+        <Modal
+          isOpen={this.state.modalOpen}
+          onRequestClose={this.onModalClose}
+          style={ModalStyle}
+          onAfterOpen={this.onModalOpen}>
+          <UserEdit close={this.onModalClose}/>
+          <button onClick={this.onModalClose}>Close</button>
+        </Modal>
+
       </div>
     );
   }

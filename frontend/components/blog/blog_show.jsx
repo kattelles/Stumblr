@@ -4,16 +4,19 @@ const SessionStore = require("../../stores/session_store");
 const BlogActions = require("../../actions/blog_actions");
 const hashHistory = require('react-router').hashHistory;
 const FollowActions = require("../../actions/follow_actions");
+const BlogEdit = require("./blog_edit");
+
+const Modal = require("react-modal");
+const ModalStyle = require("../modals/blogSettingsModal");
 
 const BlogShow = React.createClass({
   getInitialState() {
-    return ({blog: {}, currentUser: {}});
+    return ({blog: {}, currentUser: SessionStore.currentUser(), modalOpen: false});
   },
 
   componentDidMount() {
     this.listener = BlogStore.addListener(this._onChange);
     this.sessionListener = SessionStore.addListener(this._onSessionChange);
-    this.setState({currentUser: SessionStore.currentUser()});
     BlogActions.getBlog(this.props.params.userId);
   },
 
@@ -39,8 +42,7 @@ const BlogShow = React.createClass({
   },
 
   editBlog() {
-    let url = `blog/${this.props.params.userId}/edit`;
-    hashHistory.push(url);
+    this.setState({modalOpen: true});
   },
 
   follow() {
@@ -60,15 +62,13 @@ const BlogShow = React.createClass({
     if (!this.state.blog) {
       return "";
     }
-
-    if (this.state.blog.owner_id === this.state.currentUser.id) {
+    if (parseInt(this.props.params.userId) === this.state.currentUser.id) {
       return (
           <div id="blog-show-edit" onClick={this.editBlog}>
               <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321393/edit-32_zkkgxx.png"/>
           </div>
       );
     } else {
-
       let button, clickMethod;
       if (BlogStore.isFollowing(this.state.currentUser.id))  {
         button = (
@@ -86,6 +86,15 @@ const BlogShow = React.createClass({
         <div id="blog-show-follow" onClick={clickMethod}><div>{button}</div></div>
       );
     }
+  },
+
+  onModalClose() {
+    this.setState({modalOpen: false});
+    ModalStyle.content.opacity = 0;
+  },
+
+  onModalOpen(){
+    ModalStyle.content.opacity = 100;
   },
 
   render() {
@@ -112,6 +121,16 @@ const BlogShow = React.createClass({
           <h1 className='blog-title'>{this.state.blog.title} </h1>
           <h3 className="blog-desc">{this.state.blog.description}</h3>
            <div>follows: {numFollows}</div>
+
+         <Modal
+           isOpen={this.state.modalOpen}
+           onRequestClose={this.onModalClose}
+           style={ModalStyle}
+           onAfterOpen={this.onModalOpen}>
+           <BlogEdit close={this.onModalClose} blog={this.state.blog}/>
+           <button onClick={this.onModalClose}>Close</button>
+         </Modal>
+
         </div>
 
     );

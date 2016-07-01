@@ -1,7 +1,6 @@
 const React = require("react");
 const SessionStore = require("../../stores/session_store");
 const UserActions = require("../../actions/user_actions");
-const hashHistory = require("react-router").hashHistory;
 
 const UserEdit = React.createClass({
   getInitialState() {
@@ -38,7 +37,8 @@ const UserEdit = React.createClass({
   },
 
   backToDashboard() {
-    hashHistory.push("/");
+    // debugger
+    this.props.close();
   },
 
   handleSubmit(e) {
@@ -70,7 +70,6 @@ const UserEdit = React.createClass({
         <input type="submit" value="Save"/>
       </form>
       <br/>
-      <button onClick={this.backToDashboard}>Back to Dashboard</button>
     </div>);
 
   }

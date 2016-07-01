@@ -56,15 +56,6 @@
 }
 
 
-.post-form img {
-  width: 65px;
-  height: 60px;
-  padding-top: 10px;
-  padding-bottom: 0;
-  margin-left: 14px;
-  margin-top: 5px;
-}
-
 #new-post-label-img {
   display: inline-block;
   vertical-align: middle;
@@ -87,31 +78,63 @@
 #new-post-label-text {
   width: 85px;
   height: 85px;
-  background-color: #56bc8a;
+  background-color: white;
   border-radius: 3px;
-  border: 3px solid white;
+}
+
+#new-post-label-text img {
+  width: 65px;
+  height: 60px;
+  padding-top: 10px;
+  padding-bottom: 0;
+  margin-left: 10px;
+  margin-top: 5px;
 }
 
 #new-post-label-photo {
   width: 85px;
   height: 85px;
-  background-color: #f2992e;
+  background-color: white;
   border-radius: 3px;
-  border: 3px solid white;
+}
+
+#new-post-label-photo img {
+  width: 65px;
+  height: 60px;
+  padding-top: 10px;
+  padding-bottom: 0;
+  margin-left: 11px;
+  margin-top: 2px;
 }
 
 #new-post-label-quote {
   width: 85px;
   height: 85px;
-  background-color: #d95e40;
+  background-color: white;
   border-radius: 3px;
-  border: 3px solid white;
+}
+
+#new-post-label-quote img {
+  width: 65px;
+  height: 60px;
+  padding-top: 10px;
+  padding-bottom: 0;
+  margin-left: 10px;
+  margin-top: 4px;
 }
 
 #new-post-label-link {
   width: 85px;
   height: 85px;
-  background-color: #385976;
+  background-color: white;
   border-radius: 3px;
-  border: 3px solid white;
+}
+
+#new-post-label-link img {
+  width: 65px;
+  height: 60px;
+  padding-top: 10px;
+  padding-bottom: 0;
+  margin-left: 11px;
+  margin-top: 3px;
 }

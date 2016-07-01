@@ -5,15 +5,17 @@
   bottom: 0;
   right: 0;
   overflow: auto;
-  background: url("https://res.cloudinary.com/kattelles/image/upload/v1467067423/splash_lebsi9.jpg");
+  background: url("https://res.cloudinary.com/kattelles/image/upload/v1467332133/photo-1465161191540-aac346fcbaff_btp5ef.jpg");
   background-size: cover;
 }
 
 .login-form {
   margin: 15% auto;
   width: 350px;
-  border: 5px solid black;
-  background-color: #DCDCDC;
+  border: 5px solid #56bc8a;
+  background-color: #d95e40;
+  padding: 10px;
+  padding-top: 15px;
 }
 
 .login-input {
@@ -21,9 +23,12 @@
 }
 
 .login-errors {
-  color: #696969;
+  color: #385976;
 }
 
+#logo {
+  margin-left: 25px;
+}
 
 .login-input input{
   background: white;
@@ -39,18 +44,18 @@
 }
 
 .login-submit {
-  background: #80b3b3;
+  background: #f2992e;
   width: 85%;
   height: 50px;
   font-size: 16px;
   padding: 0;
   margin-left: 27px;
   border: 0;
-  color: #696969;
+  color: #385976;
 }
 
 .login-toggle {
   text-align: center;
   font-size: 16px;
-  color: #696969;
+  color: #385976;
 }

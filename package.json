@@ -22,10 +22,10 @@
     "flux": "^2.1.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-modal": "^1.4.0",
     "react-router": "^2.5.1",
     "webpack": "^1.13.1"
   },
-
   "engines": {
     "node": "6.2.1",
     "npm": "3.9.3"
