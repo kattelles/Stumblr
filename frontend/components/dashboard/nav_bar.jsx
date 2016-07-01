@@ -3,7 +3,6 @@ const hashHistory = require('react-router').hashHistory;
 const SessionActions = require("../../actions/session_actions");
 const SessionStore = require("../../stores/session_store");
 const Modal = require("react-modal");
-const ModalStyle = require("../modals/accountSettingsModal");
 const UserEdit = require("./user_edit");
 
 
@@ -43,11 +42,6 @@ const NavBar = React.createClass({
 
   onModalClose() {
     this.setState({modalOpen: false});
-    ModalStyle.content.opacity = 0;
-  },
-
-  onModalOpen(){
-    ModalStyle.content.opacity = 100;
   },
 
   render() {
@@ -68,9 +62,9 @@ const NavBar = React.createClass({
         </div>
 
         <Modal
+          className="user-edit-modal"
           isOpen={this.state.modalOpen}
           onRequestClose={this.onModalClose}
-          style={ModalStyle}
           onAfterOpen={this.onModalOpen}>
           <UserEdit close={this.onModalClose}/>
           <button onClick={this.onModalClose}>Close</button>

@@ -1,0 +1,29 @@
+.post-form-modal {
+  width: 540px;
+  height: 300px;
+  background-color: white;
+  border-radius: 3px;
+  margin: 0 auto;
+  margin-top: 150px;
+  color: #444;
+}
+
+.user-edit-modal {
+  margin: 0 auto;
+  margin-top: 150px;
+  width: 450px;
+  height: 600px;
+  background-color: white;
+  border-radius: 3px;
+  color: #444;
+}
+
+.blog-edit-modal {
+  margin: 0 auto;
+  margin-top: 150px;
+  width: 450px;
+  height: 600px;
+  background-color: white;
+  border-radius: 3px;
+  color: #444;
+}

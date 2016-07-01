@@ -33420,7 +33420,6 @@
 	var SessionActions = __webpack_require__(231);
 	var SessionStore = __webpack_require__(243);
 	var Modal = __webpack_require__(277);
-	var ModalStyle = __webpack_require__(297);
 	var UserEdit = __webpack_require__(274);
 	
 	var NavBar = React.createClass({
@@ -33453,10 +33452,6 @@
 	  },
 	  onModalClose: function onModalClose() {
 	    this.setState({ modalOpen: false });
-	    ModalStyle.content.opacity = 0;
-	  },
-	  onModalOpen: function onModalOpen() {
-	    ModalStyle.content.opacity = 100;
 	  },
 	  render: function render() {
 	    return React.createElement(
@@ -33480,9 +33475,9 @@
 	      React.createElement(
 	        Modal,
 	        {
+	          className: "user-edit-modal",
 	          isOpen: this.state.modalOpen,
 	          onRequestClose: this.onModalClose,
-	          style: ModalStyle,
 	          onAfterOpen: this.onModalOpen },
 	        React.createElement(UserEdit, { close: this.onModalClose }),
 	        React.createElement(
@@ -33535,7 +33530,6 @@
 	var SessionStore = __webpack_require__(243);
 	var hashHistory = __webpack_require__(168).hashHistory;
 	var Modal = __webpack_require__(277);
-	var ModalStyle = __webpack_require__(299);
 	var TextForm = __webpack_require__(300);
 	var ImageForm = __webpack_require__(301);
 	var QuoteForm = __webpack_require__(302);
@@ -33564,10 +33558,6 @@
 	  },
 	  onModalClose: function onModalClose() {
 	    this.setState({ modalOpen: false });
-	    ModalStyle.content.opacity = 0;
-	  },
-	  onModalOpen: function onModalOpen() {
-	    ModalStyle.content.opacity = 100;
 	  },
 	  onClick: function onClick(type) {
 	    this.setState({ postType: type, modalOpen: true });
@@ -33626,9 +33616,9 @@
 	      React.createElement(
 	        Modal,
 	        {
+	          className: "post-form-modal",
 	          isOpen: this.state.modalOpen,
 	          onRequestClose: this.onModalClose,
-	          style: ModalStyle,
 	          onAfterOpen: this.onModalOpen },
 	        component,
 	        React.createElement(
@@ -33658,7 +33648,6 @@
 	var BlogEdit = __webpack_require__(273);
 	
 	var Modal = __webpack_require__(277);
-	var ModalStyle = __webpack_require__(298);
 	
 	var BlogShow = React.createClass({
 	  displayName: "BlogShow",
@@ -33734,10 +33723,6 @@
 	  },
 	  onModalClose: function onModalClose() {
 	    this.setState({ modalOpen: false });
-	    ModalStyle.content.opacity = 0;
-	  },
-	  onModalOpen: function onModalOpen() {
-	    ModalStyle.content.opacity = 100;
 	  },
 	  render: function render() {
 	    var toggleButton = this.getToggle();
@@ -33795,9 +33780,9 @@
 	        React.createElement(
 	          Modal,
 	          {
+	            className: "blog-edit-modal",
 	            isOpen: this.state.modalOpen,
 	            onRequestClose: this.onModalClose,
-	            style: ModalStyle,
 	            onAfterOpen: this.onModalOpen },
 	          React.createElement(BlogEdit, { close: this.onModalClose, blog: this.state.blog }),
 	          React.createElement(
@@ -36083,93 +36068,9 @@
 
 
 /***/ },
-/* 297 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  overlay: {
-	    position: 'fixed',
-	    top: 0,
-	    left: 0,
-	    right: 0,
-	    bottom: 0,
-	    backgroundColor: 'rgba(255, 255, 255, 0.75)'
-	  },
-	  content: {
-	    position: 'fixed',
-	    top: '100px',
-	    left: '150px',
-	    right: '150px',
-	    bottom: '100px',
-	    border: '1px solid #ccc',
-	    padding: '20px',
-	    backgroundColor: '#36465d',
-	    opacity: '0',
-	    transition: 'opacity 0.5s'
-	  }
-	};
-
-/***/ },
-/* 298 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  overlay: {
-	    position: 'fixed',
-	    top: 0,
-	    left: 0,
-	    right: 0,
-	    bottom: 0,
-	    backgroundColor: 'rgba(255, 255, 255, 0.75)'
-	  },
-	  content: {
-	    position: 'fixed',
-	    top: '100px',
-	    left: '150px',
-	    right: '150px',
-	    bottom: '100px',
-	    border: '1px solid #ccc',
-	    padding: '20px',
-	    backgroundColor: '#36465d',
-	    opacity: '0',
-	    transition: 'opacity .5s'
-	  }
-	};
-
-/***/ },
-/* 299 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  overlay: {
-	    position: 'fixed',
-	    top: 0,
-	    left: 0,
-	    right: 0,
-	    bottom: 0,
-	    backgroundColor: 'rgba(255, 255, 255, 0.75)'
-	  },
-	  content: {
-	    position: 'fixed',
-	    top: '100px',
-	    left: '150px',
-	    right: '150px',
-	    bottom: '100px',
-	    border: '1px solid #ccc',
-	    padding: '20px',
-	    backgroundColor: '#36465d',
-	    opacity: '0',
-	    transition: 'opacity 0.5s'
-	  }
-	};
-
-/***/ },
+/* 297 */,
+/* 298 */,
+/* 299 */,
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 

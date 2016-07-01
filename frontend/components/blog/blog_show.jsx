@@ -7,7 +7,6 @@ const FollowActions = require("../../actions/follow_actions");
 const BlogEdit = require("./blog_edit");
 
 const Modal = require("react-modal");
-const ModalStyle = require("../modals/blogSettingsModal");
 
 const BlogShow = React.createClass({
   getInitialState() {
@@ -90,12 +89,8 @@ const BlogShow = React.createClass({
 
   onModalClose() {
     this.setState({modalOpen: false});
-    ModalStyle.content.opacity = 0;
   },
 
-  onModalOpen(){
-    ModalStyle.content.opacity = 100;
-  },
 
   render() {
     let toggleButton = this.getToggle();
@@ -127,9 +122,9 @@ const BlogShow = React.createClass({
            <div>follows: {numFollows}</div>
 
          <Modal
+           className="blog-edit-modal"
            isOpen={this.state.modalOpen}
            onRequestClose={this.onModalClose}
-           style={ModalStyle}
            onAfterOpen={this.onModalOpen}>
            <BlogEdit close={this.onModalClose} blog={this.state.blog}/>
            <button onClick={this.onModalClose}>Close</button>

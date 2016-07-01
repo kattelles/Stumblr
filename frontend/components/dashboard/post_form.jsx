@@ -2,7 +2,6 @@ const React = require('react');
 const SessionStore = require("../../stores/session_store");
 const hashHistory = require("react-router").hashHistory;
 const Modal = require("react-modal");
-const ModalStyle = require("../modals/postFormModal");
 const TextForm = require("./forms/text_form");
 const ImageForm = require("./forms/image_form");
 const QuoteForm = require("./forms/quote_form");
@@ -35,12 +34,8 @@ const PostForm = React.createClass({
 
   onModalClose() {
     this.setState({modalOpen: false});
-    ModalStyle.content.opacity = 0;
   },
 
-  onModalOpen(){
-    ModalStyle.content.opacity = 100;
-  },
 
   onClick(type) {
     this.setState({postType: type, modalOpen: true});
@@ -95,9 +90,9 @@ const PostForm = React.createClass({
       </div>
 
       <Modal
+        className="post-form-modal"
         isOpen={this.state.modalOpen}
         onRequestClose={this.onModalClose}
-        style={ModalStyle}
         onAfterOpen={this.onModalOpen}>
         {component}
         <button onClick={this.onModalClose}>Close</button>
