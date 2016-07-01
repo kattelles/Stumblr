@@ -7,9 +7,10 @@ const Dashboard = React.createClass({
   render() {
     return (
       <div>
+        <div id="dash-outer" className="group">
         <div id="dash-header">
           <div id="small-logo">
-          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467393972/Stumblr-logo_1_v8yl01.png"
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467405243/Stumblr-logo_2_ignktf.png"
             width="150" />
           </div>
           <NavBar/>
@@ -20,6 +21,7 @@ const Dashboard = React.createClass({
           </div>
             <SideBar/>
         </div>
+      </div>
       </div>);
   }
 });

@@ -1,6 +1,9 @@
 class Post < ActiveRecord::Base
   belongs_to :user
-  belongs_to :blog
 
-  validates :user_id, :blog_id, presence: true
+  has_one :blog,
+    through: :user,
+    source: :blog
+
+  validates :user_id, :post_type, presence: true
 end

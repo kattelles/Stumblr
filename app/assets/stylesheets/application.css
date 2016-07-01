@@ -17,7 +17,7 @@
 /*Helvetica Neue, HelveticaNeue, Helvetica , Arial, sans-serif;*/
 
 html {
-  font-family: 'Lato', sans-serif;
+  font-family: Helvetica;
   background-color: #36465d;
   color: white;
 }
@@ -27,4 +27,11 @@ html {
   height: 100px;
   border-radius: 3px;
   border: 1px solid white;
+}
+
+
+.group:after {
+  content: "";
+  display: block;
+  clear: both;
 }

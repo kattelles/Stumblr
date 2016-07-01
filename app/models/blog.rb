@@ -14,6 +14,10 @@ class Blog < ActiveRecord::Base
     through: :follows,
     source: :user
 
+  has_many :posts,
+    through: :owner,
+    source: :post
+
 	after_initialize :default_values
 
   private

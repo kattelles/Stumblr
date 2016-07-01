@@ -6,6 +6,7 @@
   right: 10px;
 }
 
+
 .navbar div {
   height: 35px;
   width: 35px;
@@ -22,7 +23,7 @@
 }
 
 #small-logo {
-  padding: 20px;
+  padding: 10px;
   display: inline;
   float: left;
 }

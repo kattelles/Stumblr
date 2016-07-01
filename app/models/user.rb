@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
 	attr_reader :password
 
+	has_many :posts
+
 	has_one(
 		:blog,
 		:class_name => Blog,

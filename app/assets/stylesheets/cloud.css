@@ -1,0 +1,37 @@
+#cloudinary-widget .panel.camera .form .button_holder {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#cloudinary-widget .panel.camera .note {
+  font-weight: normal;
+  font-size: 13px;
+  padding: 4px 20px 4px 20px;
+}
+
+
+#cloudinary-widget .panel.camera video {
+  border-width:0px;
+}
+
+#cloudinary-widget .camera .form {
+  background:#fff;
+  border: 1px solid #eee;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  margin: 0px 20px 0px 20px;
+  padding-top: 10px;
+}
+
+
+#cloudinary-overlay.inline .widget {
+  border: 1px solid #ddd;
+}
+
+@media screen and (max-width: 540px) {
+  #cloudinary-widget .drag_area {
+    border: none;
+    background: none;
+  }
+}

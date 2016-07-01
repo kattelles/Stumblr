@@ -89,7 +89,7 @@ const LoginForm = React.createClass({
 				<form onSubmit={this.handleSubmit} className="login-form">
 
 					<div>
-					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1467393972/Stumblr-logo_1_v8yl01.png"/>
+					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1467405337/Stumblr-logo_3_gfnm4g.png"/>
 					</div>
 
 					<div className="login-errors">

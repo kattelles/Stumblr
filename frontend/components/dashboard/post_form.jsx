@@ -7,6 +7,7 @@ const TextForm = require("./forms/text_form");
 const ImageForm = require("./forms/image_form");
 const QuoteForm = require("./forms/quote_form");
 const LinkForm = require("./forms/link_form");
+const PostStore = require("../../stores/post_store");
 
 const PostForm = React.createClass({
   getInitialState() {
@@ -51,16 +52,20 @@ const PostForm = React.createClass({
 
     switch (this.state.postType) {
       case "TextForm":
-        component = <TextForm close={this.onModalClose}/>;
+        component = <TextForm user={this.state.user}
+          close={this.onModalClose}/>;
         break;
       case "ImageForm":
-        component = <ImageForm close={this.onModalClose}/>;
+        component = <ImageForm user={this.state.user}
+          close={this.onModalClose}/>;
         break;
       case "QuoteForm":
-        component = <QuoteForm close={this.onModalClose}/>;
+        component = <QuoteForm user={this.state.user}
+          close={this.onModalClose}/>;
         break;
       case "LinkForm":
-        component = <LinkForm close={this.onModalClose}/>;
+        component = <LinkForm user={this.state.user}
+          close={this.onModalClose}/>;
         break;
     }
 

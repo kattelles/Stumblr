@@ -106,6 +106,10 @@ const BlogShow = React.createClass({
       numFollows = this.state.blog.follows.length;
     }
 
+    if (this.state.blog === {}) {
+      return <div class="loader">Loading...</div>;
+    } else {
+
     return(
         <div className="blog-show">
           <img className="cover-photo" src={this.state.blog.cover_photo}/>
@@ -134,7 +138,7 @@ const BlogShow = React.createClass({
         </div>
 
     );
-  }
+  }}
 
 });
 

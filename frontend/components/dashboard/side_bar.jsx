@@ -5,7 +5,9 @@ const SideBar = React.createClass({
 
   render: function() {
     return (
-      <div id="side-bar">Recommended Blogs</div>
+      <div id="side-bar">
+        <div id="side-header">Recommended Blogs</div>
+      </div>
     );
   }
 

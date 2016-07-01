@@ -33260,7 +33260,7 @@
 									React.createElement(
 											'div',
 											null,
-											React.createElement('img', { id: 'logo', src: 'https://res.cloudinary.com/kattelles/image/upload/v1467393972/Stumblr-logo_1_v8yl01.png' })
+											React.createElement('img', { id: 'logo', src: 'https://res.cloudinary.com/kattelles/image/upload/v1467405337/Stumblr-logo_3_gfnm4g.png' })
 									),
 									React.createElement(
 											'div',
@@ -33380,24 +33380,28 @@
 	      null,
 	      React.createElement(
 	        "div",
-	        { id: "dash-header" },
+	        { id: "dash-outer", className: "group" },
 	        React.createElement(
 	          "div",
-	          { id: "small-logo" },
-	          React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467393972/Stumblr-logo_1_v8yl01.png",
-	            width: "150" })
+	          { id: "dash-header" },
+	          React.createElement(
+	            "div",
+	            { id: "small-logo" },
+	            React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467405243/Stumblr-logo_2_ignktf.png",
+	              width: "150" })
+	          ),
+	          React.createElement(NavBar, null)
 	        ),
-	        React.createElement(NavBar, null)
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "dashboard" },
 	        React.createElement(
 	          "div",
-	          { className: "feed" },
-	          React.createElement(PostForm, null)
-	        ),
-	        React.createElement(SideBar, null)
+	          { className: "dashboard" },
+	          React.createElement(
+	            "div",
+	            { className: "feed" },
+	            React.createElement(PostForm, null)
+	          ),
+	          React.createElement(SideBar, null)
+	        )
 	      )
 	    );
 	  }
@@ -33509,7 +33513,11 @@
 	    return React.createElement(
 	      "div",
 	      { id: "side-bar" },
-	      "Recommended Blogs"
+	      React.createElement(
+	        "div",
+	        { id: "side-header" },
+	        "Recommended Blogs"
+	      )
 	    );
 	  }
 	
@@ -33532,6 +33540,7 @@
 	var ImageForm = __webpack_require__(301);
 	var QuoteForm = __webpack_require__(302);
 	var LinkForm = __webpack_require__(303);
+	var PostStore = __webpack_require__(307);
 	
 	var PostForm = React.createClass({
 	  displayName: "PostForm",
@@ -33569,16 +33578,20 @@
 	
 	    switch (this.state.postType) {
 	      case "TextForm":
-	        component = React.createElement(TextForm, { close: this.onModalClose });
+	        component = React.createElement(TextForm, { user: this.state.user,
+	          close: this.onModalClose });
 	        break;
 	      case "ImageForm":
-	        component = React.createElement(ImageForm, { close: this.onModalClose });
+	        component = React.createElement(ImageForm, { user: this.state.user,
+	          close: this.onModalClose });
 	        break;
 	      case "QuoteForm":
-	        component = React.createElement(QuoteForm, { close: this.onModalClose });
+	        component = React.createElement(QuoteForm, { user: this.state.user,
+	          close: this.onModalClose });
 	        break;
 	      case "LinkForm":
-	        component = React.createElement(LinkForm, { close: this.onModalClose });
+	        component = React.createElement(LinkForm, { user: this.state.user,
+	          close: this.onModalClose });
 	        break;
 	    }
 	
@@ -33735,57 +33748,66 @@
 	      numFollows = this.state.blog.follows.length;
 	    }
 	
-	    return React.createElement(
-	      "div",
-	      { className: "blog-show" },
-	      React.createElement("img", { className: "cover-photo", src: this.state.blog.cover_photo }),
-	      React.createElement(
+	    if (this.state.blog === {}) {
+	      return React.createElement(
 	        "div",
-	        { id: "blog-nav-bar" },
-	        toggleButton,
+	        { "class": "loader" },
+	        "Loading..."
+	      );
+	    } else {
+	
+	      return React.createElement(
+	        "div",
+	        { className: "blog-show" },
+	        React.createElement("img", { className: "cover-photo", src: this.state.blog.cover_photo }),
 	        React.createElement(
 	          "div",
-	          { id: "blog-show-dashboard", onClick: this.backToDashboard },
+	          { id: "blog-nav-bar" },
+	          toggleButton,
 	          React.createElement(
 	            "div",
-	            { id: "blog-show-dashboard-inner" },
-	            React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png" })
+	            { id: "blog-show-dashboard", onClick: this.backToDashboard },
+	            React.createElement(
+	              "div",
+	              { id: "blog-show-dashboard-inner" },
+	              React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png" })
+	            )
+	          )
+	        ),
+	        React.createElement("img", { className: "avatar", src: avatar }),
+	        React.createElement(
+	          "h1",
+	          { className: "blog-title" },
+	          this.state.blog.title,
+	          " "
+	        ),
+	        React.createElement(
+	          "h3",
+	          { className: "blog-desc" },
+	          this.state.blog.description
+	        ),
+	        React.createElement(
+	          "div",
+	          null,
+	          "follows: ",
+	          numFollows
+	        ),
+	        React.createElement(
+	          Modal,
+	          {
+	            isOpen: this.state.modalOpen,
+	            onRequestClose: this.onModalClose,
+	            style: ModalStyle,
+	            onAfterOpen: this.onModalOpen },
+	          React.createElement(BlogEdit, { close: this.onModalClose, blog: this.state.blog }),
+	          React.createElement(
+	            "button",
+	            { onClick: this.onModalClose },
+	            "Close"
 	          )
 	        )
-	      ),
-	      React.createElement("img", { className: "avatar", src: avatar }),
-	      React.createElement(
-	        "h1",
-	        { className: "blog-title" },
-	        this.state.blog.title,
-	        " "
-	      ),
-	      React.createElement(
-	        "h3",
-	        { className: "blog-desc" },
-	        this.state.blog.description
-	      ),
-	      React.createElement(
-	        "div",
-	        null,
-	        "follows: ",
-	        numFollows
-	      ),
-	      React.createElement(
-	        Modal,
-	        {
-	          isOpen: this.state.modalOpen,
-	          onRequestClose: this.onModalClose,
-	          style: ModalStyle,
-	          onAfterOpen: this.onModalOpen },
-	        React.createElement(BlogEdit, { close: this.onModalClose, blog: this.state.blog }),
-	        React.createElement(
-	          "button",
-	          { onClick: this.onModalClose },
-	          "Close"
-	        )
-	      )
-	    );
+	      );
+	    }
 	  }
 	});
 	
@@ -36085,7 +36107,7 @@
 	    padding: '20px',
 	    backgroundColor: '#36465d',
 	    opacity: '0',
-	    transition: 'opacity 1s'
+	    transition: 'opacity 0.5s'
 	  }
 	};
 
@@ -36114,7 +36136,7 @@
 	    padding: '20px',
 	    backgroundColor: '#36465d',
 	    opacity: '0',
-	    transition: 'opacity 1s'
+	    transition: 'opacity .5s'
 	  }
 	};
 
@@ -36143,7 +36165,7 @@
 	    padding: '20px',
 	    backgroundColor: '#36465d',
 	    opacity: '0',
-	    transition: 'opacity 1s'
+	    transition: 'opacity 0.5s'
 	  }
 	};
 
@@ -36151,23 +36173,51 @@
 /* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(305);
 	
 	var TextForm = React.createClass({
-	  displayName: 'TextForm',
-	  createSuccess: function createSuccess() {
+	  displayName: "TextForm",
+	  getInitialState: function getInitialState() {
+	    return { title: "", content: "" };
+	  },
+	  titleChange: function titleChange(e) {
+	    this.setState({ title: e.target.value });
+	  },
+	  contentChange: function contentChange(e) {
+	    this.setState({ content: e.target.value });
+	  },
+	  handleSubmit: function handleSubmit() {
+	    var id = this.props.user.id;
+	    PostActions.createPost({
+	      post: {
+	        post_type: "Text",
+	        user_id: parseInt(id),
+	        title: this.state.title,
+	        content: this.state.content
+	      }
+	    });
 	    this.props.close();
 	  },
 	
 	
 	  render: function render() {
-	
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      'Text Form'
+	      React.createElement(
+	        "form",
+	        { onSubmit: this.handleSubmit },
+	        React.createElement("input", { onChange: this.titleChange,
+	          placeholder: "Title", value: this.state.title }),
+	        React.createElement("br", null),
+	        React.createElement("input", { onChange: this.contentChange,
+	          placeholder: "Your text here", value: this.state.content }),
+	        React.createElement("br", null),
+	        React.createElement("input", { type: "submit", value: "Post" })
+	      )
 	    );
 	  }
 	
@@ -36179,22 +36229,46 @@
 /* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(305);
 	
 	var ImageForm = React.createClass({
-	  displayName: 'ImageForm',
-	  createSuccess: function createSuccess() {
+	  displayName: "ImageForm",
+	  getInitialState: function getInitialState() {
+	    return { url: "" };
+	  },
+	  uploadImage: function uploadImage(e) {
+	    e.preventDefault();
+	    window.cloudinary.openUploadWidget(CLOUDINARY_OPTIONS, function (error, results) {
+	      if (!error) {
+	        this.setState({ url: results[0].url });
+	      }
+	    }.bind(this));
+	  },
+	  handleSubmit: function handleSubmit() {
+	    var id = this.props.user.id;
+	    PostActions.createPost({
+	      post: {
+	        post_type: "Image",
+	        user_id: parseInt(id),
+	        image_url: this.state.url
+	      }
+	    });
 	    this.props.close();
 	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      'Image Form'
+	      React.createElement(
+	        "div",
+	        { onClick: this.uploadImage },
+	        "Upload Photo"
+	      )
 	    );
 	  }
 	
@@ -36206,22 +36280,51 @@
 /* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(305);
 	
 	var QuoteForm = React.createClass({
-	  displayName: 'QuoteForm',
-	  createSuccess: function createSuccess() {
+	  displayName: "QuoteForm",
+	  getInitialState: function getInitialState() {
+	    return { quote: "", quoteSource: "" };
+	  },
+	  quoteChange: function quoteChange(e) {
+	    this.setState({ quote: e.target.value });
+	  },
+	  quoteSourceChange: function quoteSourceChange(e) {
+	    this.setState({ quoteSource: e.target.value });
+	  },
+	  handleSubmit: function handleSubmit() {
+	    var id = this.props.user.id;
+	    PostActions.createPost({
+	      post: {
+	        post_type: "Quote",
+	        user_id: parseInt(id),
+	        quote: this.state.quote,
+	        quote_source: this.state.quoteSource
+	      }
+	    });
 	    this.props.close();
 	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      'Quote Form'
+	      React.createElement(
+	        "form",
+	        { onSubmit: this.handleSubmit },
+	        React.createElement("input", { onChange: this.quoteChange,
+	          placeholder: "Quote", value: this.state.quote }),
+	        React.createElement("br", null),
+	        React.createElement("input", { onChange: this.quoteSourceChange,
+	          placeholder: "Source", value: this.state.quoteSource }),
+	        React.createElement("br", null),
+	        React.createElement("input", { type: "submit", value: "Post" })
+	      )
 	    );
 	  }
 	
@@ -36233,28 +36336,189 @@
 /* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(305);
 	
-	var LinkForm = React.createClass({
-	  displayName: 'LinkForm',
-	  createSuccess: function createSuccess() {
+	var QuoteForm = React.createClass({
+	  displayName: "QuoteForm",
+	  getInitialState: function getInitialState() {
+	    return { link: "" };
+	  },
+	  quoteChange: function quoteChange(e) {
+	    this.setState({ link: e.target.value });
+	  },
+	  handleSubmit: function handleSubmit() {
+	    var id = this.props.user.id;
+	    PostActions.createPost({
+	      post: {
+	        post_type: "Link",
+	        user_id: parseInt(id),
+	        link_url: this.state.link
+	      }
+	    });
 	    this.props.close();
 	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      'Link Form'
+	      React.createElement(
+	        "form",
+	        { onSubmit: this.handleSubmit },
+	        React.createElement("input", { onChange: this.linkChange,
+	          placeholder: "Type or paste a URL", value: this.state.link }),
+	        React.createElement("br", null),
+	        React.createElement("input", { type: "submit", value: "Post" })
+	      )
 	    );
 	  }
 	
 	});
 	
-	module.exports = LinkForm;
+	module.exports = QuoteForm;
+
+/***/ },
+/* 304 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  createPost: function createPost(data, cb) {
+	    $.ajax({
+	      url: "api/posts",
+	      method: "POST",
+	      data: data,
+	      success: function success(post) {
+	        cb(post);
+	      }
+	    });
+	  },
+	  editPost: function editPost(data, cb) {
+	    $.ajax({
+	      url: "api/posts/" + data.id,
+	      method: "PATCH",
+	      data: data,
+	      success: function success(post) {
+	        cb(post);
+	      }
+	    });
+	  },
+	  deletePost: function deletePost(id, cb) {
+	    $.ajax({
+	      url: "api/posts/" + id,
+	      method: "DELETE",
+	      success: function success(post) {
+	        cb(post);
+	      }
+	    });
+	  },
+	  fetchFeed: function fetchFeed(userId, cb) {
+	    $.ajax({
+	      url: "api/posts",
+	      data: { user_id: userId },
+	      success: function success(posts) {
+	        cb(posts);
+	      }
+	    });
+	  }
+	};
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var PostApiUtil = __webpack_require__(304);
+	var Dispatcher = __webpack_require__(232);
+	var PostConstants = __webpack_require__(306);
+	
+	module.exports = {
+	  createPost: function createPost(data) {
+	    PostApiUtil.createPost(data, this.receivePost);
+	  },
+	  editPost: function editPost(data) {
+	    PostApiUtil.editPost(data, this.receivePost);
+	  },
+	  deletePost: function deletePost(id) {
+	    PostApiUtil.editPost(id, this.removePost);
+	  },
+	  fetchFeed: function fetchFeed(userId) {
+	    PostApiUtil.fetchFeed(userId, this.receivePost);
+	  },
+	  receiveFeed: function receiveFeed(posts) {
+	    Dispatcher.dispatch({
+	      actionType: PostConstants.POSTS_RECEIVED,
+	      posts: posts
+	    });
+	  },
+	  receivePost: function receivePost(post) {
+	    Dispatcher.dispatch({
+	      actionType: PostConstants.POST_RECEIVED,
+	      post: post
+	    });
+	  },
+	  removePost: function removePost(post) {
+	    Dispatcher.dispatch({
+	      actionType: PostConstants.POST_REMOVED,
+	      post: post
+	    });
+	  }
+	};
+
+/***/ },
+/* 306 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  POST_RECEIVED: "POST_RECEIVED",
+	  POSTS_RECEIVED: "POSTS_RECEIVED",
+	  POST_REMOVED: "POST_REMOVED"
+	};
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var Dispatcher = __webpack_require__(232);
+	var Store = __webpack_require__(244).Store;
+	var PostConstants = __webpack_require__(306);
+	
+	var PostStore = new Store(Dispatcher);
+	
+	var _posts = {};
+	
+	var addPost = function addPost(post) {
+	  _posts[post.id] = post;
+	};
+	
+	var removePost = function removePost(post) {
+	  delete _posts[post.id];
+	};
+	
+	PostStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case PostConstants.POST_RECEIVED:
+	      addPost(payload.post);
+	      this.__emitChange();
+	      break;
+	    case PostConstants.POST_REMOVED:
+	      removePost(payload.post);
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = PostStore;
 
 /***/ }
 /******/ ]);

@@ -1,12 +1,25 @@
 .dashboard {
   width: 990px;
   margin: 0 auto;
+  margin-top: 40px;
   display: flex;
   justify-content: space-between;
 }
 
 #dash-header {
-  height: 80px;
+  height: 65px;
+  border-bottom: 1px solid white;
+}
+
+#dash-outer {
+  height: 90px;
+}
+
+#side-header {
+  font-size: 20px;
+  color: white;
+  border-bottom: 1px solid white;
+  text-align: left;
 }
 
 .feed-form {
@@ -38,8 +51,6 @@
 
 #side-bar {
   width: 320px;
-  font-size: 20px;
-  color: #677385;
 }
 
 .post-form div {

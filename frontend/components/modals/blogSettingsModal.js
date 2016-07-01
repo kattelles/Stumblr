@@ -17,6 +17,6 @@ module.exports = {
       padding         : '20px',
       backgroundColor : '#36465d',
       opacity         : '0',
-      transition      : 'opacity 1s'
+      transition      : 'opacity .5s'
     }
 };

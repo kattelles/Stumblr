@@ -52,6 +52,7 @@ const NavBar = React.createClass({
 
   render() {
     return (
+
       <div className="navbar">
 
         <div onClick={this.goToMyBlog}>
@@ -74,8 +75,8 @@ const NavBar = React.createClass({
           <UserEdit close={this.onModalClose}/>
           <button onClick={this.onModalClose}>Close</button>
         </Modal>
-
       </div>
+
     );
   }
 });
