@@ -7,9 +7,10 @@ const QuoteForm = React.createClass({
     return ({link: ""});
   },
 
-  quoteChange(e) {
+  linkChange(e) {
     this.setState({link: e.target.value});
   },
+
 
   handleSubmit() {
     let id = this.props.user.id;
@@ -26,12 +27,17 @@ const QuoteForm = React.createClass({
   render: function() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.linkChange}
+        <div id="modal-header">{this.props.user.username}</div>
+        <form>
+          <div id="link-outer">
+          <input type="text" id="link-form" onChange={this.linkChange}
             placeholder="Type or paste a URL" value={this.state.link}/>
+          </div>
           <br/>
-
-          <input type="submit" value="Post"/>
+            <div id="footer">
+              <div id="close-button" onClick={this.props.close}>Close</div>
+              <div onClick={this.handleSubmit} id="post-button">Post</div>
+            </div>
         </form>
       </div>
     );

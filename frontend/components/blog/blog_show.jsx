@@ -10,7 +10,7 @@ const Modal = require("react-modal");
 
 const BlogShow = React.createClass({
   getInitialState() {
-    return ({blog: {}, currentUser: SessionStore.currentUser(), modalOpen: false});
+    return ({blog: "", currentUser: SessionStore.currentUser(), modalOpen: false});
   },
 
   componentDidMount() {
@@ -93,6 +93,9 @@ const BlogShow = React.createClass({
 
 
   render() {
+    if (this.state.blog === "") {
+      return (<div class="loader">Loading...</div>);
+    }
     let toggleButton = this.getToggle();
     let avatar = this.state.blog.avatar;
 
@@ -101,9 +104,6 @@ const BlogShow = React.createClass({
       numFollows = this.state.blog.follows.length;
     }
 
-    if (this.state.blog === {}) {
-      return <div class="loader">Loading...</div>;
-    } else {
 
     return(
         <div className="blog-show">
@@ -133,7 +133,7 @@ const BlogShow = React.createClass({
         </div>
 
     );
-  }}
+  }
 
 });
 

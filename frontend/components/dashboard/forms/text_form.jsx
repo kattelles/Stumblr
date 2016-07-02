@@ -31,14 +31,18 @@ const TextForm = React.createClass({
   render: function() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.titleChange}
+        <div id="modal-header">{this.props.user.username}</div>
+        <form id="post-inputs">
+          <input id="post-text" onChange={this.titleChange}
             placeholder="Title" value={this.state.title}/>
           <br/>
-          <input onChange={this.contentChange}
+          <textarea id="post-content" onChange={this.contentChange}
             placeholder="Your text here" value={this.state.content}/>
           <br/>
-          <input type="submit" value="Post"/>
+          <div id="footer">
+            <div id="close-button" onClick={this.props.close}>Close</div>
+            <div onClick={this.handleSubmit} id="post-button">Post</div>
+          </div>
         </form>
       </div>
     );

@@ -33620,18 +33620,15 @@
 	          isOpen: this.state.modalOpen,
 	          onRequestClose: this.onModalClose,
 	          onAfterOpen: this.onModalOpen },
-	        component,
-	        React.createElement(
-	          "button",
-	          { onClick: this.onModalClose },
-	          "Close"
-	        )
+	        component
 	      )
 	    );
 	  }
 	});
 	
 	module.exports = PostForm;
+	
+	// <img id="post-form-avatar" src={this.state.user.avatar}/>
 
 /***/ },
 /* 270 */
@@ -33652,7 +33649,7 @@
 	var BlogShow = React.createClass({
 	  displayName: "BlogShow",
 	  getInitialState: function getInitialState() {
-	    return { blog: {}, currentUser: SessionStore.currentUser(), modalOpen: false };
+	    return { blog: "", currentUser: SessionStore.currentUser(), modalOpen: false };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.listener = BlogStore.addListener(this._onChange);
@@ -33725,6 +33722,13 @@
 	    this.setState({ modalOpen: false });
 	  },
 	  render: function render() {
+	    if (this.state.blog === "") {
+	      return React.createElement(
+	        "div",
+	        { "class": "loader" },
+	        "Loading..."
+	      );
+	    }
 	    var toggleButton = this.getToggle();
 	    var avatar = this.state.blog.avatar;
 	
@@ -33733,66 +33737,57 @@
 	      numFollows = this.state.blog.follows.length;
 	    }
 	
-	    if (this.state.blog === {}) {
-	      return React.createElement(
+	    return React.createElement(
+	      "div",
+	      { className: "blog-show" },
+	      React.createElement("img", { className: "cover-photo", src: this.state.blog.cover_photo }),
+	      React.createElement(
 	        "div",
-	        { "class": "loader" },
-	        "Loading..."
-	      );
-	    } else {
-	
-	      return React.createElement(
-	        "div",
-	        { className: "blog-show" },
-	        React.createElement("img", { className: "cover-photo", src: this.state.blog.cover_photo }),
+	        { id: "blog-nav-bar" },
+	        toggleButton,
 	        React.createElement(
 	          "div",
-	          { id: "blog-nav-bar" },
-	          toggleButton,
+	          { id: "blog-show-dashboard", onClick: this.backToDashboard },
 	          React.createElement(
 	            "div",
-	            { id: "blog-show-dashboard", onClick: this.backToDashboard },
-	            React.createElement(
-	              "div",
-	              { id: "blog-show-dashboard-inner" },
-	              React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png" })
-	            )
-	          )
-	        ),
-	        React.createElement("img", { className: "avatar", src: avatar }),
-	        React.createElement(
-	          "h1",
-	          { className: "blog-title" },
-	          this.state.blog.title,
-	          " "
-	        ),
-	        React.createElement(
-	          "h3",
-	          { className: "blog-desc" },
-	          this.state.blog.description
-	        ),
-	        React.createElement(
-	          "div",
-	          null,
-	          "follows: ",
-	          numFollows
-	        ),
-	        React.createElement(
-	          Modal,
-	          {
-	            className: "blog-edit-modal",
-	            isOpen: this.state.modalOpen,
-	            onRequestClose: this.onModalClose,
-	            onAfterOpen: this.onModalOpen },
-	          React.createElement(BlogEdit, { close: this.onModalClose, blog: this.state.blog }),
-	          React.createElement(
-	            "button",
-	            { onClick: this.onModalClose },
-	            "Close"
+	            { id: "blog-show-dashboard-inner" },
+	            React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png" })
 	          )
 	        )
-	      );
-	    }
+	      ),
+	      React.createElement("img", { className: "avatar", src: avatar }),
+	      React.createElement(
+	        "h1",
+	        { className: "blog-title" },
+	        this.state.blog.title,
+	        " "
+	      ),
+	      React.createElement(
+	        "h3",
+	        { className: "blog-desc" },
+	        this.state.blog.description
+	      ),
+	      React.createElement(
+	        "div",
+	        null,
+	        "follows: ",
+	        numFollows
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "blog-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        React.createElement(BlogEdit, { close: this.onModalClose, blog: this.state.blog }),
+	        React.createElement(
+	          "button",
+	          { onClick: this.onModalClose },
+	          "Close"
+	        )
+	      )
+	    );
 	  }
 	});
 	
@@ -36109,15 +36104,33 @@
 	      "div",
 	      null,
 	      React.createElement(
+	        "div",
+	        { id: "modal-header" },
+	        this.props.user.username
+	      ),
+	      React.createElement(
 	        "form",
-	        { onSubmit: this.handleSubmit },
-	        React.createElement("input", { onChange: this.titleChange,
+	        { id: "post-inputs" },
+	        React.createElement("input", { id: "post-text", onChange: this.titleChange,
 	          placeholder: "Title", value: this.state.title }),
 	        React.createElement("br", null),
-	        React.createElement("input", { onChange: this.contentChange,
+	        React.createElement("textarea", { id: "post-content", onChange: this.contentChange,
 	          placeholder: "Your text here", value: this.state.content }),
 	        React.createElement("br", null),
-	        React.createElement("input", { type: "submit", value: "Post" })
+	        React.createElement(
+	          "div",
+	          { id: "footer" },
+	          React.createElement(
+	            "div",
+	            { id: "close-button", onClick: this.props.close },
+	            "Close"
+	          ),
+	          React.createElement(
+	            "div",
+	            { onClick: this.handleSubmit, id: "post-button" },
+	            "Post"
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -36167,8 +36180,28 @@
 	      null,
 	      React.createElement(
 	        "div",
-	        { onClick: this.uploadImage },
-	        "Upload Photo"
+	        { id: "modal-header" },
+	        this.props.user.username
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "image-form" },
+	        React.createElement(
+	          "div",
+	          { onClick: this.uploadImage },
+	          React.createElement("img", { id: "image-camera", src: "http://res.cloudinary.com/kattelles/image/upload/v1467442048/noun_26730_cc_p7i5vv.png" }),
+	          React.createElement("br", null),
+	          "Upload Photo"
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "footer" },
+	        React.createElement(
+	          "div",
+	          { id: "close-button", onClick: this.props.close },
+	          "Close"
+	        )
 	      )
 	    );
 	  }
@@ -36216,15 +36249,33 @@
 	      "div",
 	      null,
 	      React.createElement(
+	        "div",
+	        { id: "modal-header" },
+	        this.props.user.username
+	      ),
+	      React.createElement(
 	        "form",
-	        { onSubmit: this.handleSubmit },
-	        React.createElement("input", { onChange: this.quoteChange,
-	          placeholder: "Quote", value: this.state.quote }),
+	        { id: "post-inputs" },
+	        React.createElement("textarea", { id: "quote", onChange: this.quoteChange,
+	          placeholder: "\"Quote\"", value: this.state.quote }),
 	        React.createElement("br", null),
-	        React.createElement("input", { onChange: this.quoteSourceChange,
-	          placeholder: "Source", value: this.state.quoteSource }),
+	        React.createElement("input", { id: "source", onChange: this.quoteSourceChange,
+	          placeholder: "-- Source", value: this.state.quoteSource }),
 	        React.createElement("br", null),
-	        React.createElement("input", { type: "submit", value: "Post" })
+	        React.createElement(
+	          "div",
+	          { id: "footer" },
+	          React.createElement(
+	            "div",
+	            { id: "close-button", onClick: this.props.close },
+	            "Close"
+	          ),
+	          React.createElement(
+	            "div",
+	            { onClick: this.handleSubmit, id: "post-button" },
+	            "Post"
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -36247,7 +36298,7 @@
 	  getInitialState: function getInitialState() {
 	    return { link: "" };
 	  },
-	  quoteChange: function quoteChange(e) {
+	  linkChange: function linkChange(e) {
 	    this.setState({ link: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
@@ -36268,12 +36319,34 @@
 	      "div",
 	      null,
 	      React.createElement(
+	        "div",
+	        { id: "modal-header" },
+	        this.props.user.username
+	      ),
+	      React.createElement(
 	        "form",
-	        { onSubmit: this.handleSubmit },
-	        React.createElement("input", { onChange: this.linkChange,
-	          placeholder: "Type or paste a URL", value: this.state.link }),
+	        null,
+	        React.createElement(
+	          "div",
+	          { id: "link-outer" },
+	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
+	            placeholder: "Type or paste a URL", value: this.state.link })
+	        ),
 	        React.createElement("br", null),
-	        React.createElement("input", { type: "submit", value: "Post" })
+	        React.createElement(
+	          "div",
+	          { id: "footer" },
+	          React.createElement(
+	            "div",
+	            { id: "close-button", onClick: this.props.close },
+	            "Close"
+	          ),
+	          React.createElement(
+	            "div",
+	            { onClick: this.handleSubmit, id: "post-button" },
+	            "Post"
+	          )
+	        )
 	      )
 	    );
 	  }

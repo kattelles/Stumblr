@@ -95,7 +95,6 @@ const PostForm = React.createClass({
         onRequestClose={this.onModalClose}
         onAfterOpen={this.onModalOpen}>
         {component}
-        <button onClick={this.onModalClose}>Close</button>
       </Modal>
 
     </div>
@@ -105,3 +104,5 @@ const PostForm = React.createClass({
 });
 
 module.exports = PostForm;
+
+// <img id="post-form-avatar" src={this.state.user.avatar}/>

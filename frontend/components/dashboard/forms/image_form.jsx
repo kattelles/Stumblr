@@ -32,10 +32,19 @@ const ImageForm = React.createClass({
   render: function() {
     return (
       <div>
-        <div onClick={this.uploadImage}>
+        <div id="modal-header">{this.props.user.username}</div>
+        <div id="image-form">
+          <div onClick={this.uploadImage}>
+            <img id="image-camera" src="http://res.cloudinary.com/kattelles/image/upload/v1467442048/noun_26730_cc_p7i5vv.png"/>
+            <br/>
           Upload Photo
+          </div>
         </div>
-      </div>
+
+        <div id="footer">
+          <div id="close-button" onClick={this.props.close}>Close</div>
+        </div>
+        </div>
     );
   }
 

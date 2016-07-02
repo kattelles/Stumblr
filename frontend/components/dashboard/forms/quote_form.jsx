@@ -31,14 +31,18 @@ const QuoteForm = React.createClass({
   render: function() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <input onChange={this.quoteChange}
-            placeholder='Quote' value={this.state.quote}/>
+        <div id="modal-header">{this.props.user.username}</div>
+        <form id="post-inputs">
+          <textarea id="quote" onChange={this.quoteChange}
+            placeholder='"Quote"' value={this.state.quote}/>
           <br/>
-          <input onChange={this.quoteSourceChange}
-            placeholder="Source" value={this.state.quoteSource}/>
+          <input id="source" onChange={this.quoteSourceChange}
+            placeholder="-- Source" value={this.state.quoteSource}/>
           <br/>
-          <input type="submit" value="Post"/>
+            <div id="footer">
+              <div id="close-button" onClick={this.props.close}>Close</div>
+              <div onClick={this.handleSubmit} id="post-button">Post</div>
+            </div>
         </form>
       </div>
     );
