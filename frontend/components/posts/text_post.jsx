@@ -25,7 +25,7 @@ const TextPost = React.createClass({
       <div id="text-post">
 
         <div id="post-header">
-    
+          
         </div>
 
         <h1 id="text-title">

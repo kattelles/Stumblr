@@ -35339,6 +35339,7 @@
 	var SideBar = __webpack_require__(291);
 	var PostForm = __webpack_require__(292);
 	var hashHistory = __webpack_require__(188).hashHistory;
+	var PostFeed = __webpack_require__(314);
 	
 	var Dashboard = React.createClass({
 	  displayName: "Dashboard",
@@ -35369,7 +35370,8 @@
 	          React.createElement(
 	            "div",
 	            { className: "feed" },
-	            React.createElement(PostForm, null)
+	            React.createElement(PostForm, null),
+	            React.createElement(PostFeed, null)
 	          ),
 	          React.createElement(SideBar, null)
 	        )
@@ -35910,8 +35912,8 @@
 	  deletePost: function deletePost(id) {
 	    PostApiUtil.editPost(id, this.removePost);
 	  },
-	  fetchFeed: function fetchFeed(userId) {
-	    PostApiUtil.fetchFeed(userId, this.receivePost);
+	  fetchFeed: function fetchFeed() {
+	    PostApiUtil.fetchFeed(this.receivePost);
 	  },
 	  receiveFeed: function receiveFeed(posts) {
 	    Dispatcher.dispatch({
@@ -35969,10 +35971,9 @@
 	      }
 	    });
 	  },
-	  fetchFeed: function fetchFeed(userId, cb) {
+	  fetchFeed: function fetchFeed(cb) {
 	    $.ajax({
 	      url: "api/posts",
-	      data: { user_id: userId },
 	      success: function success(posts) {
 	        cb(posts);
 	      }
@@ -36320,7 +36321,7 @@
 	      post: {
 	        post_type: "Audio",
 	        user_id: parseInt(id),
-	        link_url: this.state.link
+	        audio_url: this.state.link
 	      }
 	    });
 	    this.props.close();
@@ -36377,6 +36378,7 @@
 	var Dispatcher = __webpack_require__(252);
 	var Store = __webpack_require__(264).Store;
 	var PostConstants = __webpack_require__(296);
+	var LikeConstants = __webpack_require__(315);
 	
 	var PostStore = new Store(Dispatcher);
 	
@@ -36390,6 +36392,30 @@
 	  delete _posts[post.id];
 	};
 	
+	var resetPosts = function resetPosts(posts) {
+	  _posts = {};
+	  posts.forEach(function (post) {
+	    _posts[post.id] = post;
+	  });
+	};
+	
+	PostStore.allPosts = function () {
+	  var posts = [];
+	  var keys = Object.keys(_posts);
+	
+	  keys.forEach(function (key) {
+	    posts.push(_posts[key]);
+	  });
+	
+	  return posts;
+	};
+	
+	var addLike = function addLike(like) {};
+	
+	var removeLike = function removeLike(like) {};
+	
+	var resetLikes = function resetLikes(likes) {};
+	
 	PostStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case PostConstants.POST_RECEIVED:
@@ -36398,6 +36424,22 @@
 	      break;
 	    case PostConstants.POST_REMOVED:
 	      removePost(payload.post);
+	      this.__emitChange();
+	      break;
+	    case PostConstants.POSTS_RECEIVED:
+	      resetPosts(payload.posts);
+	      this.__emitChange();
+	      break;
+	    case LikeConstants.RECEIVE_LIKE:
+	      addLike(payload.like);
+	      this.__emitChange();
+	      break;
+	    case LikeConstants.RECEIVE_LIKES:
+	      resetLikes(payload.likes);
+	      this.__emitChange();
+	      break;
+	    case LikeConstants.REMOVE_LIKE:
+	      removeLike(payload.like);
 	      this.__emitChange();
 	      break;
 	  }
@@ -36572,6 +36614,7 @@
 	        numFollows
 	      ),
 	      React.createElement(BlogFeed, { posts: this.state.blog.posts }),
+	      React.createElement("footer", { id: "blog-show-footer" }),
 	      React.createElement(
 	        Modal,
 	        {
@@ -36987,11 +37030,11 @@
 	
 	    return React.createElement(
 	      "div",
-	      { id: "text-post" },
+	      { id: "quote-post" },
 	      React.createElement("div", { id: "post-header" }),
 	      React.createElement(
 	        "h1",
-	        { id: "quote" },
+	        { id: "quote-quote" },
 	        "\"",
 	        this.props.post.quote,
 	        "\""
@@ -37112,12 +37155,17 @@
 	
 	    return React.createElement(
 	      "div",
-	      null,
+	      { id: "audio-post" },
 	      React.createElement("div", { id: "post-header" }),
 	      React.createElement(
 	        "div",
-	        null,
-	        React.createElement("audio", null)
+	        { id: "audio-audio" },
+	        React.createElement(
+	          "audio",
+	          { type: "audio/mpeg", controls: true },
+	          React.createElement("source", { src: this.props.post.audio_url }),
+	          "Your browser does not support audio from Stumblr."
+	        )
 	      ),
 	      React.createElement(
 	        "div",
@@ -37175,7 +37223,7 @@
 	      React.createElement(
 	        "div",
 	        { id: "video-video" },
-	        React.createElement("iframe", { width: "646", height: "363",
+	        React.createElement("iframe", { width: "496", height: "275",
 	          src: url,
 	          frameborder: "0", allowfullscreen: true })
 	      ),
@@ -37195,6 +37243,98 @@
 	});
 	
 	module.exports = VideoPost;
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var PostStore = __webpack_require__(302);
+	
+	var TextPost = __webpack_require__(308);
+	var ImagePost = __webpack_require__(309);
+	var LinkPost = __webpack_require__(311);
+	var QuotePost = __webpack_require__(310);
+	var AudioPost = __webpack_require__(312);
+	var VideoPost = __webpack_require__(313);
+	
+	var PostActions = __webpack_require__(294);
+	
+	var PostFeed = React.createClass({
+	  displayName: "PostFeed",
+	  getInitialState: function getInitialState() {
+	    return { posts: [] };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.postListener = PostStore.addListener(this.postsChange);
+	    PostActions.fetchFeed();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.postListener.remove();
+	  },
+	  postsChange: function postsChange() {
+	    this.setState({ posts: PostStore.allPosts() });
+	  },
+	
+	
+	  render: function render() {
+	    if (this.state.posts.length === 0) {
+	      return React.createElement(
+	        "div",
+	        { className: "loader" },
+	        "Loading..."
+	      );
+	    }
+	
+	    var posts = [];
+	    this.state.posts[0].forEach(function (post) {
+	
+	      switch (post.post_type) {
+	        case "Text":
+	          posts.push(React.createElement(TextPost, { key: post.id, post: post }));
+	          break;
+	
+	        case "Image":
+	          posts.push(React.createElement(ImagePost, { key: post.id, post: post }));
+	          break;
+	        case "Quote":
+	          posts.push(React.createElement(QuotePost, { key: post.id, post: post }));
+	          break;
+	        case "Link":
+	          posts.push(React.createElement(LinkPost, { key: post.id, post: post }));
+	          break;
+	        case "Audio":
+	          posts.push(React.createElement(AudioPost, { key: post.id, post: post }));
+	          break;
+	        case "Video":
+	          posts.push(React.createElement(VideoPost, { key: post.id, post: post }));
+	          break;
+	      }
+	    });
+	    return React.createElement(
+	      "div",
+	      { id: "post-feed" },
+	      posts
+	    );
+	  }
+	
+	});
+	
+	module.exports = PostFeed;
+
+/***/ },
+/* 315 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  RECEIVE_LIKE: "RECEIVE_LIKE",
+	  RECEIVE_LIKES: "RECEIVE_LIKES",
+	  REMOVE_LIKE: "REMOVE_LIKE"
+	};
 
 /***/ }
 /******/ ]);

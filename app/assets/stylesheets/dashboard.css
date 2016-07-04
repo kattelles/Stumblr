@@ -157,3 +157,7 @@
   opacity: .75;
   font-size: 18px;
 }
+
+#post-feed {
+  width: 625px;
+}

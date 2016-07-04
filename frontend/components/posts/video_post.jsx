@@ -31,7 +31,7 @@ const VideoPost  = React.createClass({
         </div>
 
         <div id="video-video">
-        <iframe width="646" height="363"
+        <iframe width="496" height="275"
         src={url}
         frameborder="0" allowfullscreen></iframe>
         </div>

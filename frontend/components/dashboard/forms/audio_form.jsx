@@ -17,7 +17,7 @@ const AudioForm = React.createClass({
       post: {
         post_type: "Audio",
         user_id: parseInt(id),
-        link_url: this.state.link,
+        audio_url: this.state.link,
       }
     });
     this.props.close();

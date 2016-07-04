@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
 		through: :follows,
 		source: :blog
 
+	has_many :followed_posts,
+		through: :followed_blogs,
+		source: :posts
+
 	after_create :create_blog
 
 	validates :username, :password_digest, :session_token, presence: true

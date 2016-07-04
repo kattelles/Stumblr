@@ -31,10 +31,9 @@ module.exports = {
     });
   },
 
-  fetchFeed(userId, cb) {
+  fetchFeed( cb) {
     $.ajax({
       url: "api/posts",
-      data: {user_id: userId},
       success: (posts) => {
         cb(posts);
       }

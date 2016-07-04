@@ -4,7 +4,6 @@ const SessionStore = require("../../stores/session_store");
 
 const AudioPost  = React.createClass({
 
-
     settingsClick() {
 
     },
@@ -24,14 +23,15 @@ const AudioPost  = React.createClass({
     }
 
     return (
-      <div>
+      <div id="audio-post">
 
         <div id="post-header">
         </div>
 
-        <div>
-          <audio>
-
+        <div id="audio-audio">
+          <audio type="audio/mpeg" controls >
+            <source src={this.props.post.audio_url}/>
+                Your browser does not support audio from Stumblr.
           </audio>
         </div>
 

@@ -15,8 +15,8 @@ module.exports = {
     PostApiUtil.editPost(id, this.removePost);
   },
 
-  fetchFeed(userId) {
-    PostApiUtil.fetchFeed(userId, this.receivePost);
+  fetchFeed() {
+    PostApiUtil.fetchFeed( this.receivePost);
   },
 
   receiveFeed(posts) {

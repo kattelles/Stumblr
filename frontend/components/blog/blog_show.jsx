@@ -131,7 +131,7 @@ const BlogShow = React.createClass({
           <h3 className="blog-desc">{this.state.blog.description}</h3>
            <div>follows: {numFollows}</div>
           <BlogFeed posts={this.state.blog.posts}/>
-
+          <footer id='blog-show-footer'/>
          <Modal
            className="blog-edit-modal"
            isOpen={this.state.modalOpen}

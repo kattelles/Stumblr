@@ -7,6 +7,7 @@ class Post < ActiveRecord::Base
     :primary_key => :id
     )
 
+  has_many :likes
 
   validates :user_id, :post_type, presence: true
 end

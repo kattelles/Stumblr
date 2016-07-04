@@ -24,13 +24,13 @@ const QuotePost = React.createClass({
 
 
     return (
-      <div id="text-post">
+      <div id="quote-post">
 
         <div id="post-header">
 
         </div>
 
-        <h1 id="quote">
+        <h1 id="quote-quote">
           "{this.props.post.quote}"
         </h1>
 
