@@ -6,6 +6,8 @@ const TextForm = require("./forms/text_form");
 const ImageForm = require("./forms/image_form");
 const QuoteForm = require("./forms/quote_form");
 const LinkForm = require("./forms/link_form");
+const VideoForm = require("./forms/video_form");
+const AudioForm = require("./forms/audio_form");
 const PostStore = require("../../stores/post_store");
 
 const PostForm = React.createClass({
@@ -62,7 +64,15 @@ const PostForm = React.createClass({
         component = <LinkForm user={this.state.user}
           close={this.onModalClose}/>;
         break;
-    }
+      case "AudioForm":
+        component = <AudioForm user={this.state.user}
+          close={this.onModalClose}/>;
+        break;
+      case "VideoForm":
+        component = <VideoForm user={this.state.user}
+          close={this.onModalClose}/>;
+        break;
+  }
 
 
     return (
@@ -73,19 +83,36 @@ const PostForm = React.createClass({
       <div className="post-form">
         <div onClick={this.onClick.bind(this, "TextForm")} id="new-post-label-text">
           <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240866/text_nyqjm3.png"/>
+          <div id="post-label">Text</div>
         </div>
 
         <div onClick={this.onClick.bind(this, "ImageForm")} id="new-post-label-photo">
           <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240873/camera_x4i8lc.png"/>
+          <div id="post-label">Image</div>
         </div>
 
         <div onClick={this.onClick.bind(this, "QuoteForm")} id="new-post-label-quote">
           <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240870/quote_pvuc3i.png"/>
+          <div id="post-label">Quote</div>
         </div>
 
         <div onClick={this.onClick.bind(this, "LinkForm")} id="new-post-label-link">
           <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467240863/link_sgldrd.png"/>
+          <div id="post-label">Link</div>
         </div>
+
+        <div onClick={this.onClick.bind(this, "AudioForm")} id="new-post-label-link">
+          <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467590081/imageedit_11_4622279752_haln2b.png"/>
+          <div id="post-label">Audio</div>
+        </div>
+
+        <div onClick={this.onClick.bind(this, "VideoForm")} id="new-post-label-link">
+          <img id="new-post-label-img" src="https://res.cloudinary.com/kattelles/image/upload/v1467590082/imageedit_9_8364659514_er0b6n.png"/>
+          <div id="post-label">Video</div>
+        </div>
+
+
+
 
       </div>
 

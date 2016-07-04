@@ -44,21 +44,32 @@ const NavBar = React.createClass({
     this.setState({modalOpen: false});
   },
 
+  goToDashboard() {
+    hashHistory.push("/");
+  },
+
   render() {
     return (
 
       <div className="navbar">
-
-        <div onClick={this.goToMyBlog}>
-            <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321692/user_istndw.png" />
+        <div className="tooltip" onClick={this.goToDashboard}>
+          <span className="tooltiptext">My Dashboard</span>
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592469/house-32_2_lfyr7s.png"/>
         </div>
 
-        <div onClick={this.goToSettings}>
-          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321639/settings-4-32_mb8oty.png" />
+        <div className="tooltip" onClick={this.goToMyBlog}>
+            <span className="tooltiptext">My blog</span>
+            <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592691/contacts-32_1_hhqmqc.png" />
         </div>
 
-        <div onClick={this.logOut}>
-          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321963/logout-32_k9us73.png" />
+        <div className="tooltip" onClick={this.goToSettings}>
+          <span className="tooltiptext">Settings</span>
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" />
+        </div>
+
+        <div className="tooltip" onClick={this.logOut}>
+          <span className="tooltiptext">Log out</span>
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592872/logout-32_1_yixxsh.png" />
         </div>
 
         <Modal

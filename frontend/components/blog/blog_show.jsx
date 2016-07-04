@@ -61,9 +61,12 @@ const BlogShow = React.createClass({
     if (!this.state.blog) {
       return "";
     }
+
+    let tooltipText;
     if (parseInt(this.props.params.userId) === this.state.currentUser.id) {
       return (
-          <div id="blog-show-edit" onClick={this.editBlog}>
+          <div id="blog-show-edit" className="tooltip" onClick={this.editBlog}>
+            <span className="tooltiptext">Edit</span>
               <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321393/edit-32_zkkgxx.png"/>
           </div>
       );
@@ -74,15 +77,18 @@ const BlogShow = React.createClass({
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321538/minus-32_mqqko7.png"/>
         );
         clickMethod = this.unfollow;
+        tooltipText = "Unfollow";
       } else {
         button = (
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321543/plus-32_kav2vv.png" />
         );
         clickMethod = this.follow;
+          tooltipText = "Follow";
       }
 
       return (
-        <div id="blog-show-follow" onClick={clickMethod}><div>{button}</div></div>
+        <div id="blog-show-follow" className="tooltip" onClick={clickMethod}><div>{button}
+        <span className="tooltiptext">{tooltipText}</span></div></div>
       );
     }
   },
@@ -110,7 +116,8 @@ const BlogShow = React.createClass({
           <img className="cover-photo" src={this.state.blog.cover_photo}/>
           <div id="blog-nav-bar">
             {toggleButton}
-            <div id="blog-show-dashboard" onClick={this.backToDashboard}>
+            <div id="blog-show-dashboard"  className="tooltip" onClick={this.backToDashboard}>
+              <span className="tooltiptext">Home</span>
                 <div id="blog-show-dashboard-inner">
                   <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png"/>
                </div>

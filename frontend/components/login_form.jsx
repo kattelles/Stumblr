@@ -49,6 +49,13 @@ const LoginForm = React.createClass({
     }
 	},
 
+	demoAccount() {
+		SessionActions.logIn({
+			username: "guest",
+			password: "password"
+		});
+	},
+
   fieldErrors(field) {
     const errors = ErrorStore.formErrors(this.formType());
 
@@ -75,7 +82,7 @@ const LoginForm = React.createClass({
     if (this.formType() === "login") {
       navLink = <Link to="/signup">Sign up</Link>;
 			buttonText = "Login";
-			question = "Don't have an account? ";
+			question = "New user? ";
     } else {
       navLink = <Link to="/login">Log in</Link>;
 			buttonText = "Sign up";
@@ -89,7 +96,7 @@ const LoginForm = React.createClass({
 				<form onSubmit={this.handleSubmit} className="login-form">
 
 					<div>
-					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1467405337/Stumblr-logo_3_gfnm4g.png"/>
+					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1467593972/Stumblr-logo_3_xwtbzz.png"/>
 					</div>
 
 					<div className="login-errors">
@@ -117,15 +124,9 @@ const LoginForm = React.createClass({
 							value={buttonText} />
 						<br/>
 
-
-
-						<br/>
 						<div className="login-toggle">
-							{ question }  { navLink }
+							{ question }  { navLink } or continue as <span id="demo" onClick={this.demoAccount}>Guest</span>.
 						</div>
-
-
-						<br />
 				</form>
 			</div>
 		);

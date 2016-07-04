@@ -1,7 +1,7 @@
 const React = require('react');
 const PostActions = require("../../../actions/post_actions");
 
-const LinkForm = React.createClass({
+const VideoForm = React.createClass({
 
   getInitialState() {
     return ({link: ""});
@@ -15,9 +15,9 @@ const LinkForm = React.createClass({
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
-        post_type: "Link",
+        post_type: "Video",
         user_id: parseInt(id),
-        link_url: this.state.link,
+        video_url: this.state.link,
       }
     });
     this.props.close();
@@ -30,7 +30,7 @@ const LinkForm = React.createClass({
         <form>
           <div id="link-outer">
           <input type="text" id="link-form" onChange={this.linkChange}
-            placeholder="Type or paste a URL" value={this.state.link}/>
+            placeholder="Type or paste a video URL" value={this.state.link}/>
           </div>
           <br/>
             <div id="footer">
@@ -44,4 +44,4 @@ const LinkForm = React.createClass({
 
 });
 
-module.exports = LinkForm;
+module.exports = VideoForm;
