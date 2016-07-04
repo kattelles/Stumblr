@@ -4,7 +4,7 @@ const PostActions = require("../../../actions/post_actions");
 const ImageForm = React.createClass({
 
   getInitialState() {
-    return ({url: ""});
+    return ({url: "", imageCaption: ""});
   },
 
   uploadImage(e) {
@@ -16,6 +16,9 @@ const ImageForm = React.createClass({
     }.bind(this));
   },
 
+  captionChange(e) {
+    this.setState({imageCaption: e.target.value});
+  },
 
   handleSubmit() {
     let id = this.props.user.id;
@@ -24,6 +27,7 @@ const ImageForm = React.createClass({
         post_type: "Image",
         user_id: parseInt(id),
         image_url: this.state.url,
+        image_caption: this.state.imageCaption
       }
     });
     this.props.close();
@@ -41,8 +45,14 @@ const ImageForm = React.createClass({
           </div>
         </div>
 
+          <input id="image-caption" onChange={this.captionChange}
+            placeholder="Add a caption (optional)"
+            value={this.state.imageCaption}/>
+
+
         <div id="footer">
           <div id="close-button" onClick={this.props.close}>Close</div>
+          <div onClick={this.handleSubmit} id="post-button">Post</div>
         </div>
         </div>
     );

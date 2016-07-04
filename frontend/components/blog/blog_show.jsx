@@ -5,7 +5,7 @@ const BlogActions = require("../../actions/blog_actions");
 const hashHistory = require('react-router').hashHistory;
 const FollowActions = require("../../actions/follow_actions");
 const BlogEdit = require("./blog_edit");
-
+const BlogFeed = require("./blog_feed");
 const Modal = require("react-modal");
 
 const BlogShow = React.createClass({
@@ -100,7 +100,7 @@ const BlogShow = React.createClass({
 
   render() {
     if (this.state.blog === "") {
-      return (<div class="loader">Loading...</div>);
+      return (<div className="loader">Loading...</div>);
     }
     let toggleButton = this.getToggle();
     let avatar = this.state.blog.avatar;
@@ -110,10 +110,13 @@ const BlogShow = React.createClass({
       numFollows = this.state.blog.follows.length;
     }
 
+    let coverPhoto = {
+      backgroundImage: 'url(' + this.state.blog.cover_photo + ')'
+    };
 
     return(
         <div className="blog-show">
-          <img className="cover-photo" src={this.state.blog.cover_photo}/>
+          <div className="cover-photo" style={coverPhoto}/>
           <div id="blog-nav-bar">
             {toggleButton}
             <div id="blog-show-dashboard"  className="tooltip" onClick={this.backToDashboard}>
@@ -127,6 +130,7 @@ const BlogShow = React.createClass({
           <h1 className='blog-title'>{this.state.blog.title} </h1>
           <h3 className="blog-desc">{this.state.blog.description}</h3>
            <div>follows: {numFollows}</div>
+          <BlogFeed posts={this.state.blog.posts}/>
 
          <Modal
            className="blog-edit-modal"

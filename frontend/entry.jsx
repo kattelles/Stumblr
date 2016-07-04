@@ -49,3 +49,5 @@ document.addEventListener("DOMContentLoaded", () =>{
   let content = document.getElementById('content');
   ReactDOM.render(appRouter, content);
 });
+
+window.BlogActions = require("./actions/blog_actions");

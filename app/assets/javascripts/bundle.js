@@ -64,7 +64,7 @@
 	var App = __webpack_require__(250);
 	var LoginForm = __webpack_require__(284);
 	var Dashboard = __webpack_require__(286);
-	var BlogShow = __webpack_require__(301);
+	var BlogShow = __webpack_require__(303);
 	
 	// Auth
 	var SessionStore = __webpack_require__(263);
@@ -99,6 +99,8 @@
 	  var content = document.getElementById('content');
 	  ReactDOM.render(appRouter, content);
 	});
+	
+	window.BlogActions = __webpack_require__(260);
 
 /***/ },
 /* 1 */
@@ -35668,9 +35670,9 @@
 	var ImageForm = __webpack_require__(297);
 	var QuoteForm = __webpack_require__(298);
 	var LinkForm = __webpack_require__(299);
-	var VideoForm = __webpack_require__(305);
-	var AudioForm = __webpack_require__(306);
-	var PostStore = __webpack_require__(300);
+	var VideoForm = __webpack_require__(300);
+	var AudioForm = __webpack_require__(301);
+	var PostStore = __webpack_require__(302);
 	
 	var PostForm = React.createClass({
 	  displayName: "PostForm",
@@ -36002,7 +36004,7 @@
 	var ImageForm = React.createClass({
 	  displayName: "ImageForm",
 	  getInitialState: function getInitialState() {
-	    return { url: "" };
+	    return { url: "", imageCaption: "" };
 	  },
 	  uploadImage: function uploadImage(e) {
 	    e.preventDefault();
@@ -36012,13 +36014,17 @@
 	      }
 	    }.bind(this));
 	  },
+	  captionChange: function captionChange(e) {
+	    this.setState({ imageCaption: e.target.value });
+	  },
 	  handleSubmit: function handleSubmit() {
 	    var id = this.props.user.id;
 	    PostActions.createPost({
 	      post: {
 	        post_type: "Image",
 	        user_id: parseInt(id),
-	        image_url: this.state.url
+	        image_url: this.state.url,
+	        image_caption: this.state.imageCaption
 	      }
 	    });
 	    this.props.close();
@@ -36045,6 +36051,9 @@
 	          "Upload Photo"
 	        )
 	      ),
+	      React.createElement("input", { id: "image-caption", onChange: this.captionChange,
+	        placeholder: "Add a caption (optional)",
+	        value: this.state.imageCaption }),
 	      React.createElement(
 	        "div",
 	        { id: "footer" },
@@ -36052,6 +36061,11 @@
 	          "div",
 	          { id: "close-button", onClick: this.props.close },
 	          "Close"
+	        ),
+	        React.createElement(
+	          "div",
+	          { onClick: this.handleSubmit, id: "post-button" },
+	          "Post"
 	        )
 	      )
 	    );
@@ -36147,7 +36161,7 @@
 	var LinkForm = React.createClass({
 	  displayName: "LinkForm",
 	  getInitialState: function getInitialState() {
-	    return { link: "" };
+	    return { link: "", linkTitle: "" };
 	  },
 	  linkChange: function linkChange(e) {
 	    this.setState({ link: e.target.value });
@@ -36158,10 +36172,14 @@
 	      post: {
 	        post_type: "Link",
 	        user_id: parseInt(id),
-	        link_url: this.state.link
+	        link_url: this.state.link,
+	        link_title: this.state.linkTitle
 	      }
 	    });
 	    this.props.close();
+	  },
+	  titleChange: function titleChange(e) {
+	    this.setState({ linkTitle: e.target.value });
 	  },
 	
 	
@@ -36183,6 +36201,8 @@
 	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
 	            placeholder: "Type or paste a URL", value: this.state.link })
 	        ),
+	        React.createElement("input", { id: "link-title", onChange: this.titleChange, value: this.state.linkTitle,
+	          placeholder: "Link Title" }),
 	        React.createElement("br", null),
 	        React.createElement(
 	          "div",
@@ -36208,6 +36228,148 @@
 
 /***/ },
 /* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(294);
+	
+	var VideoForm = React.createClass({
+	  displayName: "VideoForm",
+	  getInitialState: function getInitialState() {
+	    return { link: "" };
+	  },
+	  linkChange: function linkChange(e) {
+	    this.setState({ link: e.target.value });
+	  },
+	  handleSubmit: function handleSubmit() {
+	    var id = this.props.user.id;
+	    PostActions.createPost({
+	      post: {
+	        post_type: "Video",
+	        user_id: parseInt(id),
+	        video_url: this.state.link
+	      }
+	    });
+	    this.props.close();
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        { id: "modal-header" },
+	        this.props.user.username
+	      ),
+	      React.createElement(
+	        "form",
+	        null,
+	        React.createElement(
+	          "div",
+	          { id: "link-outer" },
+	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
+	            placeholder: "Type or paste YouTube watch URL", value: this.state.link })
+	        ),
+	        React.createElement("br", null),
+	        React.createElement(
+	          "div",
+	          { id: "footer" },
+	          React.createElement(
+	            "div",
+	            { id: "close-button", onClick: this.props.close },
+	            "Close"
+	          ),
+	          React.createElement(
+	            "div",
+	            { onClick: this.handleSubmit, id: "post-button" },
+	            "Post"
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = VideoForm;
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(294);
+	
+	var AudioForm = React.createClass({
+	  displayName: "AudioForm",
+	  getInitialState: function getInitialState() {
+	    return { link: "" };
+	  },
+	  linkChange: function linkChange(e) {
+	    this.setState({ link: e.target.value });
+	  },
+	  handleSubmit: function handleSubmit() {
+	    var id = this.props.user.id;
+	    PostActions.createPost({
+	      post: {
+	        post_type: "Audio",
+	        user_id: parseInt(id),
+	        link_url: this.state.link
+	      }
+	    });
+	    this.props.close();
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        { id: "modal-header" },
+	        this.props.user.username
+	      ),
+	      React.createElement(
+	        "form",
+	        null,
+	        React.createElement(
+	          "div",
+	          { id: "link-outer" },
+	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
+	            placeholder: "Type or paste an audio URL", value: this.state.link })
+	        ),
+	        React.createElement("br", null),
+	        React.createElement(
+	          "div",
+	          { id: "footer" },
+	          React.createElement(
+	            "div",
+	            { id: "close-button", onClick: this.props.close },
+	            "Close"
+	          ),
+	          React.createElement(
+	            "div",
+	            { onClick: this.handleSubmit, id: "post-button" },
+	            "Post"
+	          )
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AudioForm;
+
+/***/ },
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36244,7 +36406,7 @@
 	module.exports = PostStore;
 
 /***/ },
-/* 301 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36254,9 +36416,9 @@
 	var SessionStore = __webpack_require__(263);
 	var BlogActions = __webpack_require__(260);
 	var hashHistory = __webpack_require__(188).hashHistory;
-	var FollowActions = __webpack_require__(302);
-	var BlogEdit = __webpack_require__(304);
-	
+	var FollowActions = __webpack_require__(304);
+	var BlogEdit = __webpack_require__(306);
+	var BlogFeed = __webpack_require__(307);
 	var Modal = __webpack_require__(168);
 	
 	var BlogShow = React.createClass({
@@ -36352,7 +36514,7 @@
 	    if (this.state.blog === "") {
 	      return React.createElement(
 	        "div",
-	        { "class": "loader" },
+	        { className: "loader" },
 	        "Loading..."
 	      );
 	    }
@@ -36364,10 +36526,14 @@
 	      numFollows = this.state.blog.follows.length;
 	    }
 	
+	    var coverPhoto = {
+	      backgroundImage: 'url(' + this.state.blog.cover_photo + ')'
+	    };
+	
 	    return React.createElement(
 	      "div",
 	      { className: "blog-show" },
-	      React.createElement("img", { className: "cover-photo", src: this.state.blog.cover_photo }),
+	      React.createElement("div", { className: "cover-photo", style: coverPhoto }),
 	      React.createElement(
 	        "div",
 	        { id: "blog-nav-bar" },
@@ -36405,6 +36571,7 @@
 	        "follows: ",
 	        numFollows
 	      ),
+	      React.createElement(BlogFeed, { posts: this.state.blog.posts }),
 	      React.createElement(
 	        Modal,
 	        {
@@ -36426,12 +36593,12 @@
 	module.exports = BlogShow;
 
 /***/ },
-/* 302 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var FollowApiUtil = __webpack_require__(303);
+	var FollowApiUtil = __webpack_require__(305);
 	var Dispatcher = __webpack_require__(252);
 	var FollowConstants = __webpack_require__(283);
 	
@@ -36459,7 +36626,7 @@
 	module.exports = FollowActions;
 
 /***/ },
-/* 303 */
+/* 305 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -36489,7 +36656,7 @@
 	module.exports = FollowApiUtil;
 
 /***/ },
-/* 304 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36604,146 +36771,430 @@
 	module.exports = BlogEdit;
 
 /***/ },
-/* 305 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(294);
+	var TextPost = __webpack_require__(308);
+	var ImagePost = __webpack_require__(309);
+	var QuotePost = __webpack_require__(310);
+	var LinkPost = __webpack_require__(311);
+	var AudioPost = __webpack_require__(312);
+	var VideoPost = __webpack_require__(313);
 	
-	var VideoForm = React.createClass({
-	  displayName: "VideoForm",
-	  getInitialState: function getInitialState() {
-	    return { link: "" };
-	  },
-	  linkChange: function linkChange(e) {
-	    this.setState({ link: e.target.value });
-	  },
-	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Video",
-	        user_id: parseInt(id),
-	        video_url: this.state.link
-	      }
-	    });
-	    this.props.close();
-	  },
+	var BlogFeed = React.createClass({
+	  displayName: "BlogFeed",
 	
 	
 	  render: function render() {
+	    var posts = [];
+	
+	    this.props.posts.map(function (post) {
+	      switch (post.post_type) {
+	        case "Text":
+	          posts.push(React.createElement(TextPost, { key: post.id, post: post }));
+	          break;
+	        case "Image":
+	          posts.push(React.createElement(ImagePost, { key: post.id, post: post }));
+	          break;
+	        case "Quote":
+	          posts.push(React.createElement(QuotePost, { key: post.id, post: post }));
+	          break;
+	        case "Link":
+	          posts.push(React.createElement(LinkPost, { key: post.id, post: post }));
+	          break;
+	        case "Audio":
+	          posts.push(React.createElement(AudioPost, { key: post.id, post: post }));
+	          break;
+	        case "Video":
+	          posts.push(React.createElement(VideoPost, { key: post.id, post: post }));
+	          break;
+	      }
+	    });
 	    return React.createElement(
 	      "div",
-	      null,
-	      React.createElement(
-	        "div",
-	        { id: "modal-header" },
-	        this.props.user.username
-	      ),
-	      React.createElement(
-	        "form",
-	        null,
-	        React.createElement(
-	          "div",
-	          { id: "link-outer" },
-	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
-	            placeholder: "Type or paste a video URL", value: this.state.link })
-	        ),
-	        React.createElement("br", null),
-	        React.createElement(
-	          "div",
-	          { id: "footer" },
-	          React.createElement(
-	            "div",
-	            { id: "close-button", onClick: this.props.close },
-	            "Close"
-	          ),
-	          React.createElement(
-	            "div",
-	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
-	          )
-	        )
-	      )
+	      { id: "blog-feed" },
+	      " ",
+	      posts,
+	      " "
 	    );
 	  }
 	
 	});
 	
-	module.exports = VideoForm;
+	module.exports = BlogFeed;
 
 /***/ },
-/* 306 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(294);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
 	
-	var AudioForm = React.createClass({
-	  displayName: "AudioForm",
-	  getInitialState: function getInitialState() {
-	    return { link: "" };
-	  },
-	  linkChange: function linkChange(e) {
-	    this.setState({ link: e.target.value });
-	  },
-	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Audio",
-	        user_id: parseInt(id),
-	        link_url: this.state.link
-	      }
-	    });
-	    this.props.close();
-	  },
+	var TextPost = React.createClass({
+	  displayName: "TextPost",
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {},
 	
 	
 	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        " like/unlike "
+	      );
+	    }
+	
 	    return React.createElement(
 	      "div",
-	      null,
+	      { id: "text-post" },
+	      React.createElement("div", { id: "post-header" }),
 	      React.createElement(
-	        "div",
-	        { id: "modal-header" },
-	        this.props.user.username
+	        "h1",
+	        { id: "text-title" },
+	        this.props.post.title
 	      ),
 	      React.createElement(
-	        "form",
-	        null,
+	        "div",
+	        { id: "text-content" },
+	        this.props.post.content
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "post-footer" },
 	        React.createElement(
 	          "div",
-	          { id: "link-outer" },
-	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
-	            placeholder: "Type or paste an audio URL", value: this.state.link })
+	          { id: "post-likes" },
+	          "0 likes"
 	        ),
-	        React.createElement("br", null),
-	        React.createElement(
-	          "div",
-	          { id: "footer" },
-	          React.createElement(
-	            "div",
-	            { id: "close-button", onClick: this.props.close },
-	            "Close"
-	          ),
-	          React.createElement(
-	            "div",
-	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
-	          )
-	        )
+	        footerToggle
 	      )
 	    );
 	  }
 	
 	});
 	
-	module.exports = AudioForm;
+	module.exports = TextPost;
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	
+	var ImagePost = React.createClass({
+	  displayName: "ImagePost",
+	
+	
+	  // componentDidMount() {
+	  //   debugger
+	  // },
+	
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {},
+	
+	
+	  render: function render() {
+	
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        " like/unlike "
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "image-post" },
+	      React.createElement("div", { id: "post-header" }),
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement("img", { id: "image-image", src: this.props.post.image_url })
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "image-caption" },
+	        this.props.post.image_caption
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "post-footer" },
+	        React.createElement(
+	          "div",
+	          { id: "post-likes" },
+	          "0 likes"
+	        ),
+	        footerToggle
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = ImagePost;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	
+	var QuotePost = React.createClass({
+	  displayName: "QuotePost",
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {},
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        " like/unlike "
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "text-post" },
+	      React.createElement("div", { id: "post-header" }),
+	      React.createElement(
+	        "h1",
+	        { id: "quote" },
+	        "\"",
+	        this.props.post.quote,
+	        "\""
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "quote-source" },
+	        "-- ",
+	        this.props.post.quote_source
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "post-footer" },
+	        React.createElement(
+	          "div",
+	          { id: "post-likes" },
+	          "0 likes"
+	        ),
+	        footerToggle
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = QuotePost;
+
+/***/ },
+/* 311 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	
+	var LinkPost = React.createClass({
+	  displayName: "LinkPost",
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {},
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        " like/unlike "
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "text-post" },
+	      React.createElement("div", { id: "post-header" }),
+	      React.createElement(
+	        "div",
+	        { id: "link-post" },
+	        React.createElement(
+	          "a",
+	          { id: "link",
+	            href: this.props.post.link_url },
+	          this.props.post.link_title
+	        )
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "post-footer" },
+	        React.createElement(
+	          "div",
+	          { id: "post-likes" },
+	          "0 likes"
+	        ),
+	        footerToggle
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = LinkPost;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	
+	var AudioPost = React.createClass({
+	  displayName: "AudioPost",
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {},
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        " like/unlike "
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement("div", { id: "post-header" }),
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement("audio", null)
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "post-footer" },
+	        React.createElement(
+	          "div",
+	          { id: "post-likes" },
+	          "0 likes"
+	        ),
+	        footerToggle
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AudioPost;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	
+	var VideoPost = React.createClass({
+	  displayName: "VideoPost",
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {},
+	
+	
+	  render: function render() {
+	
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        " like/unlike "
+	      );
+	    }
+	
+	    var url = "https://www.youtube.com/embed/" + this.props.post.video_url.split("=")[1];
+	    return React.createElement(
+	      "div",
+	      { id: "video-post" },
+	      React.createElement("div", { id: "post-header" }),
+	      React.createElement(
+	        "div",
+	        { id: "video-video" },
+	        React.createElement("iframe", { width: "646", height: "363",
+	          src: url,
+	          frameborder: "0", allowfullscreen: true })
+	      ),
+	      React.createElement(
+	        "div",
+	        { id: "post-footer" },
+	        React.createElement(
+	          "div",
+	          { id: "post-likes" },
+	          "0 likes"
+	        ),
+	        footerToggle
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = VideoPost;
 
 /***/ }
 /******/ ]);

@@ -6,6 +6,7 @@
   width: 100%;
   height: 350px;
   position: relative;
+  background-size: cover;
 }
 
 .avatar {
@@ -79,4 +80,112 @@
 #blog-show-follow img {
   width: 30px;
   height: 30px;
+}
+
+#blog-feed {
+  position: absolute;
+  top: 550px;
+  left: 50%;
+  width: 650px;
+  transform: translateX(-50%);
+}
+
+#text-post {
+  width: 100%;
+  border-radius: 3px;
+  background-color: white;
+  margin-top: 20px;
+  color: #444444;
+  display: flex;
+  flex-direction: column;
+}
+
+#text-title {
+  margin-left: 20px;
+  padding-top: 20px;
+  width: 90%;
+  height: auto;
+}
+
+#text-content {
+  margin-left: 20px;
+  padding-bottom: 20px;
+  width: 90%;
+  height: auto;
+  font-size: 20px;
+}
+
+#post-footer {
+  height: 50px;
+}
+
+#post-likes {
+  padding: 6px 12px;
+  float: left;
+  color: #a2a2a2;
+}
+
+#post-toggle {
+  padding: 6px 12px;
+  float: right;
+  cursor: pointer;
+}
+
+#image-post {
+  width: 100%;
+  border-radius: 3px;
+  background-color: white;
+  margin-top: 20px;
+  color: #444444;
+  display: flex;
+  flex-direction: column;
+}
+
+#image-image {
+  width: 100%;
+  height: auto;
+}
+
+#image-caption {
+  padding-bottom: 20px;
+  width: 90%;
+  height: auto;
+  font-size: 20px;
+}
+
+#post-header {
+  height: 27px;
+}
+
+#quote {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-left: 20px;
+  padding-top: 20px;
+  padding: 0px;
+  width: 90%;
+  height: auto;
+  font-size: 50px;
+}
+
+#quote-source {
+  margin-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 90%;
+  height: auto;
+}
+
+#link {
+  font-size: 40px;
+  margin-left: 20px;
+
+}
+
+#video-post {
+  width: 100%;
+  border-radius: 3px;
+  background-color: white;
+  margin-top: 20px;
+  color: #444444;
 }

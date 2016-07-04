@@ -3,20 +3,20 @@ class Blog < ActiveRecord::Base
 
   belongs_to(
     :owner,
-    :class_name => User,
+    :class_name => "User",
     :foreign_key => :owner_id,
     :primary_key => :id
   )
 
   has_many :follows
 
+  has_many :posts,
+    through: :owner,
+    source: :posts
+
   has_many :followers,
     through: :follows,
     source: :user
-
-  has_many :posts,
-    through: :owner,
-    source: :post
 
 	after_initialize :default_values
 

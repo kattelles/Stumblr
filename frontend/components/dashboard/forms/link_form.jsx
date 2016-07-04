@@ -4,7 +4,7 @@ const PostActions = require("../../../actions/post_actions");
 const LinkForm = React.createClass({
 
   getInitialState() {
-    return ({link: ""});
+    return ({link: "", linkTitle: ""});
   },
 
   linkChange(e) {
@@ -18,9 +18,14 @@ const LinkForm = React.createClass({
         post_type: "Link",
         user_id: parseInt(id),
         link_url: this.state.link,
+        link_title: this.state.linkTitle
       }
     });
     this.props.close();
+  },
+
+  titleChange(e) {
+    this.setState({linkTitle: e.target.value});
   },
 
   render: function() {
@@ -32,6 +37,10 @@ const LinkForm = React.createClass({
           <input type="text" id="link-form" onChange={this.linkChange}
             placeholder="Type or paste a URL" value={this.state.link}/>
           </div>
+
+          <input id="link-title" onChange={this.titleChange} value={this.state.linkTitle}
+                placeholder="Link Title" />
+
           <br/>
             <div id="footer">
               <div id="close-button" onClick={this.props.close}>Close</div>

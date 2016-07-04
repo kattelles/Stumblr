@@ -1,11 +1,16 @@
 class User < ActiveRecord::Base
 	attr_reader :password
 
-	has_many :posts
+	has_many(
+		:posts,
+		:class_name => "Post",
+		:foreign_key => :user_id,
+		:primary_key => :id
+		)
 
 	has_one(
 		:blog,
-		:class_name => Blog,
+		:class_name => "Blog",
 		:foreign_key => :owner_id,
 		:primary_key => :id
 	)

@@ -48,7 +48,7 @@ textarea {
 #image-form {
   border-top: 1px dashed #cacaca;
   border-bottom: 1px dashed #cacaca;
-  height: 145px;
+  height: 130px;
   background-color: #efefef;
   cursor: pointer;
   display: flex;
@@ -56,6 +56,16 @@ textarea {
   text-align: center;
   padding-bottom: 5px;
   margin-bottom: 12px;
+}
+
+
+#image-caption {
+  display: block;
+  border: 0;
+  font-size: 16px;
+  width: 90%;
+  padding-left: 20px;
+  padding-bottom: 5px;
 }
 
 #link-form {
@@ -74,12 +84,17 @@ textarea:focus, input:focus{
 #link-outer {
   border-top: 1px dashed #cacaca;
   border-bottom: 1px dashed #cacaca;
-  height: 150px;
+  height: 100px;
   background-color: #efefef;
   cursor: pointer;
   padding: 0px;
   margin-bottom: 0px;
   width: 100%;
+}
+
+#link-title {
+  border: 0;
+  width: 90%;
 }
 
 #quote {
@@ -99,9 +114,9 @@ textarea:focus, input:focus{
 }
 
 #image-camera {
-  height: 100px;
-  width: 120px;
-  padding-top: 20px;
+  height: 80px;
+  width: 100px;
+  padding-top: 10px;
 }
 
 #post-button {

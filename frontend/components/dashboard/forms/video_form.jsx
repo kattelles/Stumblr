@@ -30,7 +30,7 @@ const VideoForm = React.createClass({
         <form>
           <div id="link-outer">
           <input type="text" id="link-form" onChange={this.linkChange}
-            placeholder="Type or paste a video URL" value={this.state.link}/>
+            placeholder="Type or paste YouTube watch URL" value={this.state.link}/>
           </div>
           <br/>
             <div id="footer">
