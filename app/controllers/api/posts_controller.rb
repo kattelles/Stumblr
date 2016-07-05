@@ -22,13 +22,17 @@ class Api::PostsController < ApplicationController
   end
 
   def index
-    @posts = current_user.followed_posts
+    if params[:user_id]
+      @posts = User.find(params[:user_id]).posts
+    else
+      @posts = current_user.followed_posts
+    end
   end
 
   private
 
   def post_params
-    params.require(:post).permit( :post_type, :image_caption, :link_title,
+    params.require(:post).permit(:post_type, :image_caption, :link_title,
       :user_id, :title, :content, :video_url, :audio_url,
       :image_url, :quote, :quote_source, :link_url)
   end

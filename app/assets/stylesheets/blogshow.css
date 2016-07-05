@@ -91,14 +91,18 @@
   padding-bottom: 50px;
 }
 
+#post {
+  display: flex;
+  width: 625px;
+  justify-content: space-around;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 #text-post {
-  width: 100%;
+  width: 500px;
   border-radius: 3px;
   background-color: white;
-  margin-top: 20px;
   color: #444444;
-  display: flex;
-  flex-direction: column;
 }
 
 #text-title {
@@ -133,13 +137,14 @@
 }
 
 #image-post {
-  width: 100%;
+  width: 500px;
   border-radius: 3px;
   background-color: white;
-  margin-top: 20px;
+  height: auto;
+  /*margin-top: 20px;*/
   color: #444444;
-  display: flex;
-  flex-direction: column;
+  /*display: flex;
+  flex-direction: column;*/
 }
 
 #image-image {
@@ -159,10 +164,9 @@
 }
 
 #quote-post {
-  width: 100%;
+  width: 500px;
   border-radius: 3px;
   background-color: white;
-  margin-top: 20px;
   color: #444444;
   display: flex;
   flex-direction: column;
@@ -190,22 +194,19 @@
 #link {
   font-size: 40px;
   margin-left: 20px;
-
 }
 
 #video-post {
-  width: 100%;
+  width: 500px;
   border-radius: 3px;
   background-color: white;
-  margin-top: 20px;
   color: #444444;
 }
 
 #audio-post {
-  width: 100%;
+  width: 500px;
   border-radius: 3px;
   background-color: white;
-  margin-top: 20px;
   color: #444444;
 }
 

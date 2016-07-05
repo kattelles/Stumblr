@@ -21,7 +21,7 @@ const Dashboard = React.createClass({
           <NavBar/>
         </div>
         <div className="dashboard">
-          <div className="feed">
+          <div className="feed group">
             <PostForm/>
             <PostFeed/>
           </div>

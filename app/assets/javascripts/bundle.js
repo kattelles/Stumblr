@@ -64,7 +64,7 @@
 	var App = __webpack_require__(250);
 	var LoginForm = __webpack_require__(284);
 	var Dashboard = __webpack_require__(286);
-	var BlogShow = __webpack_require__(303);
+	var BlogShow = __webpack_require__(311);
 	
 	// Auth
 	var SessionStore = __webpack_require__(263);
@@ -35339,7 +35339,7 @@
 	var SideBar = __webpack_require__(291);
 	var PostForm = __webpack_require__(292);
 	var hashHistory = __webpack_require__(188).hashHistory;
-	var PostFeed = __webpack_require__(314);
+	var PostFeed = __webpack_require__(304);
 	
 	var Dashboard = React.createClass({
 	  displayName: "Dashboard",
@@ -35369,7 +35369,7 @@
 	          { className: "dashboard" },
 	          React.createElement(
 	            "div",
-	            { className: "feed" },
+	            { className: "feed group" },
 	            React.createElement(PostForm, null),
 	            React.createElement(PostFeed, null)
 	          ),
@@ -35913,7 +35913,10 @@
 	    PostApiUtil.editPost(id, this.removePost);
 	  },
 	  fetchFeed: function fetchFeed() {
-	    PostApiUtil.fetchFeed(this.receivePost);
+	    PostApiUtil.fetchFeed(this.receiveFeed);
+	  },
+	  getBlogPosts: function getBlogPosts(id) {
+	    PostApiUtil.getPosts(id, this.receiveFeed);
 	  },
 	  receiveFeed: function receiveFeed(posts) {
 	    Dispatcher.dispatch({
@@ -35974,6 +35977,15 @@
 	  fetchFeed: function fetchFeed(cb) {
 	    $.ajax({
 	      url: "api/posts",
+	      success: function success(posts) {
+	        cb(posts);
+	      }
+	    });
+	  },
+	  getPosts: function getPosts(id, cb) {
+	    $.ajax({
+	      url: "api/posts",
+	      data: { user_id: id },
 	      success: function success(posts) {
 	        cb(posts);
 	      }
@@ -36378,7 +36390,7 @@
 	var Dispatcher = __webpack_require__(252);
 	var Store = __webpack_require__(264).Store;
 	var PostConstants = __webpack_require__(296);
-	var LikeConstants = __webpack_require__(315);
+	var LikeConstants = __webpack_require__(303);
 	
 	var PostStore = new Store(Dispatcher);
 	
@@ -36410,11 +36422,27 @@
 	  return posts;
 	};
 	
-	var addLike = function addLike(like) {};
+	var addLike = function addLike(like) {
+	  // debugger
+	  _posts[like.post_id].likes.push(like);
+	};
 	
-	var removeLike = function removeLike(like) {};
+	var removeLike = function removeLike(like) {
 	
-	var resetLikes = function resetLikes(likes) {};
+	  var idx = void 0;
+	
+	  _posts[like.post_id].likes.forEach(function (_like, index) {
+	    if (like.id === _like.id) {
+	      idx = index;
+	    }
+	  });
+	
+	  _posts[like.post_id].likes.splice(idx, 1);
+	};
+	
+	PostStore.getPost = function (id) {
+	  return _posts[id];
+	};
 	
 	PostStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
@@ -36434,10 +36462,6 @@
 	      addLike(payload.like);
 	      this.__emitChange();
 	      break;
-	    case LikeConstants.RECEIVE_LIKES:
-	      resetLikes(payload.likes);
-	      this.__emitChange();
-	      break;
 	    case LikeConstants.REMOVE_LIKE:
 	      removeLike(payload.like);
 	      this.__emitChange();
@@ -36449,6 +36473,688 @@
 
 /***/ },
 /* 303 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  RECEIVE_LIKE: "RECEIVE_LIKE",
+	  RECEIVE_LIKES: "RECEIVE_LIKES",
+	  REMOVE_LIKE: "REMOVE_LIKE"
+	};
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var PostStore = __webpack_require__(302);
+	var SessionStore = __webpack_require__(263);
+	var TextPost = __webpack_require__(305);
+	var ImagePost = __webpack_require__(306);
+	var LinkPost = __webpack_require__(307);
+	var QuotePost = __webpack_require__(308);
+	var AudioPost = __webpack_require__(309);
+	var VideoPost = __webpack_require__(310);
+	
+	var PostActions = __webpack_require__(294);
+	
+	var PostFeed = React.createClass({
+	  displayName: "PostFeed",
+	  getInitialState: function getInitialState() {
+	    return { posts: undefined };
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.postListener = PostStore.addListener(this.postsChange);
+	    PostActions.fetchFeed();
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.postListener.remove();
+	  },
+	  postsChange: function postsChange() {
+	    this.setState({ posts: PostStore.allPosts() });
+	  },
+	  isLiked: function isLiked(post) {
+	    var liked = false;
+	    post.likes.forEach(function (like) {
+	      if (like.user_id === SessionStore.currentUser().id) {
+	        liked = true;
+	      }
+	    });
+	    return liked;
+	  },
+	
+	
+	  render: function render() {
+	    var _this = this;
+	
+	    if (!this.state.posts) {
+	      return React.createElement(
+	        "div",
+	        { className: "loader" },
+	        "Loading..."
+	      );
+	    }
+	
+	    var posts = [];
+	    this.state.posts.forEach(function (post) {
+	      // debugger
+	      switch (post.post_type) {
+	        case "Text":
+	          posts.push(React.createElement(TextPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
+	          break;
+	        case "Image":
+	          posts.push(React.createElement(ImagePost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
+	          break;
+	        case "Quote":
+	          posts.push(React.createElement(QuotePost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
+	          break;
+	        case "Link":
+	          posts.push(React.createElement(LinkPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
+	          break;
+	        case "Audio":
+	          posts.push(React.createElement(AudioPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
+	          break;
+	        case "Video":
+	          posts.push(React.createElement(VideoPost, { isLiked: _this.isLiked(post), key: post.id, post: post }));
+	          break;
+	      }
+	    });
+	    return React.createElement(
+	      "div",
+	      { id: "post-feed group" },
+	      posts
+	    );
+	  }
+	
+	});
+	
+	module.exports = PostFeed;
+
+/***/ },
+/* 305 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	var LikeActions = __webpack_require__(316);
+	var PostStore = __webpack_require__(302);
+	
+	var TextPost = React.createClass({
+	  displayName: "TextPost",
+	  settingsClick: function settingsClick() {},
+	  avatarClick: function avatarClick() {
+	    var url = "blogs/" + this.props.post.user.id;
+	    hashHistory.push(url);
+	  },
+	  likeClick: function likeClick() {
+	    LikeActions.like({
+	      like: {
+	        user_id: SessionStore.currentUser().id,
+	        post_id: this.props.post.id }
+	    });
+	  },
+	  unlikeClick: function unlikeClick() {
+	    var _like = void 0;
+	    var cu = SessionStore.currentUser().id;
+	    this.props.post.likes.forEach(function (like) {
+	      if (like.user_id === cu) {
+	        _like = like;
+	      }
+	    });
+	
+	    LikeActions.unlike(_like.id);
+	  },
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else if (this.props.isLiked) {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.unlikeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" })
+	      );
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "post" },
+	      React.createElement("img", { id: "post-avatar", onClick: this.avatarClick,
+	        src: this.props.post.user.avatar }),
+	      React.createElement(
+	        "div",
+	        { id: "text-post" },
+	        React.createElement(
+	          "h1",
+	          { id: "text-title" },
+	          this.props.post.title
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "text-content" },
+	          this.props.post.content
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-footer" },
+	          React.createElement(
+	            "div",
+	            { id: "post-likes" },
+	            this.props.post.likes.length,
+	            " likes"
+	          ),
+	          footerToggle
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = TextPost;
+
+/***/ },
+/* 306 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	var LikeActions = __webpack_require__(316);
+	var ImagePost = React.createClass({
+	  displayName: "ImagePost",
+	  settingsClick: function settingsClick() {},
+	  avatarClick: function avatarClick() {
+	    var url = "blogs/" + this.props.post.user.id;
+	    hashHistory.push(url);
+	  },
+	  likeClick: function likeClick() {
+	    LikeActions.like({
+	      like: {
+	        user_id: SessionStore.currentUser().id,
+	        post_id: this.props.post.id }
+	    });
+	  },
+	  unlikeClick: function unlikeClick() {
+	    var _like = void 0;
+	    var cu = SessionStore.currentUser().id;
+	    this.props.post.likes.forEach(function (like) {
+	      if (like.user_id === cu) {
+	        _like = like;
+	      }
+	    });
+	
+	    LikeActions.unlike(_like.id);
+	  },
+	
+	
+	  render: function render() {
+	
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else if (this.props.isLiked) {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.unlikeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" })
+	      );
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "post" },
+	      React.createElement("img", { id: "post-avatar", onClick: this.avatarClick,
+	        src: this.props.post.user.avatar }),
+	      React.createElement(
+	        "div",
+	        { id: "image-post" },
+	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          null,
+	          React.createElement("img", { id: "image-image", src: this.props.post.image_url })
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "image-caption" },
+	          this.props.post.image_caption
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-footer" },
+	          React.createElement(
+	            "div",
+	            { id: "post-likes" },
+	            this.props.post.likes.length,
+	            " likes"
+	          ),
+	          footerToggle
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = ImagePost;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	var LikeActions = __webpack_require__(316);
+	
+	var LinkPost = React.createClass({
+	  displayName: "LinkPost",
+	  settingsClick: function settingsClick() {},
+	  avatarClick: function avatarClick() {
+	    var url = "blogs/" + this.props.post.user.id;
+	    hashHistory.push(url);
+	  },
+	  likeClick: function likeClick() {
+	    LikeActions.like({
+	      like: {
+	        user_id: SessionStore.currentUser().id,
+	        post_id: this.props.post.id }
+	    });
+	  },
+	  unlikeClick: function unlikeClick() {
+	    var _like = void 0;
+	    var cu = SessionStore.currentUser().id;
+	    this.props.post.likes.forEach(function (like) {
+	      if (like.user_id === cu) {
+	        _like = like;
+	      }
+	    });
+	
+	    LikeActions.unlike(_like.id);
+	  },
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else if (this.props.isLiked) {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.unlikeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" })
+	      );
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
+	      );
+	    }
+	    return React.createElement(
+	      "div",
+	      { id: "post" },
+	      React.createElement("img", { id: "post-avatar", onClick: this.avatarClick,
+	        src: this.props.post.user.avatar }),
+	      React.createElement(
+	        "div",
+	        { id: "text-post" },
+	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { id: "link-post" },
+	          React.createElement(
+	            "a",
+	            { id: "link",
+	              href: this.props.post.link_url },
+	            this.props.post.link_title
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-footer" },
+	          React.createElement(
+	            "div",
+	            { id: "post-likes" },
+	            this.props.post.likes.length,
+	            " likes"
+	          ),
+	          footerToggle
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = LinkPost;
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	var LikeActions = __webpack_require__(316);
+	
+	var QuotePost = React.createClass({
+	  displayName: "QuotePost",
+	  settingsClick: function settingsClick() {},
+	  avatarClick: function avatarClick() {
+	    var url = "blogs/" + this.props.post.user.id;
+	    hashHistory.push(url);
+	  },
+	  likeClick: function likeClick() {
+	    LikeActions.like({
+	      like: {
+	        user_id: SessionStore.currentUser().id,
+	        post_id: this.props.post.id }
+	    });
+	  },
+	  unlikeClick: function unlikeClick() {
+	    var _like = void 0;
+	    var cu = SessionStore.currentUser().id;
+	    this.props.post.likes.forEach(function (like) {
+	      if (like.user_id === cu) {
+	        _like = like;
+	      }
+	    });
+	
+	    LikeActions.unlike(_like.id);
+	  },
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else if (this.props.isLiked) {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.unlikeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" })
+	      );
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "post" },
+	      React.createElement("img", { id: "post-avatar", onClick: this.avatarClick,
+	        src: this.props.post.user.avatar }),
+	      React.createElement(
+	        "div",
+	        { id: "quote-post" },
+	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "h1",
+	          { id: "quote-quote" },
+	          "\"",
+	          this.props.post.quote,
+	          "\""
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "quote-source" },
+	          "-- ",
+	          this.props.post.quote_source
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-footer" },
+	          React.createElement(
+	            "div",
+	            { id: "post-likes" },
+	            this.props.post.likes.length,
+	            " likes"
+	          ),
+	          footerToggle
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = QuotePost;
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	var LikeActions = __webpack_require__(316);
+	var AudioPost = React.createClass({
+	  displayName: "AudioPost",
+	  settingsClick: function settingsClick() {},
+	  avatarClick: function avatarClick() {
+	    var url = "blogs/" + this.props.post.user.id;
+	    hashHistory.push(url);
+	  },
+	  likeClick: function likeClick() {
+	    LikeActions.like({
+	      like: {
+	        user_id: SessionStore.currentUser().id,
+	        post_id: this.props.post.id }
+	    });
+	  },
+	  unlikeClick: function unlikeClick() {
+	    var _like = void 0;
+	    var cu = SessionStore.currentUser().id;
+	    this.props.post.likes.forEach(function (like) {
+	      if (like.user_id === cu) {
+	        _like = like;
+	      }
+	    });
+	
+	    LikeActions.unlike(_like.id);
+	  },
+	
+	
+	  render: function render() {
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else if (this.props.isLiked) {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.unlikeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" })
+	      );
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
+	      );
+	    }
+	
+	    return React.createElement(
+	      "div",
+	      { id: "post" },
+	      React.createElement("img", { id: "post-avatar", onClick: this.avatarClick,
+	        src: this.props.post.user.avatar }),
+	      React.createElement(
+	        "div",
+	        { id: "audio-post" },
+	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { id: "audio-audio" },
+	          React.createElement(
+	            "audio",
+	            { type: "audio/mpeg", controls: true },
+	            React.createElement("source", { src: this.props.post.audio_url }),
+	            "Your browser does not support audio from Stumblr."
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-footer" },
+	          React.createElement(
+	            "div",
+	            { id: "post-likes" },
+	            this.props.post.likes.length,
+	            " likes"
+	          ),
+	          footerToggle
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = AudioPost;
+
+/***/ },
+/* 310 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var SessionStore = __webpack_require__(263);
+	var LikeActions = __webpack_require__(316);
+	var VideoPost = React.createClass({
+	  displayName: "VideoPost",
+	  settingsClick: function settingsClick() {},
+	  likeClick: function likeClick() {
+	    LikeActions.like({
+	      like: {
+	        user_id: SessionStore.currentUser().id,
+	        post_id: this.props.post.id }
+	    });
+	  },
+	  unlikeClick: function unlikeClick() {
+	    var _like = void 0;
+	    var cu = SessionStore.currentUser().id;
+	    this.props.post.likes.forEach(function (like) {
+	      if (like.user_id === cu) {
+	        _like = like;
+	      }
+	    });
+	
+	    LikeActions.unlike(_like.id);
+	  },
+	  avatarClick: function avatarClick() {
+	    var url = "blogs/" + this.props.post.user.id;
+	    hashHistory.push(url);
+	  },
+	
+	
+	  render: function render() {
+	
+	    var footerToggle = void 0;
+	
+	    if (SessionStore.currentUser().id === this.props.post.user_id) {
+	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
+	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	    } else if (this.props.isLiked) {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.unlikeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" })
+	      );
+	    } else {
+	      footerToggle = React.createElement(
+	        "div",
+	        { onClick: this.likeClick, id: "post-toggle" },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
+	      );
+	    }
+	
+	    var url = "https://www.youtube.com/embed/" + this.props.post.video_url.split("=")[1];
+	    return React.createElement(
+	      "div",
+	      { id: "post" },
+	      React.createElement("img", { id: "post-avatar", onClick: this.avatarClick,
+	        src: this.props.post.user.avatar }),
+	      React.createElement(
+	        "div",
+	        { id: "video-post" },
+	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { id: "video-video" },
+	          React.createElement("iframe", { width: "496", height: "275",
+	            src: url,
+	            frameborder: "0", allowfullscreen: true })
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-footer" },
+	          React.createElement(
+	            "div",
+	            { id: "post-likes" },
+	            this.props.post.likes.length,
+	            " likes"
+	          ),
+	          footerToggle
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = VideoPost;
+
+/***/ },
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36456,32 +37162,42 @@
 	var React = __webpack_require__(1);
 	var BlogStore = __webpack_require__(282);
 	var SessionStore = __webpack_require__(263);
+	var PostStore = __webpack_require__(302);
 	var BlogActions = __webpack_require__(260);
 	var hashHistory = __webpack_require__(188).hashHistory;
-	var FollowActions = __webpack_require__(304);
-	var BlogEdit = __webpack_require__(306);
-	var BlogFeed = __webpack_require__(307);
+	var FollowActions = __webpack_require__(312);
+	var BlogEdit = __webpack_require__(314);
+	var BlogFeed = __webpack_require__(315);
 	var Modal = __webpack_require__(168);
+	var PostActions = __webpack_require__(294);
 	
 	var BlogShow = React.createClass({
 	  displayName: "BlogShow",
 	  getInitialState: function getInitialState() {
-	    return { blog: "", currentUser: SessionStore.currentUser(), modalOpen: false };
+	    return { blog: "", currentUser: SessionStore.currentUser(),
+	      modalOpen: false, posts: [] };
 	  },
 	  componentDidMount: function componentDidMount() {
 	    this.listener = BlogStore.addListener(this._onChange);
+	    this.postListener = PostStore.addListener(this.postChange);
 	    this.sessionListener = SessionStore.addListener(this._onSessionChange);
 	    BlogActions.getBlog(this.props.params.userId);
+	    PostActions.getBlogPosts(this.props.params.userId);
 	  },
 	  componentWillUnmount: function componentWillUnmount() {
 	    this.listener.remove();
 	    this.sessionListener.remove();
+	    this.postListener.remove();
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
 	    BlogActions.getBlog(newProps.params.userId);
+	    PostActions.getBlogPosts(newProps.params.userId);
 	  },
 	  _onChange: function _onChange() {
 	    this.setState({ blog: BlogStore.getBlog() });
+	  },
+	  postChange: function postChange() {
+	    this.setState({ posts: PostStore.allPosts() });
 	  },
 	  _onSessionChange: function _onSessionChange() {
 	    this.setState({ currentUser: SessionStore.currentUser() });
@@ -36609,11 +37325,11 @@
 	      ),
 	      React.createElement(
 	        "div",
-	        null,
-	        "follows: ",
-	        numFollows
+	        { id: "follows" },
+	        numFollows,
+	        " Follower(s)"
 	      ),
-	      React.createElement(BlogFeed, { posts: this.state.blog.posts }),
+	      React.createElement(BlogFeed, { posts: this.state.posts }),
 	      React.createElement("footer", { id: "blog-show-footer" }),
 	      React.createElement(
 	        Modal,
@@ -36636,12 +37352,12 @@
 	module.exports = BlogShow;
 
 /***/ },
-/* 304 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var FollowApiUtil = __webpack_require__(305);
+	var FollowApiUtil = __webpack_require__(313);
 	var Dispatcher = __webpack_require__(252);
 	var FollowConstants = __webpack_require__(283);
 	
@@ -36669,7 +37385,7 @@
 	module.exports = FollowActions;
 
 /***/ },
-/* 305 */
+/* 313 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -36699,7 +37415,7 @@
 	module.exports = FollowApiUtil;
 
 /***/ },
-/* 306 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36814,45 +37530,63 @@
 	module.exports = BlogEdit;
 
 /***/ },
-/* 307 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var TextPost = __webpack_require__(308);
-	var ImagePost = __webpack_require__(309);
-	var QuotePost = __webpack_require__(310);
-	var LinkPost = __webpack_require__(311);
-	var AudioPost = __webpack_require__(312);
-	var VideoPost = __webpack_require__(313);
+	var TextPost = __webpack_require__(305);
+	var ImagePost = __webpack_require__(306);
+	var QuotePost = __webpack_require__(308);
+	var LinkPost = __webpack_require__(307);
+	var AudioPost = __webpack_require__(309);
+	var VideoPost = __webpack_require__(310);
+	var SessionStore = __webpack_require__(263);
 	
 	var BlogFeed = React.createClass({
 	  displayName: "BlogFeed",
+	  isLiked: function isLiked(post) {
+	    var liked = false;
+	    post.likes.forEach(function (like) {
+	      if (like.user_id === SessionStore.currentUser().id) {
+	        liked = true;
+	      }
+	    });
+	    return liked;
+	  },
 	
 	
 	  render: function render() {
+	    var _this = this;
+	
 	    var posts = [];
 	
 	    this.props.posts.map(function (post) {
 	      switch (post.post_type) {
 	        case "Text":
-	          posts.push(React.createElement(TextPost, { key: post.id, post: post }));
+	          posts.push(React.createElement(TextPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
 	          break;
 	        case "Image":
-	          posts.push(React.createElement(ImagePost, { key: post.id, post: post }));
+	          posts.push(React.createElement(ImagePost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
 	          break;
 	        case "Quote":
-	          posts.push(React.createElement(QuotePost, { key: post.id, post: post }));
+	          posts.push(React.createElement(QuotePost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
 	          break;
 	        case "Link":
-	          posts.push(React.createElement(LinkPost, { key: post.id, post: post }));
+	          posts.push(React.createElement(LinkPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
 	          break;
 	        case "Audio":
-	          posts.push(React.createElement(AudioPost, { key: post.id, post: post }));
+	          posts.push(React.createElement(AudioPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
 	          break;
 	        case "Video":
-	          posts.push(React.createElement(VideoPost, { key: post.id, post: post }));
+	          posts.push(React.createElement(VideoPost, { isLiked: _this.isLiked(post),
+	            key: post.id, post: post }));
 	          break;
 	      }
 	    });
@@ -36870,470 +37604,65 @@
 	module.exports = BlogFeed;
 
 /***/ },
-/* 308 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(188).hashHistory;
-	var SessionStore = __webpack_require__(263);
+	var LikeApiUtil = __webpack_require__(317);
+	var LikeConstants = __webpack_require__(303);
+	var Dispatcher = __webpack_require__(252);
 	
-	var TextPost = React.createClass({
-	  displayName: "TextPost",
-	  settingsClick: function settingsClick() {},
-	  likeClick: function likeClick() {},
-	
-	
-	  render: function render() {
-	    var footerToggle = void 0;
-	
-	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
-	    } else {
-	      footerToggle = React.createElement(
-	        "div",
-	        { onClick: this.likeClick, id: "post-toggle" },
-	        " like/unlike "
-	      );
-	    }
-	
-	    return React.createElement(
-	      "div",
-	      { id: "text-post" },
-	      React.createElement("div", { id: "post-header" }),
-	      React.createElement(
-	        "h1",
-	        { id: "text-title" },
-	        this.props.post.title
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "text-content" },
-	        this.props.post.content
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "post-footer" },
-	        React.createElement(
-	          "div",
-	          { id: "post-likes" },
-	          "0 likes"
-	        ),
-	        footerToggle
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = TextPost;
-
-/***/ },
-/* 309 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(188).hashHistory;
-	var SessionStore = __webpack_require__(263);
-	
-	var ImagePost = React.createClass({
-	  displayName: "ImagePost",
-	
-	
-	  // componentDidMount() {
-	  //   debugger
-	  // },
-	
-	  settingsClick: function settingsClick() {},
-	  likeClick: function likeClick() {},
-	
-	
-	  render: function render() {
-	
-	    var footerToggle = void 0;
-	
-	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
-	    } else {
-	      footerToggle = React.createElement(
-	        "div",
-	        { onClick: this.likeClick, id: "post-toggle" },
-	        " like/unlike "
-	      );
-	    }
-	
-	    return React.createElement(
-	      "div",
-	      { id: "image-post" },
-	      React.createElement("div", { id: "post-header" }),
-	      React.createElement(
-	        "div",
-	        null,
-	        React.createElement("img", { id: "image-image", src: this.props.post.image_url })
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "image-caption" },
-	        this.props.post.image_caption
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "post-footer" },
-	        React.createElement(
-	          "div",
-	          { id: "post-likes" },
-	          "0 likes"
-	        ),
-	        footerToggle
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = ImagePost;
-
-/***/ },
-/* 310 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(188).hashHistory;
-	var SessionStore = __webpack_require__(263);
-	
-	var QuotePost = React.createClass({
-	  displayName: "QuotePost",
-	  settingsClick: function settingsClick() {},
-	  likeClick: function likeClick() {},
-	
-	
-	  render: function render() {
-	    var footerToggle = void 0;
-	
-	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
-	    } else {
-	      footerToggle = React.createElement(
-	        "div",
-	        { onClick: this.likeClick, id: "post-toggle" },
-	        " like/unlike "
-	      );
-	    }
-	
-	    return React.createElement(
-	      "div",
-	      { id: "quote-post" },
-	      React.createElement("div", { id: "post-header" }),
-	      React.createElement(
-	        "h1",
-	        { id: "quote-quote" },
-	        "\"",
-	        this.props.post.quote,
-	        "\""
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "quote-source" },
-	        "-- ",
-	        this.props.post.quote_source
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "post-footer" },
-	        React.createElement(
-	          "div",
-	          { id: "post-likes" },
-	          "0 likes"
-	        ),
-	        footerToggle
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = QuotePost;
-
-/***/ },
-/* 311 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(188).hashHistory;
-	var SessionStore = __webpack_require__(263);
-	
-	var LinkPost = React.createClass({
-	  displayName: "LinkPost",
-	  settingsClick: function settingsClick() {},
-	  likeClick: function likeClick() {},
-	
-	
-	  render: function render() {
-	    var footerToggle = void 0;
-	
-	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
-	    } else {
-	      footerToggle = React.createElement(
-	        "div",
-	        { onClick: this.likeClick, id: "post-toggle" },
-	        " like/unlike "
-	      );
-	    }
-	
-	    return React.createElement(
-	      "div",
-	      { id: "text-post" },
-	      React.createElement("div", { id: "post-header" }),
-	      React.createElement(
-	        "div",
-	        { id: "link-post" },
-	        React.createElement(
-	          "a",
-	          { id: "link",
-	            href: this.props.post.link_url },
-	          this.props.post.link_title
-	        )
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "post-footer" },
-	        React.createElement(
-	          "div",
-	          { id: "post-likes" },
-	          "0 likes"
-	        ),
-	        footerToggle
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = LinkPost;
-
-/***/ },
-/* 312 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(188).hashHistory;
-	var SessionStore = __webpack_require__(263);
-	
-	var AudioPost = React.createClass({
-	  displayName: "AudioPost",
-	  settingsClick: function settingsClick() {},
-	  likeClick: function likeClick() {},
-	
-	
-	  render: function render() {
-	    var footerToggle = void 0;
-	
-	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
-	    } else {
-	      footerToggle = React.createElement(
-	        "div",
-	        { onClick: this.likeClick, id: "post-toggle" },
-	        " like/unlike "
-	      );
-	    }
-	
-	    return React.createElement(
-	      "div",
-	      { id: "audio-post" },
-	      React.createElement("div", { id: "post-header" }),
-	      React.createElement(
-	        "div",
-	        { id: "audio-audio" },
-	        React.createElement(
-	          "audio",
-	          { type: "audio/mpeg", controls: true },
-	          React.createElement("source", { src: this.props.post.audio_url }),
-	          "Your browser does not support audio from Stumblr."
-	        )
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "post-footer" },
-	        React.createElement(
-	          "div",
-	          { id: "post-likes" },
-	          "0 likes"
-	        ),
-	        footerToggle
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = AudioPost;
-
-/***/ },
-/* 313 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var hashHistory = __webpack_require__(188).hashHistory;
-	var SessionStore = __webpack_require__(263);
-	
-	var VideoPost = React.createClass({
-	  displayName: "VideoPost",
-	  settingsClick: function settingsClick() {},
-	  likeClick: function likeClick() {},
-	
-	
-	  render: function render() {
-	
-	    var footerToggle = void 0;
-	
-	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
-	    } else {
-	      footerToggle = React.createElement(
-	        "div",
-	        { onClick: this.likeClick, id: "post-toggle" },
-	        " like/unlike "
-	      );
-	    }
-	
-	    var url = "https://www.youtube.com/embed/" + this.props.post.video_url.split("=")[1];
-	    return React.createElement(
-	      "div",
-	      { id: "video-post" },
-	      React.createElement("div", { id: "post-header" }),
-	      React.createElement(
-	        "div",
-	        { id: "video-video" },
-	        React.createElement("iframe", { width: "496", height: "275",
-	          src: url,
-	          frameborder: "0", allowfullscreen: true })
-	      ),
-	      React.createElement(
-	        "div",
-	        { id: "post-footer" },
-	        React.createElement(
-	          "div",
-	          { id: "post-likes" },
-	          "0 likes"
-	        ),
-	        footerToggle
-	      )
-	    );
-	  }
-	
-	});
-	
-	module.exports = VideoPost;
-
-/***/ },
-/* 314 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var React = __webpack_require__(1);
-	var PostStore = __webpack_require__(302);
-	
-	var TextPost = __webpack_require__(308);
-	var ImagePost = __webpack_require__(309);
-	var LinkPost = __webpack_require__(311);
-	var QuotePost = __webpack_require__(310);
-	var AudioPost = __webpack_require__(312);
-	var VideoPost = __webpack_require__(313);
-	
-	var PostActions = __webpack_require__(294);
-	
-	var PostFeed = React.createClass({
-	  displayName: "PostFeed",
-	  getInitialState: function getInitialState() {
-	    return { posts: [] };
+	module.exports = {
+	  like: function like(data) {
+	    LikeApiUtil.like(data, this.receiveLike);
 	  },
-	  componentDidMount: function componentDidMount() {
-	    this.postListener = PostStore.addListener(this.postsChange);
-	    PostActions.fetchFeed();
+	  unlike: function unlike(likeId) {
+	    LikeApiUtil.unlike(likeId, this.removeLike);
 	  },
-	  componentWillUnmount: function componentWillUnmount() {
-	    this.postListener.remove();
+	  fetchLikes: function fetchLikes(postId) {
+	    LikeApiUtil.fetchLikes(postId, this.receiveLikes);
 	  },
-	  postsChange: function postsChange() {
-	    this.setState({ posts: PostStore.allPosts() });
-	  },
-	
-	
-	  render: function render() {
-	    if (this.state.posts.length === 0) {
-	      return React.createElement(
-	        "div",
-	        { className: "loader" },
-	        "Loading..."
-	      );
-	    }
-	
-	    var posts = [];
-	    this.state.posts[0].forEach(function (post) {
-	
-	      switch (post.post_type) {
-	        case "Text":
-	          posts.push(React.createElement(TextPost, { key: post.id, post: post }));
-	          break;
-	
-	        case "Image":
-	          posts.push(React.createElement(ImagePost, { key: post.id, post: post }));
-	          break;
-	        case "Quote":
-	          posts.push(React.createElement(QuotePost, { key: post.id, post: post }));
-	          break;
-	        case "Link":
-	          posts.push(React.createElement(LinkPost, { key: post.id, post: post }));
-	          break;
-	        case "Audio":
-	          posts.push(React.createElement(AudioPost, { key: post.id, post: post }));
-	          break;
-	        case "Video":
-	          posts.push(React.createElement(VideoPost, { key: post.id, post: post }));
-	          break;
-	      }
+	  receiveLike: function receiveLike(like) {
+	    Dispatcher.dispatch({
+	      actionType: LikeConstants.RECEIVE_LIKE,
+	      like: like
 	    });
-	    return React.createElement(
-	      "div",
-	      { id: "post-feed" },
-	      posts
-	    );
+	  },
+	  removeLike: function removeLike(like) {
+	    Dispatcher.dispatch({
+	      actionType: LikeConstants.REMOVE_LIKE,
+	      like: like
+	    });
 	  }
-	
-	});
-	
-	module.exports = PostFeed;
+	};
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports) {
 
 	"use strict";
 	
 	module.exports = {
-	  RECEIVE_LIKE: "RECEIVE_LIKE",
-	  RECEIVE_LIKES: "RECEIVE_LIKES",
-	  REMOVE_LIKE: "REMOVE_LIKE"
+	  like: function like(data, cb) {
+	    $.ajax({
+	      url: "api/likes",
+	      method: "POST",
+	      data: data,
+	      success: function success(like) {
+	        cb(like);
+	      }
+	    });
+	  },
+	  unlike: function unlike(likeId, cb) {
+	    $.ajax({
+	      url: "api/likes/" + likeId,
+	      method: "DELETE",
+	      success: function success(like) {
+	        cb(like);
+	      }
+	    });
+	  }
 	};
 
 /***/ }

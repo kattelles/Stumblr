@@ -34,15 +34,25 @@ PostStore.allPosts = function() {
 };
 
 const addLike = function(like) {
-
+  // debugger
+  _posts[like.post_id].likes.push(like);
 };
 
 const removeLike = function(like) {
 
+  let idx;
+
+    _posts[like.post_id].likes.forEach((_like, index) => {
+      if (like.id === _like.id) {
+        idx = index;
+      }
+    });
+
+  _posts[like.post_id].likes.splice(idx, 1);
 };
 
-const resetLikes = function(likes) {
-
+PostStore.getPost = function(id) {
+  return _posts[id];
 };
 
 PostStore.__onDispatch = function(payload) {
@@ -61,10 +71,6 @@ PostStore.__onDispatch = function(payload) {
       break;
     case LikeConstants.RECEIVE_LIKE:
       addLike(payload.like);
-      this.__emitChange();
-      break;
-    case LikeConstants.RECEIVE_LIKES:
-      resetLikes(payload.likes);
       this.__emitChange();
       break;
     case LikeConstants.REMOVE_LIKE:

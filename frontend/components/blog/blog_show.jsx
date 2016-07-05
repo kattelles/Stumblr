@@ -1,35 +1,46 @@
 const React = require("react");
 const BlogStore = require("../../stores/blog_store");
 const SessionStore = require("../../stores/session_store");
+const PostStore = require("../../stores/post_store");
 const BlogActions = require("../../actions/blog_actions");
 const hashHistory = require('react-router').hashHistory;
 const FollowActions = require("../../actions/follow_actions");
 const BlogEdit = require("./blog_edit");
 const BlogFeed = require("./blog_feed");
 const Modal = require("react-modal");
+const PostActions = require("../../actions/post_actions");
 
 const BlogShow = React.createClass({
   getInitialState() {
-    return ({blog: "", currentUser: SessionStore.currentUser(), modalOpen: false});
+    return ({blog: "", currentUser: SessionStore.currentUser(),
+      modalOpen: false, posts: []});
   },
 
   componentDidMount() {
     this.listener = BlogStore.addListener(this._onChange);
+    this.postListener = PostStore.addListener(this.postChange);
     this.sessionListener = SessionStore.addListener(this._onSessionChange);
     BlogActions.getBlog(this.props.params.userId);
+    PostActions.getBlogPosts(this.props.params.userId);
   },
 
   componentWillUnmount() {
     this.listener.remove();
     this.sessionListener.remove();
+    this.postListener.remove();
   },
 
   componentWillReceiveProps(newProps) {
     BlogActions.getBlog(newProps.params.userId);
+    PostActions.getBlogPosts(newProps.params.userId);
   },
 
   _onChange() {
     this.setState({blog: BlogStore.getBlog()});
+  },
+
+  postChange() {
+    this.setState({posts: PostStore.allPosts()});
   },
 
   _onSessionChange(){
@@ -129,8 +140,10 @@ const BlogShow = React.createClass({
           <img className="avatar" src={avatar}/>
           <h1 className='blog-title'>{this.state.blog.title} </h1>
           <h3 className="blog-desc">{this.state.blog.description}</h3>
-           <div>follows: {numFollows}</div>
-          <BlogFeed posts={this.state.blog.posts}/>
+
+           <div id="follows">{numFollows} Follower(s)</div>
+
+          <BlogFeed posts={this.state.posts}/>
           <footer id='blog-show-footer'/>
          <Modal
            className="blog-edit-modal"

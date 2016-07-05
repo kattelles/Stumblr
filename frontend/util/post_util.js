@@ -39,4 +39,14 @@ module.exports = {
       }
     });
   },
+
+  getPosts(id, cb) {
+    $.ajax({
+      url: "api/posts",
+      data: {user_id: id},
+      success: (posts) => {
+        cb(posts);
+      }
+    });
+  }
 };

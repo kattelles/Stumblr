@@ -5,9 +5,20 @@ const QuotePost = require("../posts/quote_post");
 const LinkPost = require("../posts/link_post");
 const AudioPost = require("../posts/audio_post");
 const VideoPost = require("../posts/video_post");
+const SessionStore = require("../../stores/session_store");
 
 
 const BlogFeed = React.createClass({
+
+  isLiked(post) {
+    let liked = false;
+    post.likes.forEach(like => {
+      if (like.user_id === SessionStore.currentUser().id) {
+        liked = true;
+      }
+    });
+    return liked;
+  },
 
   render: function() {
     let posts = [];
@@ -15,22 +26,28 @@ const BlogFeed = React.createClass({
     this.props.posts.map(post => {
       switch (post.post_type) {
         case "Text":
-          posts.push(<TextPost key={post.id} post={post}/>);
+          posts.push(<TextPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Image":
-          posts.push(<ImagePost key={post.id} post={post}/>);
+          posts.push(<ImagePost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Quote":
-          posts.push(<QuotePost key={post.id} post={post}/>);
+          posts.push(<QuotePost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Link":
-          posts.push(<LinkPost key={post.id} post={post}/>);
+          posts.push(<LinkPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Audio":
-          posts.push(<AudioPost key={post.id} post={post}/>);
+          posts.push(<AudioPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Video":
-          posts.push(<VideoPost key={post.id} post={post}/>);
+          posts.push(<VideoPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
       }
     });

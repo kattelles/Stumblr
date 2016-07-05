@@ -16,7 +16,11 @@ module.exports = {
   },
 
   fetchFeed() {
-    PostApiUtil.fetchFeed( this.receivePost);
+    PostApiUtil.fetchFeed(this.receiveFeed);
+  },
+
+  getBlogPosts(id) {
+    PostApiUtil.getPosts(id, this.receiveFeed);
   },
 
   receiveFeed(posts) {

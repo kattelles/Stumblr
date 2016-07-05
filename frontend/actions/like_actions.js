@@ -8,7 +8,7 @@ module.exports = {
   },
 
   unlike(likeId) {
-    LikeApiUtil.like(likeId, this.removeLike);
+    LikeApiUtil.unlike(likeId, this.removeLike);
   },
 
   fetchLikes(postId) {
@@ -19,13 +19,6 @@ module.exports = {
     Dispatcher.dispatch({
       actionType: LikeConstants.RECEIVE_LIKE,
       like: like
-    });
-  },
-
-  receiveLikes(likes) {
-    Dispatcher.dispatch({
-      actionType: LikeConstants.RECEIVE_LIKES,
-      likes: likes
     });
   },
 

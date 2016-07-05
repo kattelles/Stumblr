@@ -1,6 +1,6 @@
 const React = require('react');
 const PostStore = require("../../stores/post_store");
-
+const SessionStore = require("../../stores/session_store");
 const TextPost = require("../posts/text_post");
 const ImagePost = require("../posts/image_post");
 const LinkPost = require("../posts/link_post");
@@ -12,7 +12,7 @@ const PostActions = require("../../actions/post_actions");
 
 const PostFeed = React.createClass({
   getInitialState() {
-    return ({posts: []});
+    return ({posts: undefined});
   },
 
   componentDidMount() {
@@ -28,38 +28,52 @@ const PostFeed = React.createClass({
     this.setState({posts: PostStore.allPosts()});
   },
 
+  isLiked(post) {
+    let liked = false;
+    post.likes.forEach(like => {
+      if (like.user_id === SessionStore.currentUser().id) {
+        liked = true;
+      }
+    });
+    return liked;
+  },
+
   render: function() {
-    if (this.state.posts.length === 0) {
+    if (!this.state.posts) {
       return (<div className="loader">Loading...</div>);
     }
 
     let posts = [];
-    this.state.posts[0].forEach(post => {
-
+    this.state.posts.forEach(post => {
+      // debugger
       switch (post.post_type) {
         case "Text":
-          posts.push(<TextPost key={post.id} post={post}/>);
+          posts.push(<TextPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
-
         case "Image":
-          posts.push(<ImagePost key={post.id} post={post}/>);
+          posts.push(<ImagePost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Quote":
-          posts.push(<QuotePost key={post.id} post={post}/>);
+          posts.push(<QuotePost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Link":
-          posts.push(<LinkPost key={post.id} post={post}/>);
+          posts.push(<LinkPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Audio":
-          posts.push(<AudioPost key={post.id} post={post}/>);
+          posts.push(<AudioPost isLiked={this.isLiked(post)}
+          key={post.id} post={post}/>);
           break;
         case "Video":
-          posts.push(<VideoPost key={post.id} post={post}/>);
+          posts.push(<VideoPost isLiked={this.isLiked(post)} key={post.id} post={post}/>);
           break;
       }
     });
     return (
-      <div id="post-feed">
+      <div id="post-feed group">
         {posts}
       </div>
     );

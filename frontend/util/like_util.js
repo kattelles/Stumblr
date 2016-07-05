@@ -18,15 +18,5 @@ module.exports = {
         cb(like);
       }
     });
-  },
-
-  fetchLikes(postId, cb){
-    $.ajax({
-      url: "api/likes",
-      data: postId,
-      success: (likes) => {
-        cb(likes);
-      }
-    });
   }
 };
