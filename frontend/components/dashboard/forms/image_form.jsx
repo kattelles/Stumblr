@@ -39,7 +39,7 @@ const ImageForm = React.createClass({
         <div id="modal-header">{this.props.user.username}</div>
         <div id="image-form">
           <div onClick={this.uploadImage}>
-            <img id="image-camera" src="http://res.cloudinary.com/kattelles/image/upload/v1467442048/noun_26730_cc_p7i5vv.png"/>
+            <img id="image-camera" src="https://res.cloudinary.com/kattelles/image/upload/v1467442048/noun_26730_cc_p7i5vv.png"/>
             <br/>
           Upload Photo
           </div>
