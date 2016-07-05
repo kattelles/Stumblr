@@ -37,7 +37,7 @@ const VideoPost  = React.createClass({
   render: function() {
 
     let footerToggle;
-    
+
     if (SessionStore.currentUser().id === this.props.post.user_id) {
       footerToggle = (<img id='post-toggle' onClick={this.settingsClick}
         src="https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png"/>);
@@ -50,7 +50,7 @@ const VideoPost  = React.createClass({
       </div>;
     }
 
-    let url = "https://www.youtube.com/embed/" + this.props.post.video_url.split("=")[1];
+    let url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
     return (
       <div id="post">
         <img id="post-avatar" onClick={this.avatarClick}

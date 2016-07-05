@@ -36059,7 +36059,8 @@
 	        React.createElement(
 	          "div",
 	          { onClick: this.uploadImage },
-	          React.createElement("img", { id: "image-camera", src: "https://res.cloudinary.com/kattelles/image/upload/v1467442048/noun_26730_cc_p7i5vv.png" }),
+	          React.createElement("img", { id: "image-camera",
+	            src: "https://res.cloudinary.com/kattelles/image/upload/v1467442048/noun_26730_cc_p7i5vv.png" }),
 	          React.createElement("br", null),
 	          "Upload Photo"
 	        )
@@ -36215,7 +36216,7 @@
 	            placeholder: "Type or paste a URL", value: this.state.link })
 	        ),
 	        React.createElement("input", { id: "link-title", onChange: this.titleChange, value: this.state.linkTitle,
-	          placeholder: "Link Title" }),
+	          placeholder: "Link Title (Required)" }),
 	        React.createElement("br", null),
 	        React.createElement(
 	          "div",
@@ -36283,8 +36284,8 @@
 	        null,
 	        React.createElement(
 	          "div",
-	          { id: "link-outer" },
-	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
+	          { id: "audio-outer" },
+	          React.createElement("input", { type: "text", id: "audio-form", onChange: this.linkChange,
 	            placeholder: "Type or paste YouTube watch URL", value: this.state.link })
 	        ),
 	        React.createElement("br", null),
@@ -36343,7 +36344,7 @@
 	  render: function render() {
 	    return React.createElement(
 	      "div",
-	      null,
+	      { id: "audio" },
 	      React.createElement(
 	        "div",
 	        { id: "modal-header" },
@@ -36354,8 +36355,8 @@
 	        null,
 	        React.createElement(
 	          "div",
-	          { id: "link-outer" },
-	          React.createElement("input", { type: "text", id: "link-form", onChange: this.linkChange,
+	          { id: "audio-outer" },
+	          React.createElement("input", { type: "text", id: "audio-form", onChange: this.linkChange,
 	            placeholder: "Type or paste an audio URL", value: this.state.link })
 	        ),
 	        React.createElement("br", null),
@@ -37117,7 +37118,7 @@
 	      );
 	    }
 	
-	    var url = "https://www.youtube.com/embed/" + this.props.post.video_url.split("=")[1];
+	    var url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
 	    return React.createElement(
 	      "div",
 	      { id: "post" },

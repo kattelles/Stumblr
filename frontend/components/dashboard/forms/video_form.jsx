@@ -28,8 +28,8 @@ const VideoForm = React.createClass({
       <div>
         <div id="modal-header">{this.props.user.username}</div>
         <form>
-          <div id="link-outer">
-          <input type="text" id="link-form" onChange={this.linkChange}
+          <div id="audio-outer">
+          <input type="text" id="audio-form" onChange={this.linkChange}
             placeholder="Type or paste YouTube watch URL" value={this.state.link}/>
           </div>
           <br/>

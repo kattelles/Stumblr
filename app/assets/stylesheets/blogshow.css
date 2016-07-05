@@ -35,6 +35,13 @@
   text-align: center;
 }
 
+#follows {
+  padding-top: 10px;
+  padding-left: 20px;
+  cursor: pointer;
+  font-style: italic;
+}
+
 #blog-nav-bar {
   display: flex;
   position: absolute;
