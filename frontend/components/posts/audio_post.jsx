@@ -90,8 +90,11 @@ const AudioPost  = React.createClass({
 
       <div id="audio-post">
 
-        <div id="post-header">
+        <div onClick={this.avatarClick} id="post-header">
+          {this.props.post.user.username}
         </div>
+
+        <div id="audio-title">{this.props.post.audio_title}</div>
 
         <div id="audio-audio">
           <audio type="audio/mpeg" controls >

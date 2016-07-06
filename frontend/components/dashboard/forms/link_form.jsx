@@ -4,7 +4,14 @@ const PostActions = require("../../../actions/post_actions");
 const LinkForm = React.createClass({
 
   getInitialState() {
-    return ({link: "", linkTitle: ""});
+    let link = "";
+    let linkTitle = "";
+    if (this.props.post) {
+      link = this.props.post.link_url;
+      linkTitle = this.props.post.link_title;
+    }
+
+    return ({link: link, linkTitle: linkTitle});
   },
 
   linkChange(e) {
@@ -12,6 +19,19 @@ const LinkForm = React.createClass({
   },
 
   handleSubmit() {
+    if (this.props.edit === "true") {
+
+      PostActions.editPost({
+        post: {
+          id: this.props.post.id,
+          post_type: "Link",
+          user_id: this.props.post.user_id,
+          link_url: this.state.link,
+          link_title: this.state.linkTitle
+        }
+      });
+
+    } else {
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
@@ -21,6 +41,7 @@ const LinkForm = React.createClass({
         link_title: this.state.linkTitle
       }
     });
+  }
     this.props.close();
   },
 

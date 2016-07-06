@@ -4,7 +4,11 @@ const PostActions = require("../../../actions/post_actions");
 const VideoForm = React.createClass({
 
   getInitialState() {
-    return ({link: ""});
+    let link = "";
+    if (this.props.post) {
+      link = this.props.post.video_url;
+    }
+    return ({link: link});
   },
 
   linkChange(e) {
@@ -12,6 +16,18 @@ const VideoForm = React.createClass({
   },
 
   handleSubmit() {
+
+    if (this.props.edit === "true") {
+
+      PostActions.editPost({
+        post: {
+          id: this.props.post.id,
+          post_type: "Video",
+          user_id: this.props.post.user_id,
+          video_url: this.state.link,
+        }
+      });
+
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
@@ -20,6 +36,7 @@ const VideoForm = React.createClass({
         video_url: this.state.link,
       }
     });
+  }
     this.props.close();
   },
 

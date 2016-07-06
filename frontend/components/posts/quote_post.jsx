@@ -89,8 +89,8 @@ const QuotePost = React.createClass({
 
       <div id="quote-post">
 
-        <div id="post-header">
-
+        <div onClick={this.avatarClick} id="post-header">
+          {this.props.post.user.username}
         </div>
 
         <h1 id="quote-quote">

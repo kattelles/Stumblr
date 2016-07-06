@@ -4,7 +4,15 @@ const PostActions = require("../../../actions/post_actions");
 const ImageForm = React.createClass({
 
   getInitialState() {
-    return ({url: "", imageCaption: ""});
+
+    let url = "";
+    let imageCaption = "";
+    if (this.props.post) {
+      url = this.props.post.url;
+      imageCaption = this.props.post.image_caption;
+    }
+
+    return ({url: url, imageCaption: imageCaption});
   },
 
   uploadImage(e) {
@@ -21,6 +29,19 @@ const ImageForm = React.createClass({
   },
 
   handleSubmit() {
+    if (this.props.edit === "true") {
+
+      PostActions.editPost({
+        post: {
+          id: this.props.post.id,
+          post_type: "Image",
+          user_id: this.props.post.user_id,
+          image_url: this.state.url,
+          image_caption: this.state.imageCaption
+        }
+      });
+
+    } else {
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
@@ -30,6 +51,7 @@ const ImageForm = React.createClass({
         image_caption: this.state.imageCaption
       }
     });
+  }
     this.props.close();
   },
 

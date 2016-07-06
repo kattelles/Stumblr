@@ -4,7 +4,14 @@ const PostActions = require("../../../actions/post_actions");
 const TextForm = React.createClass({
 
   getInitialState() {
-    return ({title: "", content: ""});
+    let title = "";
+    let content = "";
+    if (this.props.post) {
+      title = this.props.post.title;
+      content = this.props.post.content;
+    }
+
+    return ({title: title, content: content});
   },
 
   titleChange(e) {
@@ -16,6 +23,20 @@ const TextForm = React.createClass({
   },
 
   handleSubmit() {
+    if (this.props.edit === "true") {
+
+      PostActions.editPost({
+        post: {
+          id: this.props.post.id,
+          post_type: "Text",
+          user_id: this.props.post.user_id,
+          title: this.state.title,
+          content: this.state.content
+        }
+      });
+
+    } else {
+
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
@@ -25,6 +46,7 @@ const TextForm = React.createClass({
         content: this.state.content
       }
     });
+  }
     this.props.close();
   },
 

@@ -9,10 +9,13 @@ const DeletePost = React.createClass({
 
   render: function() {
     return (
-      <div id="post-delete">Are you sure you want to delete this post?
+      <div id="post-delete">
+        Are you sure you want to delete this post?
         <div id="delete-buttons">
-        <div id="post-delete-btn-cancel" onClick={this.props.close}>Cancel</div>
-        <div id="post-delete-btn-ok" onClick={this.deletePost}>OK</div>
+          <div id="post-delete-btn-cancel" onClick={this.props.close}>
+            <span>Cancel</span></div>
+          <div id="post-delete-btn-ok" onClick={this.deletePost}>
+            <span>OK</span></div>
         </div>
       </div>
     );

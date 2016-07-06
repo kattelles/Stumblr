@@ -29,12 +29,14 @@
 }
 
 #post-delete {
-  margin-top: 30px;
+  margin-top: 50px;
+  font-size: 24px;
   text-align: center;
 }
 
 #delete-buttons {
-  margin-top: 30px;
+  margin-top: 50px;
+  color: white;
   display: flex;
   justify-content: space-around;
 }
@@ -54,6 +56,7 @@
   cursor: pointer;
   border-radius: 3px;
 }
+
 
 #footer {
   height: 30px;
@@ -121,6 +124,7 @@ textarea {
   font-family: 'Signika Negative', sans-serif;
   font-size: 20px;
   width: 90%;
+  height: 100px;
 }
 
 #audio-form {
@@ -131,12 +135,13 @@ textarea {
   font-family: 'Signika Negative', sans-serif;
   font-size: 20px;
   width: 90%;
+  height: 80px;
 }
 
 #audio-outer {
   border-top: 1px dashed #cacaca;
   border-bottom: 1px dashed #cacaca;
-  height: 140px;
+  height: 100px;
   background-color: #efefef;
   cursor: pointer;
   padding: 0px;
@@ -214,11 +219,12 @@ textarea:focus, input:focus{
 .user-edit-modal {
   margin: 0 auto;
   margin-top: 150px;
-  width: 650px;
+  width: 540px;
   height: 300px;
   background-color: white;
   border-radius: 3px;
   color: #444;
+    outline: none;
 }
 
 .blog-edit-modal {
@@ -229,4 +235,27 @@ textarea:focus, input:focus{
   background-color: white;
   border-radius: 3px;
   color: #444;
+}
+
+#user-edit-header {
+  margin: 0px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+#upload-image {
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: #56bc8a;
+  height: 32px;
+  width: 100px;
+}
+
+#user-edit-input {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }

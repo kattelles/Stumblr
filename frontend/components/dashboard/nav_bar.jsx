@@ -78,7 +78,6 @@ const NavBar = React.createClass({
           onRequestClose={this.onModalClose}
           onAfterOpen={this.onModalOpen}>
           <UserEdit close={this.onModalClose}/>
-          <button onClick={this.onModalClose}>Close</button>
         </Modal>
       </div>
 

@@ -9,6 +9,7 @@ const DeletePost = require("./delete_post");
 const Modal = require("react-modal");
 
 const TextPost = React.createClass({
+
   getInitialState() {
     return ({modalOpen: false, modalType: ""});
   },
@@ -89,6 +90,10 @@ const TextPost = React.createClass({
           src={this.props.post.user.avatar}/>
 
         <div id="text-post">
+          <div onClick={this.avatarClick} id="post-header">
+            {this.props.post.user.username}
+          </div>
+
           <h1 id="text-title">
             {this.props.post.title}
           </h1>

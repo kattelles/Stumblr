@@ -93,7 +93,8 @@ const VideoPost  = React.createClass({
 
       <div id="video-post">
 
-        <div id="post-header">
+        <div onClick={this.avatarClick} id="post-header">
+          {this.props.post.user.username}
         </div>
 
         <div id="video-video">

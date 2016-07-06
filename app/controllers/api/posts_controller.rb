@@ -9,7 +9,7 @@ class Api::PostsController < ApplicationController
   end
 
   def update
-    @post = Post.find(params[:id])
+    @post = Post.find(params[:post][:id])
     @post.update!(post_params)
 
     render :show
@@ -28,13 +28,13 @@ class Api::PostsController < ApplicationController
       @posts = current_user.followed_posts
     end
 
-    # @posts.order! 'created_at ASC'
+    @posts.order(created_at: :desc)
   end
 
   private
 
   def post_params
-    params.require(:post).permit(:post_type, :image_caption, :link_title,
+    params.require(:post).permit(:post_type, :image_caption, :link_title, :audio_title,
       :user_id, :title, :content, :video_url, :audio_url,
       :image_url, :quote, :quote_source, :link_url)
   end

@@ -35480,12 +35480,7 @@
 	          isOpen: this.state.modalOpen,
 	          onRequestClose: this.onModalClose,
 	          onAfterOpen: this.onModalOpen },
-	        React.createElement(UserEdit, { close: this.onModalClose }),
-	        React.createElement(
-	          "button",
-	          { onClick: this.onModalClose },
-	          "Close"
-	        )
+	        React.createElement(UserEdit, { close: this.onModalClose })
 	      )
 	    );
 	  }
@@ -35550,38 +35545,46 @@
 	      null,
 	      React.createElement(
 	        "h1",
-	        null,
+	        { id: "user-edit-header" },
 	        "Account"
 	      ),
 	      React.createElement(
-	        "form",
-	        { onSubmit: this.handleSubmit },
+	        "div",
+	        { id: "user-edit-input" },
 	        React.createElement(
-	          "label",
+	          "div",
 	          null,
 	          "Username: "
 	        ),
 	        React.createElement("input", { onChange: this.usernameChange, value: this.state.username }),
 	        React.createElement("br", null),
-	        React.createElement("br", null),
 	        React.createElement(
-	          "label",
+	          "div",
 	          null,
-	          "Avatar: "
+	          "Avatar:"
 	        ),
-	        React.createElement("br", null),
 	        React.createElement("img", { className: "user-edit-avatar", src: this.state.avatar }),
-	        React.createElement("br", null),
 	        React.createElement(
-	          "button",
-	          { onClick: this.avatarChange },
+	          "div",
+	          { id: "upload-image", onClick: this.avatarChange },
 	          "Upload Image"
-	        ),
-	        React.createElement("br", null),
-	        React.createElement("br", null),
-	        React.createElement("input", { type: "submit", value: "Save" })
+	        )
 	      ),
-	      React.createElement("br", null)
+	      React.createElement(
+	        "div",
+	        { id: "footer" },
+	        React.createElement(
+	          "div",
+	          { id: "close-button", onClick: this.props.close },
+	          "Close"
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-button", onClick: this.handleSubmit },
+	          "Save"
+	        ),
+	        React.createElement("div", null)
+	      )
 	    );
 	  }
 	});
@@ -35708,27 +35711,27 @@
 	
 	    switch (this.state.postType) {
 	      case "TextForm":
-	        component = React.createElement(TextForm, { submitButton: "Post", user: this.state.user,
+	        component = React.createElement(TextForm, { submitButton: "Post", edit: "false", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "ImageForm":
-	        component = React.createElement(ImageForm, { submitButton: "Post", user: this.state.user,
+	        component = React.createElement(ImageForm, { submitButton: "Post", edit: "false", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "QuoteForm":
-	        component = React.createElement(QuoteForm, { submitButton: "Post", user: this.state.user,
+	        component = React.createElement(QuoteForm, { submitButton: "Post", edit: "false", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "LinkForm":
-	        component = React.createElement(LinkForm, { submitButton: "Post", user: this.state.user,
+	        component = React.createElement(LinkForm, { submitButton: "Post", edit: "false", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "AudioForm":
-	        component = React.createElement(AudioForm, { submitButton: "Post", user: this.state.user,
+	        component = React.createElement(AudioForm, { submitButton: "Post", edit: "false", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "VideoForm":
-	        component = React.createElement(VideoForm, { submitButton: "Post", user: this.state.user,
+	        component = React.createElement(VideoForm, { submitButton: "Post", edit: "false", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	    }
@@ -35830,7 +35833,14 @@
 	var TextForm = React.createClass({
 	  displayName: "TextForm",
 	  getInitialState: function getInitialState() {
-	    return { title: "", content: "" };
+	    var title = "";
+	    var content = "";
+	    if (this.props.post) {
+	      title = this.props.post.title;
+	      content = this.props.post.content;
+	    }
+	
+	    return { title: title, content: content };
 	  },
 	  titleChange: function titleChange(e) {
 	    this.setState({ title: e.target.value });
@@ -35839,15 +35849,29 @@
 	    this.setState({ content: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Text",
-	        user_id: parseInt(id),
-	        title: this.state.title,
-	        content: this.state.content
-	      }
-	    });
+	    if (this.props.edit === "true") {
+	
+	      PostActions.editPost({
+	        post: {
+	          id: this.props.post.id,
+	          post_type: "Text",
+	          user_id: this.props.post.user_id,
+	          title: this.state.title,
+	          content: this.state.content
+	        }
+	      });
+	    } else {
+	
+	      var id = this.props.user.id;
+	      PostActions.createPost({
+	        post: {
+	          post_type: "Text",
+	          user_id: parseInt(id),
+	          title: this.state.title,
+	          content: this.state.content
+	        }
+	      });
+	    }
 	    this.props.close();
 	  },
 	
@@ -36017,7 +36041,15 @@
 	var ImageForm = React.createClass({
 	  displayName: "ImageForm",
 	  getInitialState: function getInitialState() {
-	    return { url: "", imageCaption: "" };
+	
+	    var url = "";
+	    var imageCaption = "";
+	    if (this.props.post) {
+	      url = this.props.post.url;
+	      imageCaption = this.props.post.image_caption;
+	    }
+	
+	    return { url: url, imageCaption: imageCaption };
 	  },
 	  uploadImage: function uploadImage(e) {
 	    e.preventDefault();
@@ -36031,15 +36063,28 @@
 	    this.setState({ imageCaption: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Image",
-	        user_id: parseInt(id),
-	        image_url: this.state.url,
-	        image_caption: this.state.imageCaption
-	      }
-	    });
+	    if (this.props.edit === "true") {
+	
+	      PostActions.editPost({
+	        post: {
+	          id: this.props.post.id,
+	          post_type: "Image",
+	          user_id: this.props.post.user_id,
+	          image_url: this.state.url,
+	          image_caption: this.state.imageCaption
+	        }
+	      });
+	    } else {
+	      var id = this.props.user.id;
+	      PostActions.createPost({
+	        post: {
+	          post_type: "Image",
+	          user_id: parseInt(id),
+	          image_url: this.state.url,
+	          image_caption: this.state.imageCaption
+	        }
+	      });
+	    }
 	    this.props.close();
 	  },
 	
@@ -36101,7 +36146,13 @@
 	var QuoteForm = React.createClass({
 	  displayName: "QuoteForm",
 	  getInitialState: function getInitialState() {
-	    return { quote: "", quoteSource: "" };
+	    var quote = "";
+	    var quoteSource = "";
+	    if (this.props.post) {
+	      quote = this.props.post.quote;
+	      quoteSource = this.props.post.quote_source;
+	    }
+	    return { quote: quote, quoteSource: quoteSource };
 	  },
 	  quoteChange: function quoteChange(e) {
 	    this.setState({ quote: e.target.value });
@@ -36110,15 +36161,29 @@
 	    this.setState({ quoteSource: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Quote",
-	        user_id: parseInt(id),
-	        quote: this.state.quote,
-	        quote_source: this.state.quoteSource
-	      }
-	    });
+	    if (this.props.edit === "true") {
+	
+	      PostActions.editPost({
+	        post: {
+	          id: this.props.post.id,
+	          post_type: "Quote",
+	          user_id: this.props.post.user_id,
+	          quote: this.state.quote,
+	          quote_source: this.state.quoteSource
+	        }
+	      });
+	    } else {
+	
+	      var id = this.props.user.id;
+	      PostActions.createPost({
+	        post: {
+	          post_type: "Quote",
+	          user_id: parseInt(id),
+	          quote: this.state.quote,
+	          quote_source: this.state.quoteSource
+	        }
+	      });
+	    }
 	    this.props.close();
 	  },
 	
@@ -36175,21 +36240,41 @@
 	var LinkForm = React.createClass({
 	  displayName: "LinkForm",
 	  getInitialState: function getInitialState() {
-	    return { link: "", linkTitle: "" };
+	    var link = "";
+	    var linkTitle = "";
+	    if (this.props.post) {
+	      link = this.props.post.link_url;
+	      linkTitle = this.props.post.link_title;
+	    }
+	
+	    return { link: link, linkTitle: linkTitle };
 	  },
 	  linkChange: function linkChange(e) {
 	    this.setState({ link: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Link",
-	        user_id: parseInt(id),
-	        link_url: this.state.link,
-	        link_title: this.state.linkTitle
-	      }
-	    });
+	    if (this.props.edit === "true") {
+	
+	      PostActions.editPost({
+	        post: {
+	          id: this.props.post.id,
+	          post_type: "Link",
+	          user_id: this.props.post.user_id,
+	          link_url: this.state.link,
+	          link_title: this.state.linkTitle
+	        }
+	      });
+	    } else {
+	      var id = this.props.user.id;
+	      PostActions.createPost({
+	        post: {
+	          post_type: "Link",
+	          user_id: parseInt(id),
+	          link_url: this.state.link,
+	          link_title: this.state.linkTitle
+	        }
+	      });
+	    }
 	    this.props.close();
 	  },
 	  titleChange: function titleChange(e) {
@@ -36252,20 +36337,37 @@
 	var VideoForm = React.createClass({
 	  displayName: "VideoForm",
 	  getInitialState: function getInitialState() {
-	    return { link: "" };
+	    var link = "";
+	    if (this.props.post) {
+	      link = this.props.post.video_url;
+	    }
+	    return { link: link };
 	  },
 	  linkChange: function linkChange(e) {
 	    this.setState({ link: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Video",
-	        user_id: parseInt(id),
-	        video_url: this.state.link
-	      }
-	    });
+	
+	    if (this.props.edit === "true") {
+	
+	      PostActions.editPost({
+	        post: {
+	          id: this.props.post.id,
+	          post_type: "Video",
+	          user_id: this.props.post.user_id,
+	          video_url: this.state.link
+	        }
+	      });
+	
+	      var id = this.props.user.id;
+	      PostActions.createPost({
+	        post: {
+	          post_type: "Video",
+	          user_id: parseInt(id),
+	          video_url: this.state.link
+	        }
+	      });
+	    }
 	    this.props.close();
 	  },
 	
@@ -36323,21 +36425,45 @@
 	var AudioForm = React.createClass({
 	  displayName: "AudioForm",
 	  getInitialState: function getInitialState() {
-	    return { link: "" };
+	    var link = "";
+	    var audioTitle = "";
+	    if (this.props.post) {
+	      link = this.props.post.audio_url;
+	      audioTitle = this.props.post.audio_title;
+	    }
+	
+	    return { link: link, audioTitle: audioTitle };
 	  },
 	  linkChange: function linkChange(e) {
 	    this.setState({ link: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    var id = this.props.user.id;
-	    PostActions.createPost({
-	      post: {
-	        post_type: "Audio",
-	        user_id: parseInt(id),
-	        audio_url: this.state.link
-	      }
-	    });
+	    if (this.props.edit === "true") {
+	
+	      PostActions.editPost({
+	        post: {
+	          id: this.props.post.id,
+	          post_type: "Audio",
+	          user_id: this.props.post.user_id,
+	          audio_url: this.state.link,
+	          audio_title: this.state.audioTitle
+	        }
+	      });
+	    } else {
+	      var id = this.props.user.id;
+	      PostActions.createPost({
+	        post: {
+	          post_type: "Audio",
+	          user_id: parseInt(id),
+	          audio_url: this.state.link,
+	          audio_title: this.state.audioTitle
+	        }
+	      });
+	    }
 	    this.props.close();
+	  },
+	  titleChange: function titleChange(e) {
+	    this.setState({ audioTitle: e.target.value });
 	  },
 	
 	
@@ -36359,6 +36485,8 @@
 	          React.createElement("input", { type: "text", id: "audio-form", onChange: this.linkChange,
 	            placeholder: "Type or paste an audio URL", value: this.state.link })
 	        ),
+	        React.createElement("input", { id: "link-title", onChange: this.titleChange, value: this.state.audioTitle,
+	          placeholder: "Title (Required)" }),
 	        React.createElement("br", null),
 	        React.createElement(
 	          "div",
@@ -36678,6 +36806,11 @@
 	        "div",
 	        { id: "text-post" },
 	        React.createElement(
+	          "div",
+	          { onClick: this.avatarClick, id: "post-header" },
+	          this.props.post.user.username
+	        ),
+	        React.createElement(
 	          "h1",
 	          { id: "text-title" },
 	          this.props.post.title
@@ -36813,7 +36946,11 @@
 	      React.createElement(
 	        "div",
 	        { id: "image-post" },
-	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { onClick: this.avatarClick, id: "post-header" },
+	          this.props.post.user.username
+	        ),
 	        React.createElement(
 	          "div",
 	          null,
@@ -36950,7 +37087,11 @@
 	      React.createElement(
 	        "div",
 	        { id: "text-post" },
-	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { onClick: this.avatarClick, id: "post-header" },
+	          this.props.post.user.username
+	        ),
 	        React.createElement(
 	          "div",
 	          { id: "link-post" },
@@ -37087,7 +37228,11 @@
 	      React.createElement(
 	        "div",
 	        { id: "quote-post" },
-	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { onClick: this.avatarClick, id: "post-header" },
+	          this.props.post.user.username
+	        ),
 	        React.createElement(
 	          "h1",
 	          { id: "quote-quote" },
@@ -37226,7 +37371,16 @@
 	      React.createElement(
 	        "div",
 	        { id: "audio-post" },
-	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { onClick: this.avatarClick, id: "post-header" },
+	          this.props.post.user.username
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "audio-title" },
+	          this.props.post.audio_title
+	        ),
 	        React.createElement(
 	          "div",
 	          { id: "audio-audio" },
@@ -37365,7 +37519,11 @@
 	      React.createElement(
 	        "div",
 	        { id: "video-post" },
-	        React.createElement("div", { id: "post-header" }),
+	        React.createElement(
+	          "div",
+	          { onClick: this.avatarClick, id: "post-header" },
+	          this.props.post.user.username
+	        ),
 	        React.createElement(
 	          "div",
 	          { id: "video-video" },
@@ -37940,27 +38098,33 @@
 	    var component = void 0;
 	    switch (this.props.post.post_type) {
 	      case "Text":
-	        component = React.createElement(TextForm, { submitButton: "Save", user: this.state.user,
+	        component = React.createElement(TextForm, { edit: "true", post: this.props.post,
+	          submitButton: "Save", user: this.state.user,
 	          close: this.props.close });
 	        break;
 	      case "Image":
-	        component = React.createElement(ImageForm, { submitButton: "Save", user: this.state.user,
+	        component = React.createElement(ImageForm, { edit: "true", post: this.props.post,
+	          submitButton: "Save", user: this.state.user,
 	          close: this.props.close });
 	        break;
 	      case "Quote":
-	        component = React.createElement(QuoteForm, { submitButton: "Save", user: this.state.user,
+	        component = React.createElement(QuoteForm, { edit: "true", post: this.props.post,
+	          submitButton: "Save", user: this.state.user,
 	          close: this.props.close });
 	        break;
 	      case "Link":
-	        component = React.createElement(LinkForm, { submitButton: "Save", user: this.state.user,
+	        component = React.createElement(LinkForm, { edit: "true", post: this.props.post,
+	          submitButton: "Save", user: this.state.user,
 	          close: this.props.close });
 	        break;
 	      case "Audio":
-	        component = React.createElement(AudioForm, { submitButton: "Save", user: this.state.user,
+	        component = React.createElement(AudioForm, { edit: "true", post: this.props.post,
+	          submitButton: "Save", user: this.state.user,
 	          close: this.props.close });
 	        break;
 	      case "Video":
-	        component = React.createElement(VideoForm, { submitButton: "Save", user: this.state.user,
+	        component = React.createElement(VideoForm, { edit: "true", post: this.props.post,
+	          submitButton: "Save", user: this.state.user,
 	          close: this.props.close });
 	        break;
 	    }
@@ -38003,12 +38167,20 @@
 	        React.createElement(
 	          "div",
 	          { id: "post-delete-btn-cancel", onClick: this.props.close },
-	          "Cancel"
+	          React.createElement(
+	            "span",
+	            null,
+	            "Cancel"
+	          )
 	        ),
 	        React.createElement(
 	          "div",
 	          { id: "post-delete-btn-ok", onClick: this.deletePost },
-	          "OK"
+	          React.createElement(
+	            "span",
+	            null,
+	            "OK"
+	          )
 	        )
 	      )
 	    );

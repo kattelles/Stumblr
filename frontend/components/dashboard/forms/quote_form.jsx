@@ -4,7 +4,13 @@ const PostActions = require("../../../actions/post_actions");
 const QuoteForm = React.createClass({
 
   getInitialState() {
-    return ({quote: "", quoteSource: ""});
+    let quote = "";
+    let quoteSource = "";
+    if (this.props.post) {
+      quote = this.props.post.quote;
+      quoteSource = this.props.post.quote_source;
+    }
+    return ({quote: quote, quoteSource: quoteSource});
   },
 
   quoteChange(e) {
@@ -16,6 +22,20 @@ const QuoteForm = React.createClass({
   },
 
   handleSubmit() {
+    if (this.props.edit === "true") {
+
+      PostActions.editPost({
+        post: {
+          id: this.props.post.id,
+          post_type: "Quote",
+          user_id: this.props.post.user_id,
+          quote: this.state.quote,
+          quote_source: this.state.quoteSource
+        }
+      });
+
+    } else {
+
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
@@ -25,6 +45,7 @@ const QuoteForm = React.createClass({
         quote_source: this.state.quoteSource
       }
     });
+  }
     this.props.close();
   },
 

@@ -52,24 +52,28 @@ const UserEdit = React.createClass({
   },
 
   render() {
-    return(<div>
-    <h1>Account</h1>
+    return(
+      <div>
 
-      <form onSubmit={this.handleSubmit}>
-        <label>Username: </label>
+        <h1 id="user-edit-header">Account</h1>
+
+        <div id="user-edit-input">
+        <div>Username: </div>
         <input onChange={this.usernameChange} value={this.state.username}/>
+
         <br/>
-        <br/>
-        <label>Avatar: </label>
-        <br/>
+
+        <div>Avatar:</div>
         <img className="user-edit-avatar" src={this.state.avatar}/>
-        <br/>
-        <button onClick={this.avatarChange}>Upload Image</button>
-        <br/>
-        <br/>
-        <input type="submit" value="Save"/>
-      </form>
-      <br/>
+        <div id="upload-image" onClick={this.avatarChange}>Upload Image</div>
+
+        </div>
+
+        <div id="footer">
+          <div id="close-button" onClick={this.props.close}>Close</div>
+          <div id="post-button" onClick={this.handleSubmit}>Save</div>
+        <div/>
+        </div>
     </div>);
 
   }

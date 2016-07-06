@@ -38,7 +38,7 @@
 #follows {
   padding-top: 10px;
   padding-left: 20px;
-  cursor: pointer;
+  width: 100px;
   font-style: italic;
 }
 
@@ -105,6 +105,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
 #text-post {
   width: 500px;
   border-radius: 3px;
@@ -114,7 +115,8 @@
 
 #text-title {
   margin-left: 20px;
-  padding-top: 20px;
+  margin-top: 0px;
+  padding-top: 0px;
   width: 90%;
   height: auto;
 }
@@ -175,7 +177,18 @@
 }
 
 #post-header {
-  height: 27px;
+  width: 540px;
+  height: 40px;
+  font-weight: bold;
+  padding-left: 20px;
+  padding-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#audio-title {
+  margin-left: 20px;
+  font-size: 20px;
 }
 
 #quote-post {
@@ -209,6 +222,7 @@
 #link {
   font-size: 40px;
   margin-left: 20px;
+  margin-bottom: 5px;
 }
 
 #video-post {

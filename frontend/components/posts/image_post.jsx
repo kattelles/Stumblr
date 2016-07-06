@@ -88,8 +88,8 @@ const ImagePost = React.createClass({
 
       <div id="image-post">
 
-        <div id="post-header">
-
+        <div onClick={this.avatarClick} id="post-header">
+          {this.props.post.user.username}
         </div>
 
         <div>

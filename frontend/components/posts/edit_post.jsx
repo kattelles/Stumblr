@@ -17,27 +17,33 @@ const EditPost = React.createClass({
     let component;
     switch (this.props.post.post_type) {
       case "Text":
-        component = <TextForm submitButton="Save" user={this.state.user}
+        component = <TextForm edit="true" post={this.props.post}
+          submitButton="Save" user={this.state.user}
           close={this.props.close}/>;
         break;
       case "Image":
-        component = <ImageForm submitButton="Save" user={this.state.user}
+        component = <ImageForm edit="true" post={this.props.post}
+          submitButton="Save" user={this.state.user}
           close={this.props.close}/>;
         break;
       case "Quote":
-        component = <QuoteForm submitButton="Save" user={this.state.user}
+        component = <QuoteForm edit="true" post={this.props.post}
+          submitButton="Save" user={this.state.user}
           close={this.props.close}/>;
         break;
       case "Link":
-        component = <LinkForm submitButton="Save" user={this.state.user}
+        component = <LinkForm edit="true" post={this.props.post}
+          submitButton="Save" user={this.state.user}
           close={this.props.close}/>;
         break;
       case "Audio":
-        component = <AudioForm submitButton="Save" user={this.state.user}
+        component = <AudioForm edit="true" post={this.props.post}
+          submitButton="Save" user={this.state.user}
           close={this.props.close}/>;
         break;
       case "Video":
-        component = <VideoForm submitButton="Save" user={this.state.user}
+        component = <VideoForm edit="true" post={this.props.post}
+          submitButton="Save" user={this.state.user}
           close={this.props.close}/>;
         break;
       }
