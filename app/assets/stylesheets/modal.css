@@ -9,6 +9,52 @@
   border: 1px solid white;
   outline: none;
 }
+
+.post-edit-modal {
+  width: 540px;
+  height: 280px;
+  background-color: white;
+  border-radius: 3px;
+  margin: 0 auto;
+  margin-top: 150px;
+  color: #444;
+  border: 1px solid white;
+  outline: none;
+  color: black;
+}
+
+#edit-modal {
+  background-color: white;
+  color: black;
+}
+
+#post-delete {
+  margin-top: 30px;
+  text-align: center;
+}
+
+#delete-buttons {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+
+#post-delete-btn-ok {
+  background-color: #7cb5d8;
+  width: 140px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+#post-delete-btn-cancel {
+  background-color: #acb3bb;
+  width: 140px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
 #footer {
   height: 30px;
 }

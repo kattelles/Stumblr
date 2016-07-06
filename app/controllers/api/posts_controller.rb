@@ -27,6 +27,8 @@ class Api::PostsController < ApplicationController
     else
       @posts = current_user.followed_posts
     end
+
+    # @posts.order! 'created_at ASC'
   end
 
   private

@@ -49,27 +49,27 @@ const PostForm = React.createClass({
 
     switch (this.state.postType) {
       case "TextForm":
-        component = <TextForm user={this.state.user}
+        component = <TextForm submitButton="Post" user={this.state.user}
           close={this.onModalClose}/>;
         break;
       case "ImageForm":
-        component = <ImageForm user={this.state.user}
+        component = <ImageForm submitButton="Post" user={this.state.user}
           close={this.onModalClose}/>;
         break;
       case "QuoteForm":
-        component = <QuoteForm user={this.state.user}
+        component = <QuoteForm submitButton="Post" user={this.state.user}
           close={this.onModalClose}/>;
         break;
       case "LinkForm":
-        component = <LinkForm user={this.state.user}
+        component = <LinkForm submitButton="Post" user={this.state.user}
           close={this.onModalClose}/>;
         break;
       case "AudioForm":
-        component = <AudioForm user={this.state.user}
+        component = <AudioForm submitButton="Post" user={this.state.user}
           close={this.onModalClose}/>;
         break;
       case "VideoForm":
-        component = <VideoForm user={this.state.user}
+        component = <VideoForm submitButton="Post" user={this.state.user}
           close={this.onModalClose}/>;
         break;
   }

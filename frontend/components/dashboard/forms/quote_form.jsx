@@ -41,7 +41,7 @@ const QuoteForm = React.createClass({
           <br/>
             <div id="footer">
               <div id="close-button" onClick={this.props.close}>Close</div>
-              <div onClick={this.handleSubmit} id="post-button">Post</div>
+              <div onClick={this.handleSubmit} id="post-button">{this.props.submitButton}</div>
             </div>
         </form>
       </div>

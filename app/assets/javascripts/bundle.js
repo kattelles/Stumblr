@@ -35708,27 +35708,27 @@
 	
 	    switch (this.state.postType) {
 	      case "TextForm":
-	        component = React.createElement(TextForm, { user: this.state.user,
+	        component = React.createElement(TextForm, { submitButton: "Post", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "ImageForm":
-	        component = React.createElement(ImageForm, { user: this.state.user,
+	        component = React.createElement(ImageForm, { submitButton: "Post", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "QuoteForm":
-	        component = React.createElement(QuoteForm, { user: this.state.user,
+	        component = React.createElement(QuoteForm, { submitButton: "Post", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "LinkForm":
-	        component = React.createElement(LinkForm, { user: this.state.user,
+	        component = React.createElement(LinkForm, { submitButton: "Post", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "AudioForm":
-	        component = React.createElement(AudioForm, { user: this.state.user,
+	        component = React.createElement(AudioForm, { submitButton: "Post", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	      case "VideoForm":
-	        component = React.createElement(VideoForm, { user: this.state.user,
+	        component = React.createElement(VideoForm, { submitButton: "Post", user: this.state.user,
 	          close: this.onModalClose });
 	        break;
 	    }
@@ -35881,7 +35881,7 @@
 	          React.createElement(
 	            "div",
 	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
+	            this.props.submitButton
 	          )
 	        )
 	      )
@@ -35910,7 +35910,7 @@
 	    PostApiUtil.editPost(data, this.receivePost);
 	  },
 	  deletePost: function deletePost(id) {
-	    PostApiUtil.editPost(id, this.removePost);
+	    PostApiUtil.deletePost(id, this.removePost);
 	  },
 	  fetchFeed: function fetchFeed() {
 	    PostApiUtil.fetchFeed(this.receiveFeed);
@@ -36079,7 +36079,7 @@
 	        React.createElement(
 	          "div",
 	          { onClick: this.handleSubmit, id: "post-button" },
-	          "Post"
+	          this.props.submitButton
 	        )
 	      )
 	    );
@@ -36152,7 +36152,7 @@
 	          React.createElement(
 	            "div",
 	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
+	            this.props.submitButton
 	          )
 	        )
 	      )
@@ -36229,7 +36229,7 @@
 	          React.createElement(
 	            "div",
 	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
+	            this.props.submitButton
 	          )
 	        )
 	      )
@@ -36300,7 +36300,7 @@
 	          React.createElement(
 	            "div",
 	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
+	            this.props.submitButton
 	          )
 	        )
 	      )
@@ -36371,7 +36371,7 @@
 	          React.createElement(
 	            "div",
 	            { onClick: this.handleSubmit, id: "post-button" },
-	            "Post"
+	            this.props.submitButton
 	          )
 	        )
 	      )
@@ -36590,10 +36590,22 @@
 	var SessionStore = __webpack_require__(263);
 	var LikeActions = __webpack_require__(316);
 	var PostStore = __webpack_require__(302);
+	var EditPost = __webpack_require__(318);
+	var DeletePost = __webpack_require__(319);
+	
+	var Modal = __webpack_require__(168);
 	
 	var TextPost = React.createClass({
 	  displayName: "TextPost",
-	  settingsClick: function settingsClick() {},
+	  getInitialState: function getInitialState() {
+	    return { modalOpen: false, modalType: "" };
+	  },
+	  onModalClose: function onModalClose() {
+	    this.setState({ modalOpen: false });
+	  },
+	  modalOpen: function modalOpen(type) {
+	    this.setState({ modalType: type, modalOpen: true });
+	  },
 	  avatarClick: function avatarClick() {
 	    var url = "blogs/" + this.props.post.user.id;
 	    hashHistory.push(url);
@@ -36622,8 +36634,14 @@
 	    var footerToggle = void 0;
 	
 	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	      footerToggle = React.createElement(
+	        "div",
+	        { id: "post-toggle" },
+	        React.createElement("img", { id: "edit-post", onClick: this.modalOpen.bind(this, "Edit"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png" }),
+	        React.createElement("img", { id: "delete-post", onClick: this.modalOpen.bind(this, "Delete"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png" })
+	      );
 	    } else if (this.props.isLiked) {
 	      footerToggle = React.createElement(
 	        "div",
@@ -36636,6 +36654,19 @@
 	        { onClick: this.likeClick, id: "post-toggle" },
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
 	      );
+	    }
+	
+	    var settingsModal = void 0;
+	
+	    switch (this.state.modalType) {
+	      case "Edit":
+	        settingsModal = React.createElement(EditPost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	      case "Delete":
+	        settingsModal = React.createElement(DeletePost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
 	    }
 	
 	    return React.createElement(
@@ -36667,6 +36698,15 @@
 	          ),
 	          footerToggle
 	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "post-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        settingsModal
 	      )
 	    );
 	  }
@@ -36685,9 +36725,22 @@
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
 	var LikeActions = __webpack_require__(316);
+	var PostStore = __webpack_require__(302);
+	var EditPost = __webpack_require__(318);
+	var DeletePost = __webpack_require__(319);
+	var Modal = __webpack_require__(168);
+	
 	var ImagePost = React.createClass({
 	  displayName: "ImagePost",
-	  settingsClick: function settingsClick() {},
+	  getInitialState: function getInitialState() {
+	    return { modalOpen: false, modalType: "" };
+	  },
+	  onModalClose: function onModalClose() {
+	    this.setState({ modalOpen: false });
+	  },
+	  modalOpen: function modalOpen(type) {
+	    this.setState({ modalType: type, modalOpen: true });
+	  },
 	  avatarClick: function avatarClick() {
 	    var url = "blogs/" + this.props.post.user.id;
 	    hashHistory.push(url);
@@ -36717,8 +36770,14 @@
 	    var footerToggle = void 0;
 	
 	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	      footerToggle = React.createElement(
+	        "div",
+	        { id: "post-toggle" },
+	        React.createElement("img", { id: "edit-post", onClick: this.modalOpen.bind(this, "Edit"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png" }),
+	        React.createElement("img", { id: "delete-post", onClick: this.modalOpen.bind(this, "Delete"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png" })
+	      );
 	    } else if (this.props.isLiked) {
 	      footerToggle = React.createElement(
 	        "div",
@@ -36731,6 +36790,19 @@
 	        { onClick: this.likeClick, id: "post-toggle" },
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
 	      );
+	    }
+	
+	    var settingsModal = void 0;
+	
+	    switch (this.state.modalType) {
+	      case "Edit":
+	        settingsModal = React.createElement(EditPost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	      case "Delete":
+	        settingsModal = React.createElement(DeletePost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
 	    }
 	
 	    return React.createElement(
@@ -36763,6 +36835,15 @@
 	          ),
 	          footerToggle
 	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "post-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        settingsModal
 	      )
 	    );
 	  }
@@ -36781,10 +36862,23 @@
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
 	var LikeActions = __webpack_require__(316);
+	var PostStore = __webpack_require__(302);
+	var EditPost = __webpack_require__(318);
+	var DeletePost = __webpack_require__(319);
+	
+	var Modal = __webpack_require__(168);
 	
 	var LinkPost = React.createClass({
 	  displayName: "LinkPost",
-	  settingsClick: function settingsClick() {},
+	  getInitialState: function getInitialState() {
+	    return { modalOpen: false, modalType: "" };
+	  },
+	  onModalClose: function onModalClose() {
+	    this.setState({ modalOpen: false });
+	  },
+	  modalOpen: function modalOpen(type) {
+	    this.setState({ modalType: type, modalOpen: true });
+	  },
 	  avatarClick: function avatarClick() {
 	    var url = "blogs/" + this.props.post.user.id;
 	    hashHistory.push(url);
@@ -36813,8 +36907,14 @@
 	    var footerToggle = void 0;
 	
 	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	      footerToggle = React.createElement(
+	        "div",
+	        { id: "post-toggle" },
+	        React.createElement("img", { id: "edit-post", onClick: this.modalOpen.bind(this, "Edit"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png" }),
+	        React.createElement("img", { id: "delete-post", onClick: this.modalOpen.bind(this, "Delete"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png" })
+	      );
 	    } else if (this.props.isLiked) {
 	      footerToggle = React.createElement(
 	        "div",
@@ -36828,6 +36928,20 @@
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
 	      );
 	    }
+	
+	    var settingsModal = void 0;
+	
+	    switch (this.state.modalType) {
+	      case "Edit":
+	        settingsModal = React.createElement(EditPost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	      case "Delete":
+	        settingsModal = React.createElement(DeletePost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	    }
+	
 	    return React.createElement(
 	      "div",
 	      { id: "post" },
@@ -36858,6 +36972,15 @@
 	          ),
 	          footerToggle
 	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "post-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        settingsModal
 	      )
 	    );
 	  }
@@ -36876,10 +36999,23 @@
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
 	var LikeActions = __webpack_require__(316);
+	var PostStore = __webpack_require__(302);
+	var EditPost = __webpack_require__(318);
+	var DeletePost = __webpack_require__(319);
+	
+	var Modal = __webpack_require__(168);
 	
 	var QuotePost = React.createClass({
 	  displayName: "QuotePost",
-	  settingsClick: function settingsClick() {},
+	  getInitialState: function getInitialState() {
+	    return { modalOpen: false, modalType: "" };
+	  },
+	  onModalClose: function onModalClose() {
+	    this.setState({ modalOpen: false });
+	  },
+	  modalOpen: function modalOpen(type) {
+	    this.setState({ modalType: type, modalOpen: true });
+	  },
 	  avatarClick: function avatarClick() {
 	    var url = "blogs/" + this.props.post.user.id;
 	    hashHistory.push(url);
@@ -36908,8 +37044,14 @@
 	    var footerToggle = void 0;
 	
 	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	      footerToggle = React.createElement(
+	        "div",
+	        { id: "post-toggle" },
+	        React.createElement("img", { id: "edit-post", onClick: this.modalOpen.bind(this, "Edit"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png" }),
+	        React.createElement("img", { id: "delete-post", onClick: this.modalOpen.bind(this, "Delete"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png" })
+	      );
 	    } else if (this.props.isLiked) {
 	      footerToggle = React.createElement(
 	        "div",
@@ -36922,6 +37064,19 @@
 	        { onClick: this.likeClick, id: "post-toggle" },
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
 	      );
+	    }
+	
+	    var settingsModal = void 0;
+	
+	    switch (this.state.modalType) {
+	      case "Edit":
+	        settingsModal = React.createElement(EditPost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	      case "Delete":
+	        settingsModal = React.createElement(DeletePost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
 	    }
 	
 	    return React.createElement(
@@ -36957,6 +37112,15 @@
 	          ),
 	          footerToggle
 	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "post-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        settingsModal
 	      )
 	    );
 	  }
@@ -36975,9 +37139,22 @@
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
 	var LikeActions = __webpack_require__(316);
+	var PostStore = __webpack_require__(302);
+	var EditPost = __webpack_require__(318);
+	var DeletePost = __webpack_require__(319);
+	var Modal = __webpack_require__(168);
+	
 	var AudioPost = React.createClass({
 	  displayName: "AudioPost",
-	  settingsClick: function settingsClick() {},
+	  getInitialState: function getInitialState() {
+	    return { modalOpen: false, modalType: "" };
+	  },
+	  onModalClose: function onModalClose() {
+	    this.setState({ modalOpen: false });
+	  },
+	  modalOpen: function modalOpen(type) {
+	    this.setState({ modalType: type, modalOpen: true });
+	  },
 	  avatarClick: function avatarClick() {
 	    var url = "blogs/" + this.props.post.user.id;
 	    hashHistory.push(url);
@@ -37006,8 +37183,14 @@
 	    var footerToggle = void 0;
 	
 	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	      footerToggle = React.createElement(
+	        "div",
+	        { id: "post-toggle" },
+	        React.createElement("img", { id: "edit-post", onClick: this.modalOpen.bind(this, "Edit"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png" }),
+	        React.createElement("img", { id: "delete-post", onClick: this.modalOpen.bind(this, "Delete"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png" })
+	      );
 	    } else if (this.props.isLiked) {
 	      footerToggle = React.createElement(
 	        "div",
@@ -37020,6 +37203,19 @@
 	        { onClick: this.likeClick, id: "post-toggle" },
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
 	      );
+	    }
+	
+	    var settingsModal = void 0;
+	
+	    switch (this.state.modalType) {
+	      case "Edit":
+	        settingsModal = React.createElement(EditPost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	      case "Delete":
+	        settingsModal = React.createElement(DeletePost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
 	    }
 	
 	    return React.createElement(
@@ -37052,6 +37248,15 @@
 	          ),
 	          footerToggle
 	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "post-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        settingsModal
 	      )
 	    );
 	  }
@@ -37070,9 +37275,23 @@
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
 	var LikeActions = __webpack_require__(316);
+	var PostStore = __webpack_require__(302);
+	var EditPost = __webpack_require__(318);
+	var DeletePost = __webpack_require__(319);
+	
+	var Modal = __webpack_require__(168);
+	
 	var VideoPost = React.createClass({
 	  displayName: "VideoPost",
-	  settingsClick: function settingsClick() {},
+	  getInitialState: function getInitialState() {
+	    return { modalOpen: false, modalType: "" };
+	  },
+	  onModalClose: function onModalClose() {
+	    this.setState({ modalOpen: false });
+	  },
+	  modalOpen: function modalOpen(type) {
+	    this.setState({ modalType: type, modalOpen: true });
+	  },
 	  likeClick: function likeClick() {
 	    LikeActions.like({
 	      like: {
@@ -37102,8 +37321,14 @@
 	    var footerToggle = void 0;
 	
 	    if (SessionStore.currentUser().id === this.props.post.user_id) {
-	      footerToggle = React.createElement("img", { id: "post-toggle", onClick: this.settingsClick,
-	        src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" });
+	      footerToggle = React.createElement(
+	        "div",
+	        { id: "post-toggle" },
+	        React.createElement("img", { id: "edit-post", onClick: this.modalOpen.bind(this, "Edit"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png" }),
+	        React.createElement("img", { id: "delete-post", onClick: this.modalOpen.bind(this, "Delete"),
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png" })
+	      );
 	    } else if (this.props.isLiked) {
 	      footerToggle = React.createElement(
 	        "div",
@@ -37116,6 +37341,19 @@
 	        { onClick: this.likeClick, id: "post-toggle" },
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" })
 	      );
+	    }
+	
+	    var settingsModal = void 0;
+	
+	    switch (this.state.modalType) {
+	      case "Edit":
+	        settingsModal = React.createElement(EditPost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
+	      case "Delete":
+	        settingsModal = React.createElement(DeletePost, { close: this.onModalClose,
+	          post: this.props.post });
+	        break;
 	    }
 	
 	    var url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
@@ -37146,6 +37384,15 @@
 	          ),
 	          footerToggle
 	        )
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: "post-edit-modal",
+	          isOpen: this.state.modalOpen,
+	          onRequestClose: this.onModalClose,
+	          onAfterOpen: this.onModalOpen },
+	        settingsModal
 	      )
 	    );
 	  }
@@ -37665,6 +37912,111 @@
 	    });
 	  }
 	};
+
+/***/ },
+/* 318 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(294);
+	var TextForm = __webpack_require__(293);
+	var ImageForm = __webpack_require__(297);
+	var QuoteForm = __webpack_require__(298);
+	var LinkForm = __webpack_require__(299);
+	var VideoForm = __webpack_require__(300);
+	var AudioForm = __webpack_require__(301);
+	var SessionStore = __webpack_require__(263);
+	
+	var EditPost = React.createClass({
+	  displayName: "EditPost",
+	  getInitialState: function getInitialState() {
+	    return { user: SessionStore.currentUser() };
+	  },
+	
+	
+	  render: function render() {
+	    var component = void 0;
+	    switch (this.props.post.post_type) {
+	      case "Text":
+	        component = React.createElement(TextForm, { submitButton: "Save", user: this.state.user,
+	          close: this.props.close });
+	        break;
+	      case "Image":
+	        component = React.createElement(ImageForm, { submitButton: "Save", user: this.state.user,
+	          close: this.props.close });
+	        break;
+	      case "Quote":
+	        component = React.createElement(QuoteForm, { submitButton: "Save", user: this.state.user,
+	          close: this.props.close });
+	        break;
+	      case "Link":
+	        component = React.createElement(LinkForm, { submitButton: "Save", user: this.state.user,
+	          close: this.props.close });
+	        break;
+	      case "Audio":
+	        component = React.createElement(AudioForm, { submitButton: "Save", user: this.state.user,
+	          close: this.props.close });
+	        break;
+	      case "Video":
+	        component = React.createElement(VideoForm, { submitButton: "Save", user: this.state.user,
+	          close: this.props.close });
+	        break;
+	    }
+	    return React.createElement(
+	      "div",
+	      null,
+	      component
+	    );
+	  }
+	
+	});
+	
+	module.exports = EditPost;
+
+/***/ },
+/* 319 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(294);
+	
+	var DeletePost = React.createClass({
+	  displayName: "DeletePost",
+	  deletePost: function deletePost() {
+	    PostActions.deletePost(this.props.post.id);
+	    this.props.close();
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      { id: "post-delete" },
+	      "Are you sure you want to delete this post?",
+	      React.createElement(
+	        "div",
+	        { id: "delete-buttons" },
+	        React.createElement(
+	          "div",
+	          { id: "post-delete-btn-cancel", onClick: this.props.close },
+	          "Cancel"
+	        ),
+	        React.createElement(
+	          "div",
+	          { id: "post-delete-btn-ok", onClick: this.deletePost },
+	          "OK"
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = DeletePost;
 
 /***/ }
 /******/ ]);

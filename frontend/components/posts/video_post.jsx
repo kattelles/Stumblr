@@ -2,11 +2,25 @@ const React = require('react');
 const hashHistory = require("react-router").hashHistory;
 const SessionStore = require("../../stores/session_store");
 const LikeActions = require("../../actions/like_actions");
+const PostStore = require("../../stores/post_store");
+const EditPost = require("./edit_post");
+const DeletePost = require("./delete_post");
+
+const Modal = require("react-modal");
+
 const VideoPost  = React.createClass({
-
-  settingsClick() {
-
+  getInitialState() {
+    return ({modalOpen: false, modalType: ""});
   },
+
+  onModalClose() {
+    this.setState({modalOpen: false});
+  },
+
+  modalOpen(type) {
+    this.setState({modalType: type, modalOpen: true});
+  },
+
 
   likeClick() {
     LikeActions.like({
@@ -39,8 +53,15 @@ const VideoPost  = React.createClass({
     let footerToggle;
 
     if (SessionStore.currentUser().id === this.props.post.user_id) {
-      footerToggle = (<img id='post-toggle' onClick={this.settingsClick}
-        src="https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png"/>);
+      footerToggle = (
+        <div id='post-toggle'>
+          <img id="edit-post" onClick={this.modalOpen.bind(this, "Edit")}
+            src="https://res.cloudinary.com/kattelles/image/upload/v1467762938/edit_cfkgyz.png"/>
+          <img id="delete-post" onClick={this.modalOpen.bind(this, "Delete")}
+            src="https://res.cloudinary.com/kattelles/image/upload/v1467762790/rubbish-bin_fns4jh.png"/>
+
+        </div>
+    );
     } else if (this.props.isLiked) {
         footerToggle = <div onClick={this.unlikeClick} id='post-toggle'>
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467744183/hearts_f0tsvw.png" /></div>;
@@ -48,6 +69,20 @@ const VideoPost  = React.createClass({
       footerToggle = <div onClick={this.likeClick} id='post-toggle'>
       <img src="https://res.cloudinary.com/kattelles/image/upload/v1467744232/dislike_lm7egs.png" />
       </div>;
+    }
+
+
+    let settingsModal;
+
+    switch (this.state.modalType) {
+      case "Edit":
+        settingsModal = <EditPost close={this.onModalClose}
+          post={this.props.post}/>;
+        break;
+      case "Delete":
+        settingsModal = <DeletePost close={this.onModalClose}
+          post={this.props.post}/>;
+        break;
     }
 
     let url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
@@ -76,6 +111,15 @@ const VideoPost  = React.createClass({
 
         </div>
       </div>
+
+      <Modal
+        className="post-edit-modal"
+        isOpen={this.state.modalOpen}
+        onRequestClose={this.onModalClose}
+        onAfterOpen={this.onModalOpen}>
+        {settingsModal}
+      </Modal>
+
       </div>
     );
   }
