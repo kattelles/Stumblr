@@ -7,12 +7,17 @@ const ImageForm = React.createClass({
 
     let url = "";
     let imageCaption = "";
+    let tags = [];
     if (this.props.post) {
       url = this.props.post.url;
       imageCaption = this.props.post.image_caption;
+      tags = this.props.post.tags.map(tag => {
+        return (`#${tag.name}`);
+      });
+      tags = tags.join(" ");
     }
 
-    return ({url: url, imageCaption: imageCaption});
+    return ({url: url, imageCaption: imageCaption, tags: tags});
   },
 
   uploadImage(e) {
@@ -28,27 +33,34 @@ const ImageForm = React.createClass({
     this.setState({imageCaption: e.target.value});
   },
 
+  tagChange(e) {
+    this.setState({tags: e.target.value});
+  },
+
   handleSubmit() {
     if (this.props.edit === "true") {
-
+      let tags = this.state.tags.split(" ");
       PostActions.editPost({
         post: {
           id: this.props.post.id,
           post_type: "Image",
           user_id: this.props.post.user_id,
           image_url: this.state.url,
-          image_caption: this.state.imageCaption
+          image_caption: this.state.imageCaption,
+          tags: tags
         }
       });
 
     } else {
+    let tags = this.state.tags.split(" ");
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
         post_type: "Image",
         user_id: parseInt(id),
         image_url: this.state.url,
-        image_caption: this.state.imageCaption
+        image_caption: this.state.imageCaption,
+        tags: tags
       }
     });
   }
@@ -72,6 +84,8 @@ const ImageForm = React.createClass({
             placeholder="Add a caption (optional)"
             value={this.state.imageCaption}/>
 
+        <input onChange={this.tagChange}
+          className="image-tags-input" placeholder="#tags" value={this.state.tags}/>
 
         <div id="footer">
           <div id="close-button" onClick={this.props.close}>Close</div>

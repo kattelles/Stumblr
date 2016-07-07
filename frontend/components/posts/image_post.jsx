@@ -81,6 +81,10 @@ const ImagePost = React.createClass({
         break;
     }
 
+    let tags = this.props.post.tags.map(tag => {
+      return (<div className="tag"> #{tag.name} </div>);
+    });
+
     return (
       <div id="post">
         <img id="post-avatar" onClick={this.avatarClick}

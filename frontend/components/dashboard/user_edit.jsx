@@ -37,7 +37,6 @@ const UserEdit = React.createClass({
   },
 
   backToDashboard() {
-    // debugger
     this.props.close();
   },
 

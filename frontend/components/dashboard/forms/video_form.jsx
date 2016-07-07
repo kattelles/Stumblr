@@ -6,11 +6,16 @@ const VideoForm = React.createClass({
   getInitialState() {
     let link = "";
     let title = "";
+    let tags = [];
     if (this.props.post) {
       link = this.props.post.video_url;
       title = this.props.post.video_title;
+      tags = this.props.post.tags.map(tag => {
+        return (`#${tag.name}`);
+      });
+      tags = tags.join(" ");
     }
-    return ({link: link, title: title});
+    return ({link: link, title: title, tags: tags});
   },
 
   linkChange(e) {
@@ -22,26 +27,34 @@ const VideoForm = React.createClass({
     this.setState({title: e.target.value});
   },
 
+  tagChange(e) {
+    this.setState({tags: e.target.value});
+  },
+
   handleSubmit() {
 
     if (this.props.edit === "true") {
+      let tags = this.state.tags.split(" ");
       PostActions.editPost({
         post: {
           id: this.props.post.id,
           post_type: "Video",
           user_id: this.props.post.user_id,
           video_url: this.state.link,
-          video_title: this.state.title
+          video_title: this.state.title,
+          tags: tags
         }
       });
     } else {
+      let tags = this.state.tags.split(" ");
       let id = this.props.user.id;
       PostActions.createPost({
         post: {
           post_type: "Video",
           user_id: parseInt(id),
           video_url: this.state.link,
-          video_title: this.state.title
+          video_title: this.state.title,
+          tags: tags
         }
       });
     }
@@ -63,6 +76,8 @@ const VideoForm = React.createClass({
                   placeholder="Title (Required)" />
 
           <br/>
+            <input onChange={this.tagChange}
+              className="image-tags-input" placeholder="#tags" value={this.state.tags}/>
             <div id="footer">
               <div id="close-button" onClick={this.props.close}>Close</div>
               <div onClick={this.handleSubmit} id="post-button">{this.props.submitButton}</div>

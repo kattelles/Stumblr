@@ -6,39 +6,51 @@ const AudioForm = React.createClass({
   getInitialState() {
     let link = "";
     let audioTitle = "";
+    let tags = [];
     if (this.props.post) {
       link = this.props.post.audio_url;
       audioTitle = this.props.post.audio_title;
+      tags = this.props.post.tags.map(tag => {
+        return (`#${tag.name}`);
+      });
+      tags = tags.join(" ");
     }
 
-    return ({link: link, audioTitle: audioTitle});
+    return ({link: link, audioTitle: audioTitle, tags: tags});
   },
 
   linkChange(e) {
     this.setState({link: e.target.value});
   },
 
+  tagChange(e) {
+    this.setState({tags: e.target.value});
+  },
+
   handleSubmit() {
     if (this.props.edit === "true") {
-
+      let tags = this.state.tags.split(" ");
       PostActions.editPost({
         post: {
           id: this.props.post.id,
           post_type: "Audio",
           user_id: this.props.post.user_id,
           audio_url: this.state.link,
-          audio_title: this.state.audioTitle
+          audio_title: this.state.audioTitle,
+          tags: tags
         }
       });
 
     } else {
+    let tags = this.state.tags.split(" ");
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
         post_type: "Audio",
         user_id: parseInt(id),
         audio_url: this.state.link,
-        audio_title: this.state.audioTitle
+        audio_title: this.state.audioTitle,
+        tags: tags
       }
     });
   }
@@ -66,6 +78,9 @@ const AudioForm = React.createClass({
 
 
           <br/>
+
+            <input onChange={this.tagChange}
+              className="image-tags-input" placeholder="#tags" value={this.state.tags}/>
             <div id="footer">
               <div id="close-button" onClick={this.props.close}>Close</div>
               <div onClick={this.handleSubmit} id="post-button">{this.props.submitButton}</div>

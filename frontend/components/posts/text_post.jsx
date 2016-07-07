@@ -82,7 +82,10 @@ const TextPost = React.createClass({
             post={this.props.post}/>;
           break;
       }
-// debugger
+
+    let tags = this.props.post.tags.map(tag => {
+      return (<div className="tag"> #{tag.name} </div>);
+    });
     return (
       <div id="post">
 
@@ -101,6 +104,8 @@ const TextPost = React.createClass({
           <div id="text-content">
             {this.props.post.content}
           </div>
+
+          <div className="tags"> {tags} </div>
 
           <div id="post-footer">
             <div id="post-likes">

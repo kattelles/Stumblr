@@ -12,7 +12,7 @@ module.exports = {
 
   editPost(data, cb) {
     $.ajax({
-      url: `api/posts/${data.id}`,
+      url: `api/posts/${data.post.id}`,
       method: "PATCH",
       data: data,
       success: (post) => {

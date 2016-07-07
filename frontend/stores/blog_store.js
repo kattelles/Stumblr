@@ -30,6 +30,16 @@ BlogStore.isFollowing = function(userId) {
   return false;
 };
 
+BlogStore.following = function(userId, blog) {
+  for (let i = 0; i < blog.follows.length; i++) {
+    if (blog.follows[i].user_id === userId) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
 BlogStore.getFollow = function(userId) {
   for (let i = 0; i < _blog.follows.length; i++) {
     if (_blog.follows[i].user_id === userId) {
@@ -38,12 +48,34 @@ BlogStore.getFollow = function(userId) {
   }
 };
 
+
 const resetRecs = function(blogs) {
   _recs = blogs;
 };
 
 BlogStore.recs = function() {
   return _recs;
+};
+
+const addFollowRecs = function(follow) {
+  let keys = Object.keys(_recs);
+
+  keys.forEach(key =>{
+    if (_recs[key].id === follow.blog_id) {
+      _recs[key].follows.push(follow);
+    }
+  });
+};
+
+const removeFollowRecs = function(follow) {
+  let keys = Object.keys(_recs);
+
+  keys.forEach(key =>{
+    if (_recs[key].id === follow.blog_id) {
+      let id = _recs[key].follows.indexOf(follow);
+      _recs[key].follows.splice(id, 1);
+    }
+  });
 };
 
 BlogStore.__onDispatch = function (payload) {
@@ -54,10 +86,12 @@ BlogStore.__onDispatch = function (payload) {
       break;
     case FollowConstants.FOLLOW_RECEIVED:
       _blog.follows.push(payload.follow);
+      addFollowRecs(payload.follow);
       this.__emitChange();
       break;
     case FollowConstants.FOLLOW_REMOVED:
       removeFollow(payload.follow);
+      removeFollowRecs(payload.follow);
       this.__emitChange();
       break;
     case BlogConstants.RECS_RECEIVED:

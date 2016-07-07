@@ -98,7 +98,23 @@
 #post-content {
   margin-left: 20px;
   width: 90%;
-  height: 120px;
+  height: 100px;
+}
+
+.tags-input {
+  margin-left: 20px;
+  width: 90%;
+  height: 20px;
+  padding-bottom: 5px;
+}
+
+.image-tags-input {
+  margin-left: 20px;
+  width: 90%;
+  height: 20px;
+  padding-bottom: 5px;
+  font-size: 16px;
+  border: 0;
 }
 
 textarea {
@@ -110,7 +126,7 @@ textarea {
 #image-form {
   border-top: 1px dashed #cacaca;
   border-bottom: 1px dashed #cacaca;
-  height: 130px;
+  height: 110px;
   background-color: #efefef;
   cursor: pointer;
   display: flex;
@@ -137,7 +153,7 @@ textarea {
   font-family: 'Signika Negative', sans-serif;
   font-size: 20px;
   width: 90%;
-  height: 100px;
+  height: 90px;
 }
 
 #audio-form {
@@ -170,7 +186,7 @@ textarea:focus, input:focus{
 #link-outer {
   border-top: 1px dashed #cacaca;
   border-bottom: 1px dashed #cacaca;
-  height: 100px;
+  height: 95px;
   background-color: #efefef;
   cursor: pointer;
   padding: 0px;
@@ -183,8 +199,8 @@ textarea:focus, input:focus{
   width: 90%;
   margin-left: 20px;
   font-size: 18px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 #quote {
@@ -193,7 +209,7 @@ textarea:focus, input:focus{
   color: grey;
   margin-left: 20px;
   width: 90%;
-  height: 100px;
+  height: 90px;
 }
 
 #source {
@@ -204,8 +220,8 @@ textarea:focus, input:focus{
 }
 
 #image-camera {
-  height: 80px;
-  width: 100px;
+  height: 70px;
+  width: 90px;
   padding-top: 10px;
 }
 

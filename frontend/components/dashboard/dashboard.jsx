@@ -4,6 +4,7 @@ const SideBar = require("./sidebar/side_bar");
 const PostForm = require("./post_form");
 const hashHistory = require("react-router").hashHistory;
 const PostFeed = require("./post_feed");
+const Search = require("./search");
 
 const Dashboard = React.createClass({
   logoClick() {
@@ -18,6 +19,7 @@ const Dashboard = React.createClass({
           <img onClick={this.logoClick} src="https://res.cloudinary.com/kattelles/image/upload/v1467405243/Stumblr-logo_2_ignktf.png"
             width="150" />
           </div>
+          <Search/>
           <NavBar/>
         </div>
         <div className="dashboard">

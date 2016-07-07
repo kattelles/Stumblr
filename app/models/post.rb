@@ -9,5 +9,8 @@ class Post < ActiveRecord::Base
 
   has_many :likes
 
+  has_many :taggings, dependent: :destroy, inverse_of: :post
+  has_many :tags, through: :taggings
+
   validates :user_id, :post_type, presence: true
 end

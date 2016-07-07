@@ -8,16 +8,13 @@ const App = React.createClass({
   componentDidMount() {
     this.sessionListener = SessionStore.addListener(this._sessionChange);
     SessionActions.fetchCurrentUser();
-    // this.blogListener = BlogStore.addListener(this._blogChange);
   },
 
   componentWillUnmount() {
     this.sessionListener.remove();
-    // this.blogListener.remove();
   },
 
   _sessionChange(){
-    // debugger
     if (SessionStore.currentUser().id) {
       BlogActions.getBlog(SessionStore.currentUser().id);
     }

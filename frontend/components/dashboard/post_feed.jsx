@@ -7,6 +7,7 @@ const LinkPost = require("../posts/link_post");
 const QuotePost = require("../posts/quote_post");
 const AudioPost = require("../posts/audio_post");
 const VideoPost = require("../posts/video_post");
+const BlogStore = require("../../stores/blog_store");
 
 const PostActions = require("../../actions/post_actions");
 
@@ -17,15 +18,20 @@ const PostFeed = React.createClass({
 
   componentDidMount() {
     this.postListener = PostStore.addListener(this.postsChange);
+    this.blogListener = BlogStore.addListener(this.blogChange);
+    PostActions.fetchFeed();
+  },
+
+  blogChange() {
     PostActions.fetchFeed();
   },
 
   componentWillUnmount() {
     this.postListener.remove();
+    this.blogListener.remove();
   },
 
   postsChange() {
-    // debugger
     this.setState({posts: PostStore.allPosts()});
   },
 
@@ -46,7 +52,6 @@ const PostFeed = React.createClass({
 
     let posts = [];
     this.state.posts.forEach(post => {
-      // debugger
       switch (post.post_type) {
         case "Text":
           posts.push(<TextPost isLiked={this.isLiked(post)}

@@ -48,7 +48,6 @@ PostStore.allPosts = function() {
 };
 
 const addLike = function(like) {
-  // debugger
   _posts[like.post_id].likes.push(like);
 };
 

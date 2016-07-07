@@ -249,12 +249,12 @@
   margin-left: 50px;
 }
 
+.tags {
+  display: flex;
+  margin-left: 20px;
+}
 
-dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+.tag {
+  padding-right: 5px;
+  color: #a2a2a2;
 }

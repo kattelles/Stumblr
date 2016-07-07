@@ -6,12 +6,18 @@ const TextForm = React.createClass({
   getInitialState() {
     let title = "";
     let content = "";
+    let tags = [];
     if (this.props.post) {
       title = this.props.post.title;
       content = this.props.post.content;
+      tags = this.props.post.tags.map(tag => {
+        return (`#${tag.name}`);
+      });
+      tags = tags.join(" ");
     }
 
-    return ({title: title, content: content});
+
+    return ({title: title, content: content, tags: tags});
   },
 
   titleChange(e) {
@@ -22,28 +28,36 @@ const TextForm = React.createClass({
     this.setState({content: e.target.value});
   },
 
-  handleSubmit() {
-    if (this.props.edit === "true") {
+  tagChange(e) {
+    this.setState({tags: e.target.value});
+  },
 
+  handleSubmit() {
+    // debugger
+    if (this.props.edit === "true") {
+      let tags = this.state.tags.split(" ");
       PostActions.editPost({
         post: {
           id: this.props.post.id,
           post_type: "Text",
           user_id: this.props.post.user_id,
           title: this.state.title,
-          content: this.state.content
+          content: this.state.content,
+          tags: tags
         }
       });
 
     } else {
 
+    let tags = this.state.tags.split(" ");
     let id = this.props.user.id;
     PostActions.createPost({
       post: {
         post_type: "Text",
         user_id: parseInt(id),
         title: this.state.title,
-        content: this.state.content
+        content: this.state.content,
+        tags: tags
       }
     });
   }
@@ -51,6 +65,7 @@ const TextForm = React.createClass({
   },
 
   render: function() {
+
     return (
       <div>
         <div id="modal-header">{this.props.user.username}</div>
@@ -61,6 +76,8 @@ const TextForm = React.createClass({
           <textarea id="post-content" onChange={this.contentChange}
             placeholder="Your text here" value={this.state.content}/>
           <br/>
+          <input onChange={this.tagChange}
+            className="tags-input" placeholder="#tags" value={this.state.tags}/>
           <div id="footer">
             <div id="close-button" onClick={this.props.close}>Close</div>
             <div onClick={this.handleSubmit} id="post-button">{this.props.submitButton}</div>

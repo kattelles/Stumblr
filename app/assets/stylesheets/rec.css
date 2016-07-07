@@ -17,6 +17,7 @@
   margin-bottom: 5px;
   border-bottom: 0.25px solid #88909e;
   display: flex;
+  justify-content: space-between;
   padding-bottom: 5px;
   padding-top: 5px;
 }
@@ -25,8 +26,21 @@
   font-size: 18px;
 }
 
+.rec-left {
+
+}
+
 .rec-desc {
 
+}
+
+.rec-follow {
+  cursor: pointer;
+}
+
+.rec-follow img {
+  width: 39px;
+  height: 39px;
 }
 
 
