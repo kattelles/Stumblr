@@ -23,12 +23,6 @@
   height: 90px;
 }
 
-#side-header {
-  font-size: 20px;
-  color: #88909e;
-  border-bottom: 1px solid #88909e;
-  text-align: left;
-}
 
 .feed {
   width: 625px;
@@ -75,10 +69,7 @@
   cursor: pointer;
 }
 
-#side-bar {
-  width: 320px;
-  color: #88909e;
-}
+
 
 #new-post-label-img {
   display: inline-block;
@@ -170,4 +161,8 @@
   text-align: center;
   opacity: .75;
   font-size: 18px;
+}
+
+.explore-click {
+  cursor: pointer;
 }

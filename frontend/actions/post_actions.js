@@ -23,6 +23,10 @@ module.exports = {
     PostApiUtil.getPosts(id, this.receiveFeed);
   },
 
+  getExplorePosts() {
+    PostApiUtil.getExplorePosts(this.receiveFeed);
+  },
+
   receiveFeed(posts) {
     Dispatcher.dispatch({
       actionType: PostConstants.POSTS_RECEIVED,

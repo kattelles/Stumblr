@@ -17,6 +17,7 @@ const App = require('./components/app');
 const LoginForm = require('./components/login_form');
 const Dashboard = require("./components/dashboard/dashboard");
 const BlogShow = require("./components/blog/blog_show");
+const Explore = require("./components/explore/explore");
 
 // Auth
 const SessionStore = require('./stores/session_store');
@@ -29,6 +30,7 @@ const appRouter = (
       <Route path="login" component={ LoginForm } />
       <Route path="signup" component={ LoginForm } />
       <Route path="blogs/:userId" component={BlogShow}/>
+      <Route path="explore" component={Explore}/>
     </Route>
   </Router>
 );

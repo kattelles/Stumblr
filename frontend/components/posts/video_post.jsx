@@ -85,7 +85,9 @@ const VideoPost  = React.createClass({
         break;
     }
 
+
     let url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
+
     return (
       <div id="post">
         <img id="post-avatar" onClick={this.avatarClick}
@@ -98,10 +100,12 @@ const VideoPost  = React.createClass({
         </div>
 
         <div id="video-video">
-        <iframe width="496" height="275"
+        <iframe width="496" height="380"
         src={url}
         frameborder="0" allowfullscreen></iframe>
         </div>
+
+        <div id="audio-title">{this.props.post.video_title}</div>
 
         <div id="post-footer">
           <div id="post-likes">

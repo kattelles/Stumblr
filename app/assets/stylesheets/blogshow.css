@@ -33,6 +33,7 @@
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+  font-size: 22px;
 }
 
 #follows {
@@ -134,7 +135,8 @@
 }
 
 #post-likes {
-  padding: 6px 12px;
+  padding: 6px 20px;
+  padding-top: 10px;
   float: left;
   color: #a2a2a2;
 }
@@ -189,6 +191,7 @@
 #audio-title {
   margin-left: 20px;
   font-size: 20px;
+  padding-bottom: 10px;
 }
 
 #quote-post {
@@ -219,9 +222,12 @@
   height: auto;
 }
 
-#link {
-  font-size: 40px;
+#link-post {
   margin-left: 20px;
+}
+
+#link {
+  font-size: 30px;
   margin-bottom: 5px;
 }
 

@@ -60,7 +60,7 @@ const LinkForm = React.createClass({
           </div>
 
           <input id="link-title" onChange={this.titleChange} value={this.state.linkTitle}
-                placeholder="Link Title (Required)" />
+                placeholder="Title (Required)" />
 
           <br/>
             <div id="footer">

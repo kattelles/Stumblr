@@ -51,6 +51,7 @@
   margin-left: 27px;
   border: 0;
   color: black;
+  cursor: pointer;
 }
 
 .login-toggle {

@@ -1,0 +1,49 @@
+
+#rec-avatar {
+  width: 37px;
+  height: 37px;
+  border-radius: 3px;
+  border: 1px solid white;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+#rec-text {
+  float: right;
+}
+
+#rec-blog {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-bottom: 0.25px solid #88909e;
+  display: flex;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.rec-title {
+  font-size: 18px;
+}
+
+.rec-desc {
+
+}
+
+
+.explore-click {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+
+#side-header {
+  font-size: 20px;
+  color: #88909e;
+  border-bottom: 1px solid #88909e;
+  text-align: left;
+}
+
+#side-bar {
+  width: 320px;
+  color: #88909e;
+}

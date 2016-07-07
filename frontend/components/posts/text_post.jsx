@@ -82,7 +82,7 @@ const TextPost = React.createClass({
             post={this.props.post}/>;
           break;
       }
-
+// debugger
     return (
       <div id="post">
 

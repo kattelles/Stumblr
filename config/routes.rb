@@ -10,6 +10,8 @@ Rails.application.routes.draw do
        resource :blog, only: [:show, :update]
       end
 
+      resources :blogs, only: [:index]
+
     end
 
     root "static_pages#root"

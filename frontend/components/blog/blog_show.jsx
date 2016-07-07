@@ -151,7 +151,6 @@ const BlogShow = React.createClass({
            onRequestClose={this.onModalClose}
            onAfterOpen={this.onModalOpen}>
            <BlogEdit close={this.onModalClose} blog={this.state.blog}/>
-           <button onClick={this.onModalClose}>Close</button>
          </Modal>
 
         </div>

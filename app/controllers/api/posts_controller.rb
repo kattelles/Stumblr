@@ -22,19 +22,24 @@ class Api::PostsController < ApplicationController
   end
 
   def index
+
     if params[:user_id]
       @posts = User.find(params[:user_id]).posts
+    elsif params[:explore]
+       @posts = Post.all.select {|post| post.user_id != current_user.id}
     else
       @posts = current_user.followed_posts
+      @posts += current_user.posts
     end
 
-    @posts.order(created_at: :desc)
+
   end
 
   private
 
   def post_params
-    params.require(:post).permit(:post_type, :image_caption, :link_title, :audio_title,
+    params.require(:post).permit(:post_type, :image_caption, :video_title,
+      :link_title, :audio_title,
       :user_id, :title, :content, :video_url, :audio_url,
       :image_url, :quote, :quote_source, :link_url)
   end

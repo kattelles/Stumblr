@@ -25,6 +25,7 @@ const PostFeed = React.createClass({
   },
 
   postsChange() {
+    // debugger
     this.setState({posts: PostStore.allPosts()});
   },
 

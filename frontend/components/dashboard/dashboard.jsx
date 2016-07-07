@@ -1,6 +1,6 @@
 const React = require("react");
 const NavBar = require("./nav_bar");
-const SideBar = require("./side_bar");
+const SideBar = require("./sidebar/side_bar");
 const PostForm = require("./post_form");
 const hashHistory = require("react-router").hashHistory;
 const PostFeed = require("./post_feed");

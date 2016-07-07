@@ -66,12 +66,6 @@ class User < ActiveRecord::Base
 		SecureRandom.base64
 	end
 
-	# def ensure_session_token_uniqueness
-	# 	while User.find_by(session_token: self.session_token)
-	# 		self.session_token = new_session_token
-	# 	end
-	# end
-
 	def default_values
 		self.avatar ||= "https://res.cloudinary.com/kattelles/image/upload/v1467250036/tumblr_o51oavbMDx1ugpbmuo7_500_2_rpuo6x.png"
 	end

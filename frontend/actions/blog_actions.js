@@ -11,10 +11,21 @@ const BlogActions = {
     BlogApiUtil.updateBlog(data, this.receiveBlog, cb);
   },
 
+  getRecBlogs() {
+    BlogApiUtil.getRecBlogs(this.receiveRecBlogs);
+  },
+
   receiveBlog(blog) {
     Dispatcher.dispatch({
       actionType: BlogConstants.BLOG_RECEIVED,
       blog: blog
+    });
+  },
+
+  receiveRecBlogs(blogs) {
+    Dispatcher.dispatch({
+      actionType: BlogConstants.RECS_RECEIVED,
+      blogs: blogs
     });
   }
 };

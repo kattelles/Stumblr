@@ -22,6 +22,15 @@ const BlogApiUtil = {
         cb2();
       }
     });
+  },
+
+  getRecBlogs(cb) {
+    $.ajax({
+      url: "api/blogs",
+      success: (blogs) => {
+        cb(blogs);
+      }
+    });
   }
 };
 

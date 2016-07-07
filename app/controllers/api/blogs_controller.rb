@@ -9,6 +9,11 @@ class Api::BlogsController < ApplicationController
     render :show
   end
 
+  def index
+    rec_blogs = [46, 47, 48, 49, 50, 51]
+    @blogs = Blog.all.select {|blog| rec_blogs.include?(blog.owner_id)}
+  end
+
   private
 
   def blog_params

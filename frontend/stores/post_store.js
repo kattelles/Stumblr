@@ -26,11 +26,25 @@ PostStore.allPosts = function() {
   let posts = [];
   let keys = Object.keys(_posts);
 
+  keys = keys.map(key => {
+    return (parseInt(key));
+  });
+
+  keys = keys.sort((x, y) => {
+    if (x < y) {
+      return -1;
+    }
+    if (x > y) {
+      return 1;
+    }
+    return 0;
+  });
+
   keys.forEach(key => {
     posts.push(_posts[key]);
   });
 
-  return posts;
+  return posts.reverse();
 };
 
 const addLike = function(like) {

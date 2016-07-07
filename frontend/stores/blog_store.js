@@ -6,6 +6,7 @@ const FollowConstants = require("../constants/follow_constants");
 const BlogStore = new Store(Dispatcher);
 
 let _blog = {};
+let _recs = {};
 
 BlogStore.getBlog = function() {
   return _blog;
@@ -37,6 +38,14 @@ BlogStore.getFollow = function(userId) {
   }
 };
 
+const resetRecs = function(blogs) {
+  _recs = blogs;
+};
+
+BlogStore.recs = function() {
+  return _recs;
+};
+
 BlogStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
     case BlogConstants.BLOG_RECEIVED:
@@ -49,6 +58,10 @@ BlogStore.__onDispatch = function (payload) {
       break;
     case FollowConstants.FOLLOW_REMOVED:
       removeFollow(payload.follow);
+      this.__emitChange();
+      break;
+    case BlogConstants.RECS_RECEIVED:
+      resetRecs(payload.blogs);
       this.__emitChange();
       break;
   }

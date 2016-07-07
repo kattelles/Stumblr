@@ -31,7 +31,7 @@ module.exports = {
     });
   },
 
-  fetchFeed( cb) {
+  fetchFeed(cb) {
     $.ajax({
       url: "api/posts",
       success: (posts) => {
@@ -44,6 +44,16 @@ module.exports = {
     $.ajax({
       url: "api/posts",
       data: {user_id: id},
+      success: (posts) => {
+        cb(posts);
+      }
+    });
+  },
+
+  getExplorePosts(cb) {
+    $.ajax({
+      url: "api/posts",
+      data: {explore: true},
       success: (posts) => {
         cb(posts);
       }

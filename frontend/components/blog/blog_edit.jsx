@@ -68,31 +68,35 @@ const BlogEdit = React.createClass({
 
   render() {
     return(<div>
-      <form onSubmit={this.handleSubmit}>
-        <h2>Blog Settings</h2>
 
-        <label>Title: </label>
-        <input type="text"
-              onChange={this.titleChange}
-              value={this.state.title}/>
+        <h1 id="user-edit-header">Blog Settings</h1>
 
-        <br/>
+        <div id="blog-edit-form">
+          <label>Title: </label>
+          <input type="text"
+                onChange={this.titleChange}
+                value={this.state.title}/>
 
-        <label>Description: </label>
-        <input type="text"
-            onChange={this.descriptionChange}
-            value={this.state.description}/>
+          <br/>
 
-        <br/>
+          <label>Description: </label>
+          <input type="text"
+              onChange={this.descriptionChange}
+              value={this.state.description}/>
 
-          <label>Cover Photo: </label>
-          <button onClick={this.coverPhotoChange}>Upload Photo</button>
+          <br/>
 
-        <br/>
-        <input type="submit" value="Save Changes"/>
-      </form>
+            <label>Cover Photo: </label>
+            <div id="upload-image" onClick={this.coverPhotoChange}>
+              <div id="upload-text">Upload Photo</div> </div>
+
+          <br/>
+        </div>
+            <div id="footer">
+              <div id="close-button" onClick={this.props.close}>Close</div>
+              <div id="post-button" onClick={this.handleSubmit}>Save</div>
+        </div>
     </div>);
-
   }
 });
 

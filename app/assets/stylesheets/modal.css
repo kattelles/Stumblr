@@ -23,6 +23,19 @@
   color: black;
 }
 
+#user-edit-input input {
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+#blog-edit-form input {
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
 #edit-modal {
   background-color: white;
   color: black;
@@ -219,22 +232,25 @@ textarea:focus, input:focus{
 .user-edit-modal {
   margin: 0 auto;
   margin-top: 150px;
-  width: 540px;
-  height: 300px;
+  width: 400px;
+  height: 350px;
   background-color: white;
+  border: 1px solid #56bc8a;
   border-radius: 3px;
   color: #444;
-    outline: none;
+  outline: none;
 }
 
 .blog-edit-modal {
   margin: 0 auto;
   margin-top: 150px;
-  width: 450px;
-  height: 600px;
+  width: 300px;
+  height: 275px;
   background-color: white;
+  border: 1px solid #56bc8a;
   border-radius: 3px;
   color: #444;
+  outline: none;
 }
 
 #user-edit-header {
@@ -250,12 +266,23 @@ textarea:focus, input:focus{
   border-radius: 3px;
   cursor: pointer;
   background-color: #56bc8a;
-  height: 32px;
-  width: 100px;
+  height: 25px;
+  width: 110px;
 }
 
 #user-edit-input {
   margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 10px;
+}
+
+#blog-edit-form {
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#upload-text {
+  padding: 2px;
+  text-align: center;
 }

@@ -48,10 +48,22 @@ const NavBar = React.createClass({
     hashHistory.push("/");
   },
 
+  goToExplore() {
+    hashHistory.push("explore");
+  },
+
   render() {
     return (
 
       <div className="navbar">
+
+        <div className="tooltip" onClick={this.goToExplore}>
+          <span className="tooltiptext">Explore</span>
+        <img id="eye-icon" src="https://res.cloudinary.com/kattelles/image/upload/v1467831168/eye-3-48_wozsqr.png"/>
+        </div>
+
+
+
         <div className="tooltip" onClick={this.goToDashboard}>
           <span className="tooltiptext">My Dashboard</span>
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592469/house-32_2_lfyr7s.png"/>
