@@ -1,6 +1,6 @@
 # Stumblr
 
-[Stumblr live][heroku] **NB:** This should be a link to your production site
+[Stumblr live][heroku]
 
 [heroku]: https://stumblrr.herokuapp.com/
 
@@ -16,11 +16,12 @@ Stumblr is a fully-functional single-page. All of it's content is delivered on o
 
 ### Blog Creation and Rendering
 
-Upon sign-up, a blog is created for the user.
+Upon sign-up, a blog is created for the user. The blog has a default cover photo, title, and description, all of which can be edited by the user. The Blog show page renders that users posts, with the most recent at the top.
+When looking at another user's blog, the edit button is replaced with a follow or unfollow button.
 
 ![image of blog show page](https://github.com/kattelles/Stumblr/blob/master/docs/images/blogshow.png)
 
-### Post Creation and Rendering
+### Post Creation, Rendering, and Editing
 
 From the dashboard, users can create 6 different types of posts: text, image, quote, link, audio, and video.
 
@@ -30,22 +31,21 @@ Upon click, a modal unique to the type of post opens.
 
 ![image of image post modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/postmodal.png)
 
-After creation, the post is rendered on it's blog show page and the users post feed.
-![image of post show](https://github.com/kattelles/Stumblr/blob/master/docs/images/show.png)
+After creation, the post is rendered on it's blog show page, the user's post feed, and the feed of that blogs followers.
 
-### Post Editing and Deleting
+![image of post show](https://github.com/kattelles/Stumblr/blob/master/docs/images/postshow.png)
 
-For posts which the current user created, edit and delete buttons are visible on the post.
+For posts which the current user created, edit and delete buttons are visible on the post. These buttons allow the post's content to be edited or deleted it it's entirety.
 
 ![image of post buttons](https://github.com/kattelles/Stumblr/blob/master/docs/images/editdelete.png)
 
-Edit button opens edit modal:
+Edit modal:
 
-![image of post edit modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/postedit.png)
+![image of edit modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/postedit.png)
 
-Delete button opens delete modal:
+Delete modal:
 
-![image of post delete modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/deletemodal.png)
+![image of delete modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/postdelete.png)
 
 ### Dashboard and Feed
 
