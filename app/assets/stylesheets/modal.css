@@ -60,6 +60,9 @@
   height: 40px;
   cursor: pointer;
   border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #post-delete-btn-cancel {
@@ -68,6 +71,9 @@
   height: 40px;
   cursor: pointer;
   border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 

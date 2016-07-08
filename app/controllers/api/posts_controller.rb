@@ -20,6 +20,7 @@ class Api::PostsController < ApplicationController
 
     if @post.save
       update_tags(tags, @post)
+      @post = Post.find(@post.id)
       render :show
     else
       render json: @post.errors, status: 422
@@ -37,6 +38,13 @@ class Api::PostsController < ApplicationController
 
     if params[:user_id]
       @posts = User.find(params[:user_id]).posts
+    elsif params[:search]
+       tag = Tag.find_by_name(params[:search])
+       if tag
+         @posts = tag.posts
+       else
+         @posts = []
+       end
     elsif params[:explore]
        @posts = Post.all.select {|post| post.user_id != current_user.id}
     else
@@ -50,9 +58,8 @@ class Api::PostsController < ApplicationController
   private
 
   def make_tags(tags, post_id)
-    debugger
+    # debugger
     tags.each do |tag|
-      tag = tag[1..-1]
       unless Tag.find_by_name(tag)
         Tag.create!(name: tag)
       end
@@ -62,22 +69,29 @@ class Api::PostsController < ApplicationController
   end
 
   def update_tags(new_tags, post)
+    if new_tags.nil?
+      post.tags.each {|tag| tag.delete}
+      return
+    end
+
     tags_to_create = []
     tags_to_remove = []
     current_tags = post.tags
+    tag_names = current_tags.map {|tag| tag.name}
 
     new_tags.each do |tag|
-      tags_to_create << tag unless current_tags.include?(tag)
+      tags_to_create << tag unless tag_names.include?(tag)
     end
 
     current_tags.each do |current_tag|
-      tags_to_remove << current_tag unless new_tags.include?(current_tag)
+      tags_to_remove << current_tag unless new_tags.include?(current_tag.name)
     end
 
+    # debugger
     make_tags(tags_to_create, post.id)
-
     tags_to_remove.each do |tag|
-      Tagging.delete(tag.id)
+      tagging = Tagging.find_by(post_id: post.id, tag_id: tag.id)
+      tagging.delete
     end
   end
 

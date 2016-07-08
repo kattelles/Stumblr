@@ -58,5 +58,15 @@ module.exports = {
         cb(posts);
       }
     });
+  },
+
+  getSearchResults(string, cb) {
+    $.ajax({
+      url: "api/posts",
+      data: {search: string},
+      success: (results) => {
+        cb(results);
+      }
+    });
   }
 };

@@ -82,7 +82,7 @@ const ImagePost = React.createClass({
     }
 
     let tags = this.props.post.tags.map(tag => {
-      return (<div className="tag"> #{tag.name} </div>);
+      return (<div key={tag.id} className="tag"> #{tag.name} </div>);
     });
 
     return (
@@ -103,6 +103,8 @@ const ImagePost = React.createClass({
         <div id="image-caption">
           {this.props.post.image_caption}
         </div>
+
+        <div className="tags"> {tags} </div>
 
         <div id="post-footer">
           <div id="post-likes">

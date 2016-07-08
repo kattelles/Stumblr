@@ -6,6 +6,7 @@ const LikeConstants = require("../constants/like_constants");
 const PostStore = new Store(Dispatcher);
 
 let _posts = {};
+let _searchResults = [];
 
 const addPost = function(post) {
   _posts[post.id] = post;
@@ -68,6 +69,10 @@ PostStore.getPost = function(id) {
   return _posts[id];
 };
 
+PostStore.searchResults = function() {
+  return _searchResults;
+};
+
 PostStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case PostConstants.POST_RECEIVED:
@@ -88,6 +93,10 @@ PostStore.__onDispatch = function(payload) {
       break;
     case LikeConstants.REMOVE_LIKE:
       removeLike(payload.like);
+      this.__emitChange();
+      break;
+    case PostConstants.SEARCH_RESULTS_RECEIVED:
+      _searchResults = payload.results;
       this.__emitChange();
       break;
   }

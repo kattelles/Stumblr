@@ -64,8 +64,9 @@
 	var App = __webpack_require__(250);
 	var LoginForm = __webpack_require__(284);
 	var Dashboard = __webpack_require__(286);
-	var BlogShow = __webpack_require__(317);
-	var Explore = __webpack_require__(322);
+	var BlogShow = __webpack_require__(320);
+	var Explore = __webpack_require__(323);
+	var SearchResults = __webpack_require__(339);
 	
 	// Auth
 	var SessionStore = __webpack_require__(263);
@@ -81,7 +82,8 @@
 	    React.createElement(Route, { path: "login", component: LoginForm }),
 	    React.createElement(Route, { path: "signup", component: LoginForm }),
 	    React.createElement(Route, { path: "blogs/:userId", component: BlogShow }),
-	    React.createElement(Route, { path: "explore", component: Explore })
+	    React.createElement(Route, { path: "explore", component: Explore }),
+	    React.createElement(Route, { path: "search", component: SearchResults })
 	  )
 	);
 	
@@ -35400,10 +35402,10 @@
 	var React = __webpack_require__(1);
 	var NavBar = __webpack_require__(287);
 	var SideBar = __webpack_require__(291);
-	var PostForm = __webpack_require__(297);
+	var PostForm = __webpack_require__(296);
 	var hashHistory = __webpack_require__(188).hashHistory;
-	var PostFeed = __webpack_require__(306);
-	var Search = __webpack_require__(337);
+	var PostFeed = __webpack_require__(308);
+	var Search = __webpack_require__(338);
 	
 	var Dashboard = React.createClass({
 	  displayName: "Dashboard",
@@ -35503,26 +35505,6 @@
 	      { className: "navbar" },
 	      React.createElement(
 	        "div",
-	        { className: "tooltip", onClick: this.goToExplore },
-	        React.createElement(
-	          "span",
-	          { className: "tooltiptext" },
-	          "Explore"
-	        ),
-	        React.createElement("img", { id: "eye-icon", src: "https://res.cloudinary.com/kattelles/image/upload/v1467831168/eye-3-48_wozsqr.png" })
-	      ),
-	      React.createElement(
-	        "div",
-	        { className: "tooltip", onClick: this.goToDashboard },
-	        React.createElement(
-	          "span",
-	          { className: "tooltiptext" },
-	          "My Dashboard"
-	        ),
-	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467592469/house-32_2_lfyr7s.png" })
-	      ),
-	      React.createElement(
-	        "div",
 	        { className: "tooltip", onClick: this.goToMyBlog },
 	        React.createElement(
 	          "span",
@@ -35533,6 +35515,16 @@
 	      ),
 	      React.createElement(
 	        "div",
+	        { className: "tooltip", onClick: this.goToExplore },
+	        React.createElement(
+	          "span",
+	          { className: "tooltiptext" },
+	          "Explore"
+	        ),
+	        React.createElement("img", { id: "eye-icon", src: "https://res.cloudinary.com/kattelles/image/upload/v1467831168/eye-3-48_wozsqr.png" })
+	      ),
+	      React.createElement(
+	        "div",
 	        { className: "tooltip", onClick: this.goToSettings },
 	        React.createElement(
 	          "span",
@@ -35540,6 +35532,16 @@
 	          "Settings"
 	        ),
 	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" })
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "tooltip", onClick: this.goToDashboard },
+	        React.createElement(
+	          "span",
+	          { className: "tooltiptext" },
+	          "My Dashboard"
+	        ),
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467592469/house-32_2_lfyr7s.png" })
 	      ),
 	      React.createElement(
 	        "div",
@@ -35722,7 +35724,8 @@
 	
 	var React = __webpack_require__(1);
 	var RecBlogs = __webpack_require__(292);
-	var Radar = __webpack_require__(296);
+	var Radar = __webpack_require__(295);
+	var TrendingTags = __webpack_require__(341);
 	
 	var SideBar = React.createClass({
 	  displayName: "SideBar",
@@ -35732,6 +35735,7 @@
 	      "div",
 	      null,
 	      React.createElement(RecBlogs, null),
+	      React.createElement(TrendingTags, null),
 	      React.createElement(Radar, null)
 	    );
 	  }
@@ -35751,7 +35755,7 @@
 	var BlogStore = __webpack_require__(282);
 	var SessionStore = __webpack_require__(263);
 	var BlogActions = __webpack_require__(260);
-	var FollowActions = __webpack_require__(318);
+	var FollowActions = __webpack_require__(293);
 	
 	var RecBlogs = React.createClass({
 	  displayName: "RecBlogs",
@@ -35817,7 +35821,7 @@
 	
 	      return React.createElement(
 	        "div",
-	        { id: "rec-blog" },
+	        { key: blog.id, id: "rec-blog" },
 	        React.createElement(
 	          "div",
 	          { className: "rec-left" },
@@ -35878,102 +35882,32 @@
 
 	"use strict";
 	
+	var FollowApiUtil = __webpack_require__(294);
 	var Dispatcher = __webpack_require__(252);
-	var Store = __webpack_require__(264).Store;
-	var PostConstants = __webpack_require__(294);
-	var LikeConstants = __webpack_require__(295);
+	var FollowConstants = __webpack_require__(283);
 	
-	var PostStore = new Store(Dispatcher);
-	
-	var _posts = {};
-	
-	var addPost = function addPost(post) {
-	  _posts[post.id] = post;
-	};
-	
-	var removePost = function removePost(post) {
-	  delete _posts[post.id];
-	};
-	
-	var resetPosts = function resetPosts(posts) {
-	  _posts = {};
-	  posts.forEach(function (post) {
-	    _posts[post.id] = post;
-	  });
-	};
-	
-	PostStore.allPosts = function () {
-	  var posts = [];
-	  var keys = Object.keys(_posts);
-	
-	  keys = keys.map(function (key) {
-	    return parseInt(key);
-	  });
-	
-	  keys = keys.sort(function (x, y) {
-	    if (x < y) {
-	      return -1;
-	    }
-	    if (x > y) {
-	      return 1;
-	    }
-	    return 0;
-	  });
-	
-	  keys.forEach(function (key) {
-	    posts.push(_posts[key]);
-	  });
-	
-	  return posts.reverse();
-	};
-	
-	var addLike = function addLike(like) {
-	  _posts[like.post_id].likes.push(like);
-	};
-	
-	var removeLike = function removeLike(like) {
-	
-	  var idx = void 0;
-	
-	  _posts[like.post_id].likes.forEach(function (_like, index) {
-	    if (like.id === _like.id) {
-	      idx = index;
-	    }
-	  });
-	
-	  _posts[like.post_id].likes.splice(idx, 1);
-	};
-	
-	PostStore.getPost = function (id) {
-	  return _posts[id];
-	};
-	
-	PostStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case PostConstants.POST_RECEIVED:
-	      addPost(payload.post);
-	      this.__emitChange();
-	      break;
-	    case PostConstants.POST_REMOVED:
-	      removePost(payload.post);
-	      this.__emitChange();
-	      break;
-	    case PostConstants.POSTS_RECEIVED:
-	      resetPosts(payload.posts);
-	      this.__emitChange();
-	      break;
-	    case LikeConstants.RECEIVE_LIKE:
-	      addLike(payload.like);
-	      this.__emitChange();
-	      break;
-	    case LikeConstants.REMOVE_LIKE:
-	      removeLike(payload.like);
-	      this.__emitChange();
-	      break;
+	var FollowActions = {
+	  follow: function follow(data) {
+	    FollowApiUtil.follow(data, this.receiveFollow);
+	  },
+	  unfollow: function unfollow(id) {
+	    FollowApiUtil.unfollow(id, this.removeFollow);
+	  },
+	  receiveFollow: function receiveFollow(follow) {
+	    Dispatcher.dispatch({
+	      actionType: FollowConstants.FOLLOW_RECEIVED,
+	      follow: follow
+	    });
+	  },
+	  removeFollow: function removeFollow(follow) {
+	    Dispatcher.dispatch({
+	      actionType: FollowConstants.FOLLOW_REMOVED,
+	      follow: follow
+	    });
 	  }
 	};
 	
-	module.exports = PostStore;
+	module.exports = FollowActions;
 
 /***/ },
 /* 294 */
@@ -35981,37 +35915,68 @@
 
 	"use strict";
 	
-	module.exports = {
-	  POST_RECEIVED: "POST_RECEIVED",
-	  POSTS_RECEIVED: "POSTS_RECEIVED",
-	  POST_REMOVED: "POST_REMOVED"
+	var FollowApiUtil = {
+	  follow: function follow(data, cb) {
+	    $.ajax({
+	      url: "api/follows",
+	      method: "POST",
+	      data: data,
+	      success: function success(follow) {
+	        cb(follow);
+	      }
+	    });
+	  },
+	  unfollow: function unfollow(id, cb) {
+	    $.ajax({
+	      url: "api/follows/" + id,
+	      method: "DELETE",
+	      success: function success(follow) {
+	        cb(follow);
+	      }
+	    });
+	  }
 	};
+	
+	module.exports = FollowApiUtil;
 
 /***/ },
 /* 295 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	module.exports = {
-	  RECEIVE_LIKE: "RECEIVE_LIKE",
-	  RECEIVE_LIKES: "RECEIVE_LIKES",
-	  REMOVE_LIKE: "REMOVE_LIKE"
-	};
-
-/***/ },
-/* 296 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
 	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
 	
 	var Radar = React.createClass({
-	  displayName: 'Radar',
+	  displayName: "Radar",
+	  click: function click() {
+	    var url = "blogs/48";
+	    hashHistory.push(url);
+	  },
+	
 	
 	  render: function render() {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      "div",
+	      { className: "radar" },
+	      React.createElement(
+	        "div",
+	        { className: "radar-title" },
+	        "Radar"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "radar-post" },
+	        React.createElement(
+	          "div",
+	          { onClick: this.click, className: "radar-header" },
+	          "nature lover"
+	        ),
+	        React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467923011/photo-1429552097216-d1944f46d443_2_cksvx3.jpg" }),
+	        React.createElement("div", { className: "radar-footer" })
+	      )
+	    );
 	  }
 	
 	});
@@ -36019,7 +35984,7 @@
 	module.exports = Radar;
 
 /***/ },
-/* 297 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36028,13 +35993,13 @@
 	var SessionStore = __webpack_require__(263);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var Modal = __webpack_require__(168);
-	var TextForm = __webpack_require__(298);
+	var TextForm = __webpack_require__(297);
 	var ImageForm = __webpack_require__(301);
 	var QuoteForm = __webpack_require__(302);
 	var LinkForm = __webpack_require__(303);
 	var VideoForm = __webpack_require__(304);
 	var AudioForm = __webpack_require__(305);
-	var PostStore = __webpack_require__(293);
+	var PostStore = __webpack_require__(306);
 	
 	var PostForm = React.createClass({
 	  displayName: "PostForm",
@@ -36179,13 +36144,13 @@
 	// <img id="post-form-avatar" src={this.state.user.avatar}/>
 
 /***/ },
-/* 298 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var TextForm = React.createClass({
 	  displayName: "TextForm",
@@ -36214,9 +36179,12 @@
 	    this.setState({ tags: e.target.value });
 	  },
 	  handleSubmit: function handleSubmit() {
-	    // debugger
 	    if (this.props.edit === "true") {
-	      var tags = this.state.tags.split(" ");
+	      var tags = [];
+	      if (this.state.tags.length > 0) {
+	        tags = this.state.tags.replace(/ /g, "");
+	        tags = tags.split("#").slice(1);
+	      }
 	      PostActions.editPost({
 	        post: {
 	          id: this.props.post.id,
@@ -36229,7 +36197,7 @@
 	      });
 	    } else {
 	
-	      var _tags = this.state.tags.split(" ");
+	      var _tags = this.state.tags.replace(/#/g, "").split(" ");
 	      var id = this.props.user.id;
 	      PostActions.createPost({
 	        post: {
@@ -36289,14 +36257,14 @@
 	module.exports = TextForm;
 
 /***/ },
-/* 299 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var PostApiUtil = __webpack_require__(300);
+	var PostApiUtil = __webpack_require__(299);
 	var Dispatcher = __webpack_require__(252);
-	var PostConstants = __webpack_require__(294);
+	var PostConstants = __webpack_require__(300);
 	
 	module.exports = {
 	  createPost: function createPost(data) {
@@ -36316,6 +36284,15 @@
 	  },
 	  getExplorePosts: function getExplorePosts() {
 	    PostApiUtil.getExplorePosts(this.receiveFeed);
+	  },
+	  getSearchResults: function getSearchResults(queryString) {
+	    PostApiUtil.getSearchResults(queryString, this.receiveSearchResults);
+	  },
+	  receiveSearchResults: function receiveSearchResults(results) {
+	    Dispatcher.dispatch({
+	      actionType: PostConstants.SEARCH_RESULTS_RECEIVED,
+	      results: results
+	    });
 	  },
 	  receiveFeed: function receiveFeed(posts) {
 	    Dispatcher.dispatch({
@@ -36338,7 +36315,7 @@
 	};
 
 /***/ },
-/* 300 */
+/* 299 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -36398,7 +36375,29 @@
 	        cb(posts);
 	      }
 	    });
+	  },
+	  getSearchResults: function getSearchResults(string, cb) {
+	    $.ajax({
+	      url: "api/posts",
+	      data: { search: string },
+	      success: function success(results) {
+	        cb(results);
+	      }
+	    });
 	  }
+	};
+
+/***/ },
+/* 300 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  POST_RECEIVED: "POST_RECEIVED",
+	  POSTS_RECEIVED: "POSTS_RECEIVED",
+	  POST_REMOVED: "POST_REMOVED",
+	  SEARCH_RESULTS_RECEIVED: "SEARCH_RESULTS_RECEIVED"
 	};
 
 /***/ },
@@ -36408,7 +36407,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var ImageForm = React.createClass({
 	  displayName: "ImageForm",
@@ -36444,7 +36443,11 @@
 	  },
 	  handleSubmit: function handleSubmit() {
 	    if (this.props.edit === "true") {
-	      var tags = this.state.tags.split(" ");
+	      var tags = [];
+	      if (this.state.tags.length > 0) {
+	        tags = this.state.tags.replace(/ /g, "");
+	        tags = tags.split("#").slice(1);
+	      }
 	      PostActions.editPost({
 	        post: {
 	          id: this.props.post.id,
@@ -36456,7 +36459,7 @@
 	        }
 	      });
 	    } else {
-	      var _tags = this.state.tags.split(" ");
+	      var _tags = this.state.tags.replace(/#/g, "").split(" ");
 	      var id = this.props.user.id;
 	      PostActions.createPost({
 	        post: {
@@ -36526,7 +36529,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var QuoteForm = React.createClass({
 	  displayName: "QuoteForm",
@@ -36555,7 +36558,11 @@
 	  },
 	  handleSubmit: function handleSubmit() {
 	    if (this.props.edit === "true") {
-	      var tags = this.state.tags.split(" ");
+	      var tags = [];
+	      if (this.state.tags.length > 0) {
+	        tags = this.state.tags.replace(/ /g, "");
+	        tags = tags.split("#").slice(1);
+	      }
 	      PostActions.editPost({
 	        post: {
 	          id: this.props.post.id,
@@ -36567,7 +36574,7 @@
 	        }
 	      });
 	    } else {
-	      var _tags = this.state.tags.split(" ");
+	      var _tags = this.state.tags.replace(/#/g, "").split(" ");
 	      var id = this.props.user.id;
 	      PostActions.createPost({
 	        post: {
@@ -36632,7 +36639,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var LinkForm = React.createClass({
 	  displayName: "LinkForm",
@@ -36659,7 +36666,11 @@
 	  },
 	  handleSubmit: function handleSubmit() {
 	    if (this.props.edit === "true") {
-	      var tags = this.state.tags.split(" ");
+	      var tags = [];
+	      if (this.state.tags.length > 0) {
+	        tags = this.state.tags.replace(/ /g, "");
+	        tags = tags.split("#").slice(1);
+	      }
 	      PostActions.editPost({
 	        post: {
 	          id: this.props.post.id,
@@ -36671,7 +36682,7 @@
 	        }
 	      });
 	    } else {
-	      var _tags = this.state.tags.split(" ");
+	      var _tags = this.state.tags.replace(/#/g, "").split(" ");
 	      var id = this.props.user.id;
 	      PostActions.createPost({
 	        post: {
@@ -36742,7 +36753,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var VideoForm = React.createClass({
 	  displayName: "VideoForm",
@@ -36772,7 +36783,11 @@
 	  handleSubmit: function handleSubmit() {
 	
 	    if (this.props.edit === "true") {
-	      var tags = this.state.tags.split(" ");
+	      var tags = [];
+	      if (this.state.tags.length > 0) {
+	        tags = this.state.tags.replace(/ /g, "");
+	        tags = tags.split("#").slice(1);
+	      }
 	      PostActions.editPost({
 	        post: {
 	          id: this.props.post.id,
@@ -36784,7 +36799,7 @@
 	        }
 	      });
 	    } else {
-	      var _tags = this.state.tags.split(" ");
+	      var _tags = this.state.tags.replace(/#/g, "").split(" ");
 	      var id = this.props.user.id;
 	      PostActions.createPost({
 	        post: {
@@ -36853,7 +36868,7 @@
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var AudioForm = React.createClass({
 	  displayName: "AudioForm",
@@ -36880,7 +36895,11 @@
 	  },
 	  handleSubmit: function handleSubmit() {
 	    if (this.props.edit === "true") {
-	      var tags = this.state.tags.split(" ");
+	      var tags = [];
+	      if (this.state.tags.length > 0) {
+	        tags = this.state.tags.replace(/ /g, "");
+	        tags = tags.split("#").slice(1);
+	      }
 	      PostActions.editPost({
 	        post: {
 	          id: this.props.post.id,
@@ -36892,7 +36911,7 @@
 	        }
 	      });
 	    } else {
-	      var _tags = this.state.tags.split(" ");
+	      var _tags = this.state.tags.replace(/#/g, "").split(" ");
 	      var id = this.props.user.id;
 	      PostActions.createPost({
 	        post: {
@@ -36962,18 +36981,142 @@
 
 	"use strict";
 	
+	var Dispatcher = __webpack_require__(252);
+	var Store = __webpack_require__(264).Store;
+	var PostConstants = __webpack_require__(300);
+	var LikeConstants = __webpack_require__(307);
+	
+	var PostStore = new Store(Dispatcher);
+	
+	var _posts = {};
+	var _searchResults = [];
+	
+	var addPost = function addPost(post) {
+	  _posts[post.id] = post;
+	};
+	
+	var removePost = function removePost(post) {
+	  delete _posts[post.id];
+	};
+	
+	var resetPosts = function resetPosts(posts) {
+	  _posts = {};
+	  posts.forEach(function (post) {
+	    _posts[post.id] = post;
+	  });
+	};
+	
+	PostStore.allPosts = function () {
+	  var posts = [];
+	  var keys = Object.keys(_posts);
+	
+	  keys = keys.map(function (key) {
+	    return parseInt(key);
+	  });
+	
+	  keys = keys.sort(function (x, y) {
+	    if (x < y) {
+	      return -1;
+	    }
+	    if (x > y) {
+	      return 1;
+	    }
+	    return 0;
+	  });
+	
+	  keys.forEach(function (key) {
+	    posts.push(_posts[key]);
+	  });
+	
+	  return posts.reverse();
+	};
+	
+	var addLike = function addLike(like) {
+	  _posts[like.post_id].likes.push(like);
+	};
+	
+	var removeLike = function removeLike(like) {
+	
+	  var idx = void 0;
+	
+	  _posts[like.post_id].likes.forEach(function (_like, index) {
+	    if (like.id === _like.id) {
+	      idx = index;
+	    }
+	  });
+	
+	  _posts[like.post_id].likes.splice(idx, 1);
+	};
+	
+	PostStore.getPost = function (id) {
+	  return _posts[id];
+	};
+	
+	PostStore.searchResults = function () {
+	  return _searchResults;
+	};
+	
+	PostStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case PostConstants.POST_RECEIVED:
+	      addPost(payload.post);
+	      this.__emitChange();
+	      break;
+	    case PostConstants.POST_REMOVED:
+	      removePost(payload.post);
+	      this.__emitChange();
+	      break;
+	    case PostConstants.POSTS_RECEIVED:
+	      resetPosts(payload.posts);
+	      this.__emitChange();
+	      break;
+	    case LikeConstants.RECEIVE_LIKE:
+	      addLike(payload.like);
+	      this.__emitChange();
+	      break;
+	    case LikeConstants.REMOVE_LIKE:
+	      removeLike(payload.like);
+	      this.__emitChange();
+	      break;
+	    case PostConstants.SEARCH_RESULTS_RECEIVED:
+	      _searchResults = payload.results;
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = PostStore;
+
+/***/ },
+/* 307 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = {
+	  RECEIVE_LIKE: "RECEIVE_LIKE",
+	  RECEIVE_LIKES: "RECEIVE_LIKES",
+	  REMOVE_LIKE: "REMOVE_LIKE"
+	};
+
+/***/ },
+/* 308 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
 	var React = __webpack_require__(1);
-	var PostStore = __webpack_require__(293);
+	var PostStore = __webpack_require__(306);
 	var SessionStore = __webpack_require__(263);
-	var TextPost = __webpack_require__(307);
-	var ImagePost = __webpack_require__(312);
-	var LinkPost = __webpack_require__(313);
-	var QuotePost = __webpack_require__(314);
-	var AudioPost = __webpack_require__(315);
-	var VideoPost = __webpack_require__(316);
+	var TextPost = __webpack_require__(309);
+	var ImagePost = __webpack_require__(314);
+	var LinkPost = __webpack_require__(315);
+	var QuotePost = __webpack_require__(316);
+	var AudioPost = __webpack_require__(317);
+	var VideoPost = __webpack_require__(318);
 	var BlogStore = __webpack_require__(282);
 	
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var PostFeed = React.createClass({
 	  displayName: "PostFeed",
@@ -37057,7 +37200,7 @@
 	module.exports = PostFeed;
 
 /***/ },
-/* 307 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37065,10 +37208,10 @@
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
-	var LikeActions = __webpack_require__(308);
-	var PostStore = __webpack_require__(293);
-	var EditPost = __webpack_require__(310);
-	var DeletePost = __webpack_require__(311);
+	var LikeActions = __webpack_require__(310);
+	var PostStore = __webpack_require__(306);
+	var EditPost = __webpack_require__(312);
+	var DeletePost = __webpack_require__(313);
 	
 	var Modal = __webpack_require__(168);
 	
@@ -37149,7 +37292,7 @@
 	    var tags = this.props.post.tags.map(function (tag) {
 	      return React.createElement(
 	        "div",
-	        { className: "tag" },
+	        { key: tag.id, className: "tag" },
 	        " #",
 	        tag.name,
 	        " "
@@ -37214,13 +37357,13 @@
 	module.exports = TextPost;
 
 /***/ },
-/* 308 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
-	var LikeApiUtil = __webpack_require__(309);
-	var LikeConstants = __webpack_require__(295);
+	var LikeApiUtil = __webpack_require__(311);
+	var LikeConstants = __webpack_require__(307);
 	var Dispatcher = __webpack_require__(252);
 	
 	module.exports = {
@@ -37248,7 +37391,7 @@
 	};
 
 /***/ },
-/* 309 */
+/* 311 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -37276,14 +37419,14 @@
 	};
 
 /***/ },
-/* 310 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
-	var TextForm = __webpack_require__(298);
+	var PostActions = __webpack_require__(298);
+	var TextForm = __webpack_require__(297);
 	var ImageForm = __webpack_require__(301);
 	var QuoteForm = __webpack_require__(302);
 	var LinkForm = __webpack_require__(303);
@@ -37344,13 +37487,13 @@
 	module.exports = EditPost;
 
 /***/ },
-/* 311 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var DeletePost = React.createClass({
 	  displayName: "DeletePost",
@@ -37395,7 +37538,7 @@
 	module.exports = DeletePost;
 
 /***/ },
-/* 312 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37403,10 +37546,10 @@
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
-	var LikeActions = __webpack_require__(308);
-	var PostStore = __webpack_require__(293);
-	var EditPost = __webpack_require__(310);
-	var DeletePost = __webpack_require__(311);
+	var LikeActions = __webpack_require__(310);
+	var PostStore = __webpack_require__(306);
+	var EditPost = __webpack_require__(312);
+	var DeletePost = __webpack_require__(313);
 	var Modal = __webpack_require__(168);
 	
 	var ImagePost = React.createClass({
@@ -37487,7 +37630,7 @@
 	    var tags = this.props.post.tags.map(function (tag) {
 	      return React.createElement(
 	        "div",
-	        { className: "tag" },
+	        { key: tag.id, className: "tag" },
 	        " #",
 	        tag.name,
 	        " "
@@ -37519,6 +37662,13 @@
 	        ),
 	        React.createElement(
 	          "div",
+	          { className: "tags" },
+	          " ",
+	          tags,
+	          " "
+	        ),
+	        React.createElement(
+	          "div",
 	          { id: "post-footer" },
 	          React.createElement(
 	            "div",
@@ -37546,7 +37696,7 @@
 	module.exports = ImagePost;
 
 /***/ },
-/* 313 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37554,10 +37704,10 @@
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
-	var LikeActions = __webpack_require__(308);
-	var PostStore = __webpack_require__(293);
-	var EditPost = __webpack_require__(310);
-	var DeletePost = __webpack_require__(311);
+	var LikeActions = __webpack_require__(310);
+	var PostStore = __webpack_require__(306);
+	var EditPost = __webpack_require__(312);
+	var DeletePost = __webpack_require__(313);
 	
 	var Modal = __webpack_require__(168);
 	
@@ -37635,6 +37785,16 @@
 	        break;
 	    }
 	
+	    var tags = this.props.post.tags.map(function (tag) {
+	      return React.createElement(
+	        "div",
+	        { key: tag.id, className: "tag" },
+	        " #",
+	        tag.name,
+	        " "
+	      );
+	    });
+	
 	    return React.createElement(
 	      "div",
 	      { id: "post" },
@@ -37657,6 +37817,13 @@
 	              href: this.props.post.link_url },
 	            this.props.post.link_title
 	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "tags" },
+	          " ",
+	          tags,
+	          " "
 	        ),
 	        React.createElement(
 	          "div",
@@ -37687,7 +37854,7 @@
 	module.exports = LinkPost;
 
 /***/ },
-/* 314 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37695,10 +37862,10 @@
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
-	var LikeActions = __webpack_require__(308);
-	var PostStore = __webpack_require__(293);
-	var EditPost = __webpack_require__(310);
-	var DeletePost = __webpack_require__(311);
+	var LikeActions = __webpack_require__(310);
+	var PostStore = __webpack_require__(306);
+	var EditPost = __webpack_require__(312);
+	var DeletePost = __webpack_require__(313);
 	
 	var Modal = __webpack_require__(168);
 	
@@ -37776,6 +37943,16 @@
 	        break;
 	    }
 	
+	    var tags = this.props.post.tags.map(function (tag) {
+	      return React.createElement(
+	        "div",
+	        { key: tag.id, className: "tag" },
+	        " #",
+	        tag.name,
+	        " "
+	      );
+	    });
+	
 	    return React.createElement(
 	      "div",
 	      { id: "post" },
@@ -37801,6 +37978,13 @@
 	          { id: "quote-source" },
 	          "-- ",
 	          this.props.post.quote_source
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "tags" },
+	          " ",
+	          tags,
+	          " "
 	        ),
 	        React.createElement(
 	          "div",
@@ -37831,7 +38015,7 @@
 	module.exports = QuotePost;
 
 /***/ },
-/* 315 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37839,10 +38023,10 @@
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
-	var LikeActions = __webpack_require__(308);
-	var PostStore = __webpack_require__(293);
-	var EditPost = __webpack_require__(310);
-	var DeletePost = __webpack_require__(311);
+	var LikeActions = __webpack_require__(310);
+	var PostStore = __webpack_require__(306);
+	var EditPost = __webpack_require__(312);
+	var DeletePost = __webpack_require__(313);
 	var Modal = __webpack_require__(168);
 	
 	var AudioPost = React.createClass({
@@ -37919,6 +38103,16 @@
 	        break;
 	    }
 	
+	    var tags = this.props.post.tags.map(function (tag) {
+	      return React.createElement(
+	        "div",
+	        { key: tag.id, className: "tag" },
+	        " #",
+	        tag.name,
+	        " "
+	      );
+	    });
+	
 	    return React.createElement(
 	      "div",
 	      { id: "post" },
@@ -37949,6 +38143,13 @@
 	        ),
 	        React.createElement(
 	          "div",
+	          { className: "tags" },
+	          " ",
+	          tags,
+	          " "
+	        ),
+	        React.createElement(
+	          "div",
 	          { id: "post-footer" },
 	          React.createElement(
 	            "div",
@@ -37976,7 +38177,7 @@
 	module.exports = AudioPost;
 
 /***/ },
-/* 316 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37984,10 +38185,10 @@
 	var React = __webpack_require__(1);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	var SessionStore = __webpack_require__(263);
-	var LikeActions = __webpack_require__(308);
-	var PostStore = __webpack_require__(293);
-	var EditPost = __webpack_require__(310);
-	var DeletePost = __webpack_require__(311);
+	var LikeActions = __webpack_require__(310);
+	var PostStore = __webpack_require__(306);
+	var EditPost = __webpack_require__(312);
+	var DeletePost = __webpack_require__(313);
 	
 	var Modal = __webpack_require__(168);
 	
@@ -38065,6 +38266,15 @@
 	          post: this.props.post });
 	        break;
 	    }
+	    var tags = this.props.post.tags.map(function (tag) {
+	      return React.createElement(
+	        "div",
+	        { key: tag.id, className: "tag" },
+	        " #",
+	        tag.name,
+	        " "
+	      );
+	    });
 	
 	    var url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
 	
@@ -38095,6 +38305,13 @@
 	        ),
 	        React.createElement(
 	          "div",
+	          { className: "tags" },
+	          " ",
+	          tags,
+	          " "
+	        ),
+	        React.createElement(
+	          "div",
 	          { id: "post-footer" },
 	          React.createElement(
 	            "div",
@@ -38122,7 +38339,8 @@
 	module.exports = VideoPost;
 
 /***/ },
-/* 317 */
+/* 319 */,
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38130,14 +38348,14 @@
 	var React = __webpack_require__(1);
 	var BlogStore = __webpack_require__(282);
 	var SessionStore = __webpack_require__(263);
-	var PostStore = __webpack_require__(293);
+	var PostStore = __webpack_require__(306);
 	var BlogActions = __webpack_require__(260);
 	var hashHistory = __webpack_require__(188).hashHistory;
-	var FollowActions = __webpack_require__(318);
-	var BlogEdit = __webpack_require__(320);
-	var BlogFeed = __webpack_require__(321);
+	var FollowActions = __webpack_require__(293);
+	var BlogEdit = __webpack_require__(321);
+	var BlogFeed = __webpack_require__(322);
 	var Modal = __webpack_require__(168);
-	var PostActions = __webpack_require__(299);
+	var PostActions = __webpack_require__(298);
 	
 	var BlogShow = React.createClass({
 	  displayName: "BlogShow",
@@ -38315,70 +38533,7 @@
 	module.exports = BlogShow;
 
 /***/ },
-/* 318 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	var FollowApiUtil = __webpack_require__(319);
-	var Dispatcher = __webpack_require__(252);
-	var FollowConstants = __webpack_require__(283);
-	
-	var FollowActions = {
-	  follow: function follow(data) {
-	    FollowApiUtil.follow(data, this.receiveFollow);
-	  },
-	  unfollow: function unfollow(id) {
-	    FollowApiUtil.unfollow(id, this.removeFollow);
-	  },
-	  receiveFollow: function receiveFollow(follow) {
-	    Dispatcher.dispatch({
-	      actionType: FollowConstants.FOLLOW_RECEIVED,
-	      follow: follow
-	    });
-	  },
-	  removeFollow: function removeFollow(follow) {
-	    Dispatcher.dispatch({
-	      actionType: FollowConstants.FOLLOW_REMOVED,
-	      follow: follow
-	    });
-	  }
-	};
-	
-	module.exports = FollowActions;
-
-/***/ },
-/* 319 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	var FollowApiUtil = {
-	  follow: function follow(data, cb) {
-	    $.ajax({
-	      url: "api/follows",
-	      method: "POST",
-	      data: data,
-	      success: function success(follow) {
-	        cb(follow);
-	      }
-	    });
-	  },
-	  unfollow: function unfollow(id, cb) {
-	    $.ajax({
-	      url: "api/follows/" + id,
-	      method: "DELETE",
-	      success: function success(follow) {
-	        cb(follow);
-	      }
-	    });
-	  }
-	};
-	
-	module.exports = FollowApiUtil;
-
-/***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -38511,18 +38666,18 @@
 	module.exports = BlogEdit;
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
-	var TextPost = __webpack_require__(307);
-	var ImagePost = __webpack_require__(312);
-	var QuotePost = __webpack_require__(314);
-	var LinkPost = __webpack_require__(313);
-	var AudioPost = __webpack_require__(315);
-	var VideoPost = __webpack_require__(316);
+	var TextPost = __webpack_require__(309);
+	var ImagePost = __webpack_require__(314);
+	var QuotePost = __webpack_require__(316);
+	var LinkPost = __webpack_require__(315);
+	var AudioPost = __webpack_require__(317);
+	var VideoPost = __webpack_require__(318);
 	var SessionStore = __webpack_require__(263);
 	
 	var BlogFeed = React.createClass({
@@ -38585,16 +38740,16 @@
 	module.exports = BlogFeed;
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
 	var NavBar = __webpack_require__(287);
-	var PostStore = __webpack_require__(293);
-	var PostActions = __webpack_require__(299);
-	var ExploreFeed = __webpack_require__(323);
+	var PostStore = __webpack_require__(306);
+	var PostActions = __webpack_require__(298);
+	var ExploreFeed = __webpack_require__(324);
 	
 	var Explore = React.createClass({
 	  displayName: "Explore",
@@ -38648,14 +38803,14 @@
 	module.exports = Explore;
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var Masonry = __webpack_require__(324);
-	var LikeActions = __webpack_require__(308);
+	var Masonry = __webpack_require__(325);
+	var LikeActions = __webpack_require__(310);
 	var SessionStore = __webpack_require__(263);
 	var hashHistory = __webpack_require__(188).hashHistory;
 	
@@ -38711,13 +38866,25 @@
 	  render: function render() {
 	    var _this = this;
 	
+	    if (this.props.posts.length === 0) {
+	      return React.createElement(
+	        'div',
+	        { className: 'no-results' },
+	        'Oh dear. No results were found. :('
+	      );
+	    }
+	
 	    var posts = [];
 	    this.props.posts.forEach(function (post) {
+	      var tags = post.tags.map(function (_post) {
+	        return ' #' + _post.name;
+	      });
+	      tags.join(" ");
 	      switch (post.post_type) {
 	        case "Text":
 	          posts.push(React.createElement(
 	            'div',
-	            { id: 'explore-post' },
+	            { key: post.id, id: 'explore-post' },
 	            React.createElement(
 	              'div',
 	              { onClick: _this.headerClick.bind(_this, post),
@@ -38736,6 +38903,11 @@
 	            ),
 	            React.createElement(
 	              'div',
+	              { className: 'ex-tags' },
+	              tags
+	            ),
+	            React.createElement(
+	              'div',
 	              { id: 'post-footer' },
 	              React.createElement(
 	                'div',
@@ -38750,7 +38922,7 @@
 	        case "Image":
 	          posts.push(React.createElement(
 	            'div',
-	            { id: 'explore-post' },
+	            { key: post.id, id: 'explore-post' },
 	            React.createElement(
 	              'div',
 	              { onClick: _this.headerClick.bind(_this, post),
@@ -38762,6 +38934,11 @@
 	              'div',
 	              { id: 'image-caption' },
 	              post.image_caption
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'ex-tags' },
+	              tags
 	            ),
 	            React.createElement(
 	              'div',
@@ -38779,7 +38956,7 @@
 	        case "Quote":
 	          posts.push(React.createElement(
 	            'div',
-	            { id: 'explore-post' },
+	            { key: post.id, id: 'explore-post' },
 	            React.createElement(
 	              'div',
 	              { onClick: _this.headerClick.bind(_this, post),
@@ -38800,6 +38977,11 @@
 	            ),
 	            React.createElement(
 	              'div',
+	              { className: 'ex-tags' },
+	              tags
+	            ),
+	            React.createElement(
+	              'div',
 	              { id: 'post-footer' },
 	              React.createElement(
 	                'div',
@@ -38814,7 +38996,7 @@
 	        case "Link":
 	          posts.push(React.createElement(
 	            'div',
-	            { id: 'explore-post' },
+	            { key: post.id, id: 'explore-post' },
 	            React.createElement(
 	              'div',
 	              { onClick: _this.headerClick.bind(_this, post),
@@ -38833,6 +39015,11 @@
 	            ),
 	            React.createElement(
 	              'div',
+	              { className: 'ex-tags' },
+	              tags
+	            ),
+	            React.createElement(
+	              'div',
 	              { id: 'post-footer' },
 	              React.createElement(
 	                'div',
@@ -38848,7 +39035,7 @@
 	        case "Audio":
 	          posts.push(React.createElement(
 	            'div',
-	            { id: 'explore-post' },
+	            { key: post.id, id: 'explore-post' },
 	            React.createElement(
 	              'div',
 	              { onClick: _this.headerClick.bind(_this, post),
@@ -38872,6 +39059,11 @@
 	            ),
 	            React.createElement(
 	              'div',
+	              { className: 'ex-tags' },
+	              tags
+	            ),
+	            React.createElement(
+	              'div',
 	              { id: 'post-footer' },
 	              React.createElement(
 	                'div',
@@ -38887,7 +39079,7 @@
 	          var url = "https://www.youtube.com/v/" + post.video_url.split("=")[1];
 	          posts.push(React.createElement(
 	            'div',
-	            { id: 'explore-post' },
+	            { key: post.id, id: 'explore-post' },
 	            React.createElement(
 	              'div',
 	              { onClick: _this.headerClick.bind(_this, post),
@@ -38900,6 +39092,11 @@
 	              React.createElement('iframe', { width: '296', height: '200',
 	                src: url,
 	                frameborder: '0', allowfullscreen: true })
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'ex-tags' },
+	              tags
 	            ),
 	            React.createElement(
 	              'div',
@@ -38930,14 +39127,14 @@
 	module.exports = ExploreFeed;
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isBrowser = typeof window !== 'undefined';
-	var Masonry = isBrowser ? window.Masonry || __webpack_require__(325) : null;
-	var imagesloaded = isBrowser ? __webpack_require__(332) : null;
-	var assign = __webpack_require__(333);
-	var debounce = __webpack_require__(336);
+	var Masonry = isBrowser ? window.Masonry || __webpack_require__(326) : null;
+	var imagesloaded = isBrowser ? __webpack_require__(333) : null;
+	var assign = __webpack_require__(334);
+	var debounce = __webpack_require__(337);
 	var React = __webpack_require__(1);
 	var refName = 'masonryContainer';
 	
@@ -39130,7 +39327,7 @@
 
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -39147,8 +39344,8 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(326),
-	        __webpack_require__(328)
+	        __webpack_require__(327),
+	        __webpack_require__(329)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS
@@ -39340,7 +39537,7 @@
 
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -39356,10 +39553,10 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(327),
 	        __webpack_require__(328),
 	        __webpack_require__(329),
-	        __webpack_require__(331)
+	        __webpack_require__(330),
+	        __webpack_require__(332)
 	      ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter, getSize, utils, Item ) {
 	        return factory( window, EvEmitter, getSize, utils, Item);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -40283,7 +40480,7 @@
 
 
 /***/ },
-/* 327 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -40398,7 +40595,7 @@
 
 
 /***/ },
-/* 328 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -40613,7 +40810,7 @@
 
 
 /***/ },
-/* 329 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -40630,7 +40827,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(330)
+	      __webpack_require__(331)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( matchesSelector ) {
 	      return factory( window, matchesSelector );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -40855,7 +41052,7 @@
 
 
 /***/ },
-/* 330 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -40914,7 +41111,7 @@
 
 
 /***/ },
-/* 331 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -40927,8 +41124,8 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(327),
-	        __webpack_require__(328)
+	        __webpack_require__(328),
+	        __webpack_require__(329)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS - Browserify, Webpack
@@ -41471,7 +41668,7 @@
 
 
 /***/ },
-/* 332 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -41488,7 +41685,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(327)
+	      __webpack_require__(328)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter ) {
 	      return factory( window, EvEmitter );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -41847,7 +42044,7 @@
 
 
 /***/ },
-/* 333 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -41858,8 +42055,8 @@
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
 	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 */
-	var keys = __webpack_require__(334),
-	    rest = __webpack_require__(335);
+	var keys = __webpack_require__(335),
+	    rest = __webpack_require__(336);
 	
 	/** Used as references for various `Number` constants. */
 	var MAX_SAFE_INTEGER = 9007199254740991;
@@ -42249,7 +42446,7 @@
 
 
 /***/ },
-/* 334 */
+/* 335 */
 /***/ function(module, exports) {
 
 	/**
@@ -42723,7 +42920,7 @@
 
 
 /***/ },
-/* 335 */
+/* 336 */
 /***/ function(module, exports) {
 
 	/**
@@ -43074,7 +43271,7 @@
 
 
 /***/ },
-/* 336 */
+/* 337 */
 /***/ function(module, exports) {
 
 	/**
@@ -43474,28 +43671,157 @@
 
 
 /***/ },
-/* 337 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	var React = __webpack_require__(1);
+	var PostActions = __webpack_require__(298);
+	var hashHistory = __webpack_require__(188).hashHistory;
 	
 	var Search = React.createClass({
 	  displayName: "Search",
+	  getInitialState: function getInitialState() {
+	    return { input: "" };
+	  },
+	  inputChange: function inputChange(e) {
+	    this.setState({ input: e.target.value.replace(/#/, "") });
+	  },
+	  handleSubmit: function handleSubmit() {
+	    PostActions.getSearchResults(this.state.input);
+	    hashHistory.push("search");
+	  },
 	
 	
 	  render: function render() {
 	    return React.createElement(
 	      "div",
 	      { className: "search" },
-	      React.createElement("input", { placeholder: "Search #tags" })
+	      React.createElement("input", { onChange: this.inputChange, placeholder: "Search #tags" }),
+	      React.createElement(
+	        "div",
+	        { className: "search-submit",
+	          onClick: this.handleSubmit },
+	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467929817/search-14-32_fhtipb.png" })
+	      )
 	    );
 	  }
 	
 	});
 	
 	module.exports = Search;
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var NavBar = __webpack_require__(287);
+	var PostStore = __webpack_require__(306);
+	var ExploreFeed = __webpack_require__(324);
+	var Search = __webpack_require__(338);
+	
+	var SearchResults = React.createClass({
+	  displayName: "SearchResults",
+	  getInitialState: function getInitialState() {
+	    return { posts: [] };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    this.listener = PostStore.addListener(this.onChange);
+	    this.setState({ posts: PostStore.searchResults() });
+	  },
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.listener.remove();
+	  },
+	  onChange: function onChange() {
+	    this.setState({ posts: PostStore.searchResults() });
+	  },
+	
+	
+	  render: function render() {
+	    return React.createElement(
+	      "div",
+	      null,
+	      React.createElement(
+	        "div",
+	        { id: "dash-outer", className: "group" },
+	        React.createElement(
+	          "div",
+	          { id: "dash-header" },
+	          React.createElement(
+	            "div",
+	            { id: "small-logo" },
+	            React.createElement("img", { onClick: this.logoClick, src: "https://res.cloudinary.com/kattelles/image/upload/v1467405243/Stumblr-logo_2_ignktf.png",
+	              width: "150" })
+	          ),
+	          React.createElement(Search, null),
+	          React.createElement(NavBar, null),
+	          React.createElement(ExploreFeed, { posts: this.state.posts })
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = SearchResults;
+
+/***/ },
+/* 340 */,
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	var hashHistory = __webpack_require__(188).hashHistory;
+	var PostActions = __webpack_require__(298);
+	
+	var PopularTags = React.createClass({
+	  displayName: "PopularTags",
+	  click: function click(tag) {
+	    PostActions.getSearchResults(tag);
+	    hashHistory.push("search");
+	  },
+	
+	
+	  render: function render() {
+	    var _this = this;
+	
+	    var _tags = ["nature", "sports", "tech", "cats", "SF", "quotes", "music", "art", "coding", "animals"];
+	    var tags = _tags.map(function (tag) {
+	      return React.createElement(
+	        "div",
+	        { key: tag, onClick: _this.click.bind(_this, tag),
+	          className: "trending-tag" },
+	        "#",
+	        tag
+	      );
+	    });
+	
+	    return React.createElement(
+	      "div",
+	      { className: "trending" },
+	      React.createElement(
+	        "div",
+	        { className: "trending-title" },
+	        "Trending Tags"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "trending-tags" },
+	        " ",
+	        tags
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = PopularTags;
 
 /***/ }
 /******/ ]);

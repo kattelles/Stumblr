@@ -53,18 +53,29 @@ const ExploreFeed  = React.createClass({
 
   render: function() {
 
+    if (this.props.posts.length === 0) {
+      return (<div className="no-results">
+      Oh dear. No results were found. :(
+      </div>);
+    }
+
     let posts = [];
     this.props.posts.forEach (post => {
+      let tags = post.tags.map(_post => {
+        return(` #${_post.name}`);
+      });
+      tags.join(" ");
       switch (post.post_type) {
         case "Text":
           posts.push(
-            <div id="explore-post">
+            <div key={post.id} id="explore-post">
               <div onClick={this.headerClick.bind(this, post)}
                   id="ex-header">
                   {post.user.username}
               </div>
               <div id="ex-title">{post.title}</div>
               <div id="ex-content">{post.content}</div>
+              <div className="ex-tags" >{tags}</div>
                 <div id="post-footer">
                   <div id="post-likes">
                     {post.likes.length} likes
@@ -76,11 +87,12 @@ const ExploreFeed  = React.createClass({
           break;
         case "Image":
           posts.push(
-            <div id="explore-post">
+            <div key={post.id} id="explore-post">
               <div onClick={this.headerClick.bind(this, post)}
                 id="ex-header">{post.user.username}</div>
                   <img id="image-image" src={post.image_url}/>
                   <div id="image-caption">{post.image_caption}</div>
+              <div className="ex-tags">{tags}</div>
               <div id="post-footer">
                 <div id="post-likes">
                   {post.likes.length} likes
@@ -92,11 +104,12 @@ const ExploreFeed  = React.createClass({
           break;
         case "Quote":
           posts.push(
-            <div id="explore-post">
+            <div key={post.id} id="explore-post">
               <div onClick={this.headerClick.bind(this, post)}
                 id="ex-header">{post.user.username}</div>
               <div id="ex-quote">"{post.quote}"</div>
               <div id="ex-quote-source">{post.quote_source}</div>
+                <div className="ex-tags">{tags}</div>
                 <div id="post-footer">
                   <div id="post-likes">
                     {post.likes.length} likes
@@ -108,13 +121,14 @@ const ExploreFeed  = React.createClass({
           break;
         case "Link":
           posts.push(
-            <div id="explore-post">
+            <div key={post.id} id="explore-post">
               <div onClick={this.headerClick.bind(this, post)}
                 id="ex-header">{post.user.username}</div>
               <div id="link-post-ex">
                   <a id="link-ex"
                     href={post.link_url}>{post.link_title}</a>
                 </div>
+                  <div className="ex-tags">{tags}</div>
                 <div id="post-footer">
                   <div id="post-likes">
                     {post.likes.length} likes
@@ -127,7 +141,7 @@ const ExploreFeed  = React.createClass({
           break;
         case "Audio":
           posts.push(
-            <div id="explore-post">
+            <div key={post.id} id="explore-post">
               <div onClick={this.headerClick.bind(this, post)}
                 id="ex-header">{post.user.username}</div>
                 <div id="audio-title">{post.audio_title}</div>
@@ -138,6 +152,7 @@ const ExploreFeed  = React.createClass({
                         Your browser does not support audio from Stumblr.
                   </audio>
                 </div>
+                  <div className="ex-tags">{tags}</div>
                 <div id="post-footer">
                   <div id="post-likes">
                     {post.likes.length} likes
@@ -150,7 +165,7 @@ const ExploreFeed  = React.createClass({
       case "Video":
       let url = "https://www.youtube.com/v/" + post.video_url.split("=")[1];
         posts.push(
-          <div id="explore-post">
+          <div key={post.id} id="explore-post">
             <div onClick={this.headerClick.bind(this, post)}
               id="ex-header">{post.user.username}</div>
               <div id="video-video">
@@ -158,6 +173,7 @@ const ExploreFeed  = React.createClass({
               src={url}
               frameborder="0" allowfullscreen></iframe>
               </div>
+                <div className="ex-tags">{tags}</div>
               <div id="post-footer">
                 <div id="post-likes">
                   {post.likes.length} likes

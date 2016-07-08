@@ -74,7 +74,7 @@ const RecBlogs= React.createClass({
       }
 
       return (
-        <div id="rec-blog">
+        <div key={blog.id} id="rec-blog">
           <div className="rec-left">
           <img onClick={this.onAvatarClick.bind(this, blog.owner_id)}
             id="rec-avatar" src={blog.avatar}/>

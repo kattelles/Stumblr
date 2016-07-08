@@ -11,7 +11,6 @@ Rails.application.routes.draw do
       end
 
       resources :blogs, only: [:index]
-
     end
 
     root "static_pages#root"

@@ -27,6 +27,17 @@ module.exports = {
     PostApiUtil.getExplorePosts(this.receiveFeed);
   },
 
+  getSearchResults(queryString) {
+    PostApiUtil.getSearchResults(queryString, this.receiveSearchResults);
+  },
+
+  receiveSearchResults(results) {
+    Dispatcher.dispatch({
+      actionType: PostConstants.SEARCH_RESULTS_RECEIVED,
+      results: results
+    });
+  },
+
   receiveFeed(posts) {
     Dispatcher.dispatch({
       actionType: PostConstants.POSTS_RECEIVED,

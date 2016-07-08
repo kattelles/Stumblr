@@ -34,7 +34,11 @@ const VideoForm = React.createClass({
   handleSubmit() {
 
     if (this.props.edit === "true") {
-      let tags = this.state.tags.split(" ");
+      let tags = [];
+      if (this.state.tags.length > 0) {
+        tags = this.state.tags.replace(/ /g, "");
+        tags = tags.split("#").slice(1);
+      }
       PostActions.editPost({
         post: {
           id: this.props.post.id,
@@ -46,7 +50,7 @@ const VideoForm = React.createClass({
         }
       });
     } else {
-      let tags = this.state.tags.split(" ");
+      let tags = this.state.tags.replace(/#/g, "").split(" ");
       let id = this.props.user.id;
       PostActions.createPost({
         post: {

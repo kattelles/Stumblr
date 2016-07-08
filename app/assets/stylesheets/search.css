@@ -2,6 +2,7 @@
   padding: 10px;
   padding-bottom: 5px;
   margin-top: 10px;
+  display: flex;
 }
 
 .search input {
@@ -11,4 +12,9 @@
   border: 0px;
   font-size: 18px;
   padding-left: 5px;
+}
+
+.search-submit {
+  cursor: pointer;
+  margin-left: 5px;
 }

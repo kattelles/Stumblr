@@ -4,7 +4,7 @@ const SideBar = require("./sidebar/side_bar");
 const PostForm = require("./post_form");
 const hashHistory = require("react-router").hashHistory;
 const PostFeed = require("./post_feed");
-const Search = require("./search");
+const Search = require("./search/search");
 
 const Dashboard = React.createClass({
   logoClick() {

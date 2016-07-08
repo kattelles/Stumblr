@@ -82,6 +82,10 @@ const QuotePost = React.createClass({
         break;
     }
 
+    let tags = this.props.post.tags.map(tag => {
+      return (<div key={tag.id} className="tag"> #{tag.name} </div>);
+    });
+
     return (
       <div id="post">
         <img id="post-avatar" onClick={this.avatarClick}
@@ -100,6 +104,8 @@ const QuotePost = React.createClass({
         <div id="quote-source">
           -- {this.props.post.quote_source}
         </div>
+
+        <div className="tags"> {tags} </div>
 
         <div id="post-footer">
           <div id="post-likes">

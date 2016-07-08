@@ -47,7 +47,6 @@ const LinkPost  = React.createClass({
     LikeActions.unlike(_like.id);
   },
 
-
   render: function() {
     let footerToggle;
 
@@ -84,6 +83,10 @@ const LinkPost  = React.createClass({
         break;
     }
 
+    let tags = this.props.post.tags.map(tag => {
+      return (<div key={tag.id} className="tag"> #{tag.name} </div>);
+    });
+
     return (
       <div id="post">
         <img id="post-avatar" onClick={this.avatarClick}
@@ -99,6 +102,8 @@ const LinkPost  = React.createClass({
           <a id="link"
             href={this.props.post.link_url}>{this.props.post.link_title}</a>
         </div>
+
+          <div className="tags"> {tags} </div>
 
         <div id="post-footer">
           <div id="post-likes">

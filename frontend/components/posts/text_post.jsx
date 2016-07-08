@@ -84,7 +84,7 @@ const TextPost = React.createClass({
       }
 
     let tags = this.props.post.tags.map(tag => {
-      return (<div className="tag"> #{tag.name} </div>);
+      return (<div key={tag.id} className="tag"> #{tag.name} </div>);
     });
     return (
       <div id="post">

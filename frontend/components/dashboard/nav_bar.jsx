@@ -57,26 +57,26 @@ const NavBar = React.createClass({
 
       <div className="navbar">
 
-        <div className="tooltip" onClick={this.goToExplore}>
-          <span className="tooltiptext">Explore</span>
-        <img id="eye-icon" src="https://res.cloudinary.com/kattelles/image/upload/v1467831168/eye-3-48_wozsqr.png"/>
-        </div>
-
-
-
-        <div className="tooltip" onClick={this.goToDashboard}>
-          <span className="tooltiptext">My Dashboard</span>
-          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592469/house-32_2_lfyr7s.png"/>
-        </div>
 
         <div className="tooltip" onClick={this.goToMyBlog}>
             <span className="tooltiptext">My blog</span>
             <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592691/contacts-32_1_hhqmqc.png" />
         </div>
 
+        <div className="tooltip" onClick={this.goToExplore}>
+          <span className="tooltiptext">Explore</span>
+        <img id="eye-icon" src="https://res.cloudinary.com/kattelles/image/upload/v1467831168/eye-3-48_wozsqr.png"/>
+        </div>
+
         <div className="tooltip" onClick={this.goToSettings}>
           <span className="tooltiptext">Settings</span>
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592809/settings-4-32_1_uj3ayg.png" />
+        </div>
+
+
+        <div className="tooltip" onClick={this.goToDashboard}>
+          <span className="tooltiptext">My Dashboard</span>
+          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467592469/house-32_2_lfyr7s.png"/>
         </div>
 
         <div className="tooltip" onClick={this.logOut}>

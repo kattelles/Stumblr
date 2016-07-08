@@ -84,7 +84,9 @@ const VideoPost  = React.createClass({
           post={this.props.post}/>;
         break;
     }
-
+    let tags = this.props.post.tags.map(tag => {
+      return (<div key={tag.id} className="tag"> #{tag.name} </div>);
+    });
 
     let url = "https://www.youtube.com/v/" + this.props.post.video_url.split("=")[1];
 
@@ -106,6 +108,7 @@ const VideoPost  = React.createClass({
         </div>
 
         <div id="audio-title">{this.props.post.video_title}</div>
+          <div className="tags"> {tags} </div>
 
         <div id="post-footer">
           <div id="post-likes">
