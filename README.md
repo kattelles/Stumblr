@@ -1,143 +1,64 @@
 # Stumblr
 
-[Live App][heroku]
+[Stumblr live][heroku] **NB:** This should be a link to your production site
 
 [heroku]: https://stumblrr.herokuapp.com/
 
-## Minimum Viable Product
+Stumblr is a full-stack web application inspired by Tumblr.  It utilizes Ruby on Rails on the backend, a PostgreSQL database, and React.js with a Flux architectural framework on the frontend.  
 
-Stumblr is a web application inspired by Tumblr that will be built using Ruby on Rails and React.js.  By the end of Week 9, this app will, at a minimum, satisfy the following criteria:
+## Features & Implementation
 
-- [ ] Hosting on Heroku
-- [ ] New account creation, login, and guest/demo login
-- [ ] A production README, replacing this README
-- [ ] Post Forms (for various post types)
-  - [ ] Smooth, bug-free navigation
-  - [ ] Adequate seed data to demonstrate the site's features
-  - [ ] Adequate CSS styling
-- [ ] Feed
-  - [ ] Smooth, bug-free navigation
-  - [ ] Adequate seed data to demonstrate the site's features
-  - [ ] Adequate CSS styling
-- [ ] Follows
-  - [ ] Smooth, bug-free navigation
-  - [ ] Adequate seed data to demonstrate the site's features
-  - [ ] Adequate CSS styling
-- [ ] Likes
-  - [ ] Smooth, bug-free navigation
-  - [ ] Adequate seed data to demonstrate the site's features
-  - [ ] Adequate CSS styling
+### Single-Page App
 
-## Design Docs
-* [View Wireframes][views]
-* [React Components][components]
-* [Flux Cycles][flux-cycles]
-* [API endpoints][api-endpoints]
-* [DB schema][schema]
+Stumblr is a fully-functional single-page. All of it's content is delivered on one static page.  
 
-[views]: docs/views.md
-[components]: docs/components.md
-[flux-cycles]: docs/flux-cycles.md
-[api-endpoints]: docs/api-endpoints.md
-[schema]: docs/schema.md
+### User Authentication
 
-## Implementation Timeline
+### Blog Creation and Rendering
 
-### Phase 1: Deploy to Heroku, User Authentication, Blog Model (1.5 day, W1 Wed 12pm)
+Upon sign-up, a blog is created for the user.
 
-**Objective:** Functioning rails project with Authentication and basic Blog model.
+![image of blog show page](https://github.com/kattelles/Stumblr/tree/master/docs/images/blogshow.png)
 
-- [x] Deploy to Heroku
-- [x] create `User` model
-- [x] authentication
-- [x] user signup/sign-in pages
-- [x] blank landing page after sign-in
-- [ ] create `Blog` model
-- [ ] create BlogsController (create, show)
+### Post Creation and Rendering
 
-### Phase 2: Post Model, JSON API, Flux Architecture, Post Form, Post Feed  (2 days, W1 Fr 12pm)
+From the dashboard, users can create 6 different types of posts: text, image, quote, link, audio, and video.
 
-**Objective:** Posts can be created, edited and destroyed through
-the API. Post components and flux loop are built out. Finish postForm and postFeed.
+![image of post form](https://github.com/kattelles/Stumblr/tree/master/docs/images/postform.png)
 
-- [ ] create `Post` model
-- [ ] jBuilder views for posts
-- [ ] seed the database with a small amount of test data
-- [ ] CRUD API for posts (`PostsController`)
-- [ ] setup `APIUtil` to interact with the API
-- [ ] test out API interaction in the console.
-- [ ] implement each Blog component, building out the flux loop as needed.
-  - [ ] PostFeed
-    - [ ] PostFeedItem  
-      - [ ] Post Detail
-  - [ ] Post Form
+Upon click, a modal unique to the type of post opens.
 
-### Weekend: Finish anything left from phase 1-2. Focus on the completion of postForm and postFeed. (2 day, W1 Sun 6pm)
+![image of image post modal](https://github.com/kattelles/Stumblr/tree/master/docs/images/postmodal.png)
 
-### Phase 3: Blog Show (1 day, W2 M 6pm)
+After creation, the post is rendered on it's blog show page and the users post feed.
+![image of post show](https://github.com/kattelles/Stumblr/tree/master/docs/images/show.png)
 
-**Objective:** Posts can be viewed on Blog Show page.
+### Post Editing and Deleting
 
-- [ ] setup React Router
-- [ ] implement each Blog component, building out the flux loop as needed.
-  - [ ] BlogHeader
-  - [ ] BlogFeed
+For posts which the current user created, edit and delete buttons are visible on the post.
 
-### Phase 4: Likes (1 day, W2 Tu 6pm)
+![image of post buttons](https://github.com/kattelles/Stumblr/tree/master/docs/images/editdelete.png)
 
-**Objective:** Posts can be liked and unliked. Posts display their numLikes.
+Edit button opens edit modal:
 
-- [ ] create 'Like' model and join table
-- [ ] implement each Like component, building out the flux loop as needed.
-  - [ ] LikeForm
-  - [ ] LikesDisplay
+![image of post edit modal](https://github.com/kattelles/Stumblr/tree/master/docs/images/postedit.png)
 
-### Phase 5: Follows (1 day, W2 Wed 6pm)
+Delete button opens delete modal:
 
-**Objective:** Users can follow and unfollow blogs. Blogs display numFollowers.
+![image of post delete modal](https://github.com/kattelles/Stumblr/tree/master/docs/images/deletemodal.png)
 
-- [ ] create `Follow` model and join table
-- [ ] JSON API for follows
-- [ ] Setup up follow flux loop
-  - [ ] setup Follow Actions and ApiUtil
-  - [ ] make Follow Store
-  - [ ] Build out follow component
-    - [ ] BlogShowFollow
+### Dashboard and Feed
 
-### Phase 6: Search (1 day, W2 Th 6pm)
+The root page of the app is the user's Dashboard which includes the search feature, navigation bar, new post forms, post feed, and a side bar including recommended blogs, trending tags and a trending post.
 
-**Objective:** Posts and blogs can be searched by post title or blog title.
+![image of dashboard](https://github.com/kattelles/Stumblr/tree/master/docs/images/dashboard.png)
 
-- [ ] create `Search` model and join table
-- [ ] JSON API for Search
-- [ ] Setup up Search flux loop
-  - [ ] setup Search Actions and ApiUtil
-  - [ ] make Search Store
-  - [ ] Build out SearchBar component
+### Follows
 
-### Phase 7: Seeding (1 day, W2 Fr 6pm)
+### Likes
 
-**objective:** Provide deep and lush seed data for application.
+### Tags
 
-- [ ] get seed data
+### Search and Explore
 
-### Weekend: Styling Cleanup (2 days, W2 Sun 6pm)
-
-**objective:** Make the site feel more cohesive and awesome.
-
-- [ ] Improve HTML and CSS.
-- [ ] Add modals, transitions, and other styling flourishes.
-
-### Bonus Features (TBD)
-- [ ] Recommended Blogs Sidebar
-- [ ] Reblog Feature
-- [ ] Explore Page
-- [ ] Taggings
-
-[phase-one]: docs/phases/phase1.md
-[phase-two]: docs/phases/phase2.md
-[phase-three]: docs/phases/phase3.md
-[phase-four]: docs/phases/phase4.md
-[phase-five]: docs/phases/phase5.md
-[phase-six]: docs/phases/phase6.md
-[phase-seven]: docs/phases/phase7.md
+### Future Directions for the Project

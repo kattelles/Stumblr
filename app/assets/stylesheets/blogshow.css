@@ -36,14 +36,14 @@
   font-size: 22px;
 }
 
-#follows {
+.followers {
   padding-top: 10px;
   padding-left: 20px;
   width: 100px;
   font-style: italic;
 }
 
-#blog-nav-bar {
+.blog-nav-bar {
   display: flex;
   position: absolute;
   top: 10px;
@@ -51,7 +51,7 @@
 }
 
 
-#blog-show-dashboard {
+.blog-show-dashboard {
   height: 35px;
   width: 35px;
   border-radius: 3px;
@@ -59,12 +59,12 @@
   cursor: pointer;
 }
 
-#blog-show-dashboard img {
+.blog-show-dashboard img {
   width: 35px;
   height: 35px;
 }
 
-#blog-show-edit {
+.blog-show-edit {
   height: 35px;
   width: 35px;
   border-radius: 3px;
@@ -72,12 +72,12 @@
   cursor: pointer;
 }
 
-#blog-show-edit img {
+.blog-show-edit img {
   width: 30px;
   height: 30px;
 }
 
-#blog-show-follow {
+.blog-show-follow {
   height: 35px;
   width: 35px;
   border-radius: 3px;
@@ -85,9 +85,10 @@
   cursor: pointer;
 }
 
-#blog-show-follow img {
+.blog-show-follow-img {
   width: 30px;
   height: 30px;
+  margin-right: 5px;
 }
 
 #blog-feed {

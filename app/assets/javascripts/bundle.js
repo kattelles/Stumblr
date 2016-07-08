@@ -35980,7 +35980,7 @@
 	        React.createElement(
 	          "div",
 	          { onClick: this.click, className: "radar-header" },
-	          "nature lover"
+	          "nature_lover"
 	        ),
 	        React.createElement("img", { src: "http://res.cloudinary.com/kattelles/image/upload/v1467923011/photo-1429552097216-d1944f46d443_2_cksvx3.jpg" }),
 	        React.createElement("div", { className: "radar-footer" })
@@ -38486,6 +38486,8 @@
 
 	"use strict";
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	var React = __webpack_require__(1);
 	var BlogStore = __webpack_require__(282);
 	var SessionStore = __webpack_require__(263);
@@ -38553,32 +38555,39 @@
 	
 	    var tooltipText = void 0;
 	    if (parseInt(this.props.params.userId) === this.state.currentUser.id) {
+	      var _React$createElement;
+	
 	      return React.createElement(
 	        "div",
-	        { id: "blog-show-edit", className: "tooltip", onClick: this.editBlog },
+	        (_React$createElement = { className: "blog-show-edit" }, _defineProperty(_React$createElement, "className", "tooltip"), _defineProperty(_React$createElement, "onClick", this.editBlog), _React$createElement),
 	        React.createElement(
 	          "span",
 	          { className: "tooltiptext" },
 	          "Edit"
 	        ),
-	        React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321393/edit-32_zkkgxx.png" })
+	        React.createElement("img", { className: "blog-show-edit-img",
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467321393/edit-32_zkkgxx.png" })
 	      );
 	    } else {
+	      var _React$createElement2;
+	
 	      var button = void 0,
 	          clickMethod = void 0;
 	      if (BlogStore.isFollowing(this.state.currentUser.id)) {
-	        button = React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321538/minus-32_mqqko7.png" });
+	        button = React.createElement("img", { className: "blog-show-follow-img",
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467321538/minus-32_mqqko7.png" });
 	        clickMethod = this.unfollow;
 	        tooltipText = "Unfollow";
 	      } else {
-	        button = React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321543/plus-32_kav2vv.png" });
+	        button = React.createElement("img", { className: "blog-show-follow-img",
+	          src: "https://res.cloudinary.com/kattelles/image/upload/v1467321543/plus-32_kav2vv.png" });
 	        clickMethod = this.follow;
 	        tooltipText = "Follow";
 	      }
 	
 	      return React.createElement(
 	        "div",
-	        { id: "blog-show-follow", className: "tooltip", onClick: clickMethod },
+	        (_React$createElement2 = { className: "blog-show-follow" }, _defineProperty(_React$createElement2, "className", "tooltip"), _defineProperty(_React$createElement2, "onClick", clickMethod), _React$createElement2),
 	        React.createElement(
 	          "div",
 	          null,
@@ -38596,6 +38605,8 @@
 	    this.setState({ modalOpen: false });
 	  },
 	  render: function render() {
+	    var _React$createElement3;
+	
 	    if (this.state.blog === "") {
 	      return React.createElement(
 	        "div",
@@ -38621,11 +38632,12 @@
 	      React.createElement("div", { className: "cover-photo", style: coverPhoto }),
 	      React.createElement(
 	        "div",
-	        { id: "blog-nav-bar" },
+	        { className: "blog-nav-bar" },
 	        toggleButton,
 	        React.createElement(
 	          "div",
-	          { id: "blog-show-dashboard", className: "tooltip", onClick: this.backToDashboard },
+	          (_React$createElement3 = { className: "blog-show-dashboard"
+	          }, _defineProperty(_React$createElement3, "className", "tooltip"), _defineProperty(_React$createElement3, "onClick", this.backToDashboard), _React$createElement3),
 	          React.createElement(
 	            "span",
 	            { className: "tooltiptext" },
@@ -38633,7 +38645,7 @@
 	          ),
 	          React.createElement(
 	            "div",
-	            { id: "blog-show-dashboard-inner" },
+	            null,
 	            React.createElement("img", { src: "https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png" })
 	          )
 	        )
@@ -38652,12 +38664,11 @@
 	      ),
 	      React.createElement(
 	        "div",
-	        { id: "follows" },
+	        { className: "followers" },
 	        numFollows,
 	        " Follower(s)"
 	      ),
 	      React.createElement(BlogFeed, { posts: this.state.posts }),
-	      React.createElement("footer", { id: "blog-show-footer" }),
 	      React.createElement(
 	        Modal,
 	        {

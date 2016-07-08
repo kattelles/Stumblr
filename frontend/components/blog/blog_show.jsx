@@ -76,29 +76,33 @@ const BlogShow = React.createClass({
     let tooltipText;
     if (parseInt(this.props.params.userId) === this.state.currentUser.id) {
       return (
-          <div id="blog-show-edit" className="tooltip" onClick={this.editBlog}>
-            <span className="tooltiptext">Edit</span>
-              <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321393/edit-32_zkkgxx.png"/>
+          <div className="blog-show-edit" className="tooltip" onClick={this.editBlog}>
+              <span className="tooltiptext">Edit</span>
+              <img className="blog-show-edit-img"
+                 src="https://res.cloudinary.com/kattelles/image/upload/v1467321393/edit-32_zkkgxx.png"/>
           </div>
       );
     } else {
       let button, clickMethod;
       if (BlogStore.isFollowing(this.state.currentUser.id))  {
         button = (
-          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321538/minus-32_mqqko7.png"/>
+          <img className="blog-show-follow-img"
+            src="https://res.cloudinary.com/kattelles/image/upload/v1467321538/minus-32_mqqko7.png"/>
         );
         clickMethod = this.unfollow;
         tooltipText = "Unfollow";
       } else {
         button = (
-          <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321543/plus-32_kav2vv.png" />
+          <img className="blog-show-follow-img"
+            src="https://res.cloudinary.com/kattelles/image/upload/v1467321543/plus-32_kav2vv.png" />
         );
         clickMethod = this.follow;
           tooltipText = "Follow";
       }
 
       return (
-        <div id="blog-show-follow" className="tooltip" onClick={clickMethod}><div>{button}
+        <div className="blog-show-follow" className="tooltip"
+          onClick={clickMethod}><div>{button}
         <span className="tooltiptext">{tooltipText}</span></div></div>
       );
     }
@@ -107,7 +111,6 @@ const BlogShow = React.createClass({
   onModalClose() {
     this.setState({modalOpen: false});
   },
-
 
   render() {
     if (this.state.blog === "") {
@@ -128,11 +131,12 @@ const BlogShow = React.createClass({
     return(
         <div className="blog-show">
           <div className="cover-photo" style={coverPhoto}/>
-          <div id="blog-nav-bar">
+          <div className="blog-nav-bar">
             {toggleButton}
-            <div id="blog-show-dashboard"  className="tooltip" onClick={this.backToDashboard}>
+            <div className="blog-show-dashboard"
+              className="tooltip" onClick={this.backToDashboard}>
               <span className="tooltiptext">Home</span>
-                <div id="blog-show-dashboard-inner">
+                <div>
                   <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png"/>
                </div>
             </div>
@@ -140,11 +144,10 @@ const BlogShow = React.createClass({
           <img className="avatar" src={avatar}/>
           <h1 className='blog-title'>{this.state.blog.title} </h1>
           <h3 className="blog-desc">{this.state.blog.description}</h3>
-
-           <div id="follows">{numFollows} Follower(s)</div>
+          <div className="followers">{numFollows} Follower(s)</div>
 
           <BlogFeed posts={this.state.posts}/>
-          <footer id='blog-show-footer'/>
+
          <Modal
            className="blog-edit-modal"
            isOpen={this.state.modalOpen}
