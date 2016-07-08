@@ -11,7 +11,8 @@ const Search = React.createClass({
     this.setState({input: e.target.value.replace(/#/, "")});
   },
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     PostActions.getSearchResults(this.state.input);
     hashHistory.push("search");
   },
@@ -19,7 +20,10 @@ const Search = React.createClass({
   render: function() {
     return (
       <div className="search">
-        <input onChange={this.inputChange} placeholder="Search #tags"/>
+        <form onSubmit={this.handleSubmit}>
+          <input
+          onChange={this.inputChange} placeholder="Search #tags"/>
+      </form>
         <div className="search-submit"
           onClick={this.handleSubmit}>
           <img src="https://res.cloudinary.com/kattelles/image/upload/v1467929817/search-14-32_fhtipb.png"/>

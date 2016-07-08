@@ -49,20 +49,34 @@ PostStore.allPosts = function() {
 };
 
 const addLike = function(like) {
-  _posts[like.post_id].likes.push(like);
+  if (_posts[like.post_id]) {
+    _posts[like.post_id].likes.push(like);
+  }
+
+  _searchResults.forEach(post => {
+    if (like.post_id === post.id) {
+      post.likes.push(like);
+    }
+  });
 };
 
 const removeLike = function(like) {
+  if (_posts[like.post_id]) {
+    let idx;
+      _posts[like.post_id].likes.forEach((_like, index) => {
+        if (like.id === _like.id) {
+          idx = index;
+        }
+      });
+    _posts[like.post_id].likes.splice(idx, 1);
+  }
 
-  let idx;
-
-    _posts[like.post_id].likes.forEach((_like, index) => {
-      if (like.id === _like.id) {
-        idx = index;
-      }
-    });
-
-  _posts[like.post_id].likes.splice(idx, 1);
+  _searchResults.forEach((post, index) => {
+    if (like.post_id === post.id) {
+      let likeIdx = _searchResults[index].likes.indexOf(like);
+      _searchResults[index].likes.splice(likeIdx, 1);
+    }
+  });
 };
 
 PostStore.getPost = function(id) {

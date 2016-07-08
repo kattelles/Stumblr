@@ -3,6 +3,7 @@ const NavBar = require("../dashboard/nav_bar");
 const PostStore = require("../../stores/post_store");
 const PostActions = require("../../actions/post_actions");
 const ExploreFeed = require("./explore_feed");
+const Search = require("../dashboard/search/search");
 
 const Explore  = React.createClass({
 
@@ -36,6 +37,7 @@ const Explore  = React.createClass({
             width="150" />
           </div>
           <NavBar/>
+          <Search/>
           <ExploreFeed posts={this.state.posts}/>
         </div>
       </div>

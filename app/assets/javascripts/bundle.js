@@ -37032,20 +37032,34 @@
 	};
 	
 	var addLike = function addLike(like) {
-	  _posts[like.post_id].likes.push(like);
+	  if (_posts[like.post_id]) {
+	    _posts[like.post_id].likes.push(like);
+	  }
+	
+	  _searchResults.forEach(function (post) {
+	    if (like.post_id === post.id) {
+	      post.likes.push(like);
+	    }
+	  });
 	};
 	
 	var removeLike = function removeLike(like) {
+	  if (_posts[like.post_id]) {
+	    var idx = void 0;
+	    _posts[like.post_id].likes.forEach(function (_like, index) {
+	      if (like.id === _like.id) {
+	        idx = index;
+	      }
+	    });
+	    _posts[like.post_id].likes.splice(idx, 1);
+	  }
 	
-	  var idx = void 0;
-	
-	  _posts[like.post_id].likes.forEach(function (_like, index) {
-	    if (like.id === _like.id) {
-	      idx = index;
+	  _searchResults.forEach(function (post, index) {
+	    if (like.post_id === post.id) {
+	      var likeIdx = _searchResults[index].likes.indexOf(like);
+	      _searchResults[index].likes.splice(likeIdx, 1);
 	    }
 	  });
-	
-	  _posts[like.post_id].likes.splice(idx, 1);
 	};
 	
 	PostStore.getPost = function (id) {
@@ -38750,6 +38764,7 @@
 	var PostStore = __webpack_require__(306);
 	var PostActions = __webpack_require__(298);
 	var ExploreFeed = __webpack_require__(324);
+	var Search = __webpack_require__(338);
 	
 	var Explore = React.createClass({
 	  displayName: "Explore",
@@ -38792,6 +38807,7 @@
 	              width: "150" })
 	          ),
 	          React.createElement(NavBar, null),
+	          React.createElement(Search, null),
 	          React.createElement(ExploreFeed, { posts: this.state.posts })
 	        )
 	      )
@@ -43688,7 +43704,8 @@
 	  inputChange: function inputChange(e) {
 	    this.setState({ input: e.target.value.replace(/#/, "") });
 	  },
-	  handleSubmit: function handleSubmit() {
+	  handleSubmit: function handleSubmit(e) {
+	    e.preventDefault();
 	    PostActions.getSearchResults(this.state.input);
 	    hashHistory.push("search");
 	  },
@@ -43698,7 +43715,12 @@
 	    return React.createElement(
 	      "div",
 	      { className: "search" },
-	      React.createElement("input", { onChange: this.inputChange, placeholder: "Search #tags" }),
+	      React.createElement(
+	        "form",
+	        { onSubmit: this.handleSubmit },
+	        React.createElement("input", {
+	          onChange: this.inputChange, placeholder: "Search #tags" })
+	      ),
 	      React.createElement(
 	        "div",
 	        { className: "search-submit",
@@ -43791,7 +43813,8 @@
 	  render: function render() {
 	    var _this = this;
 	
-	    var _tags = ["nature", "sports", "tech", "cats", "SF", "quotes", "music", "art", "coding", "animals"];
+	    var _tags = ["nature", "sports", "tech", "cats", "SF", "quotes", "music", "art", "coding", "funny", "dogs", "news", "silly", "animals", "happy"];
+	
 	    var tags = _tags.map(function (tag) {
 	      return React.createElement(
 	        "div",
