@@ -16,7 +16,7 @@ Stumblr is a fully-functional single-page. All of it's content is delivered on o
 
 ### Blog Creation and Rendering
 
-Upon sign-up, a blog is created for the user. The blog has a default cover photo, title, and description, all of which can be edited by the user. The Blog show page renders that users posts, with the most recent at the top.
+Upon sign-up, a blog is created for the user. The blog has a default cover photo, title, and description, all of which can be edited by the user. The Blog show page renders that user's posts, with the most recent at the top.
 When looking at another user's blog, the edit button is replaced with a follow or unfollow button.
 
 ![image of blog show page](https://github.com/kattelles/Stumblr/blob/master/docs/images/blogshow.png)
@@ -31,7 +31,7 @@ Upon click, a modal unique to the type of post opens.
 
 ![image of image post modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/postmodal.png)
 
-After creation, the post is rendered on it's blog show page, the user's post feed, and the feed of that blogs followers.
+After creation, the post is rendered on it's blog show page, the user's post feed, and the feed of that blog's followers.
 
 ![image of post show](https://github.com/kattelles/Stumblr/blob/master/docs/images/postshow.png)
 
@@ -75,7 +75,9 @@ The feed is a collection of the user's posts and the posts of the blogs the user
 
 ### Follows
 
-Users are able to follow or unfollow other blogs. When a user follows a blog, the latter's content will appear in that user's feed.
+Users are able to follow or unfollow other blogs. When a user follows a blog, the latter's content will appear in that user's feed. The number of followers a blog has is rendering on the blog show page.
+
+![image of follow](https://github.com/kattelles/Stumblr/blob/master/docs/images/follow.png)
 
 ### Likes
 
