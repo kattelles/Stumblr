@@ -10,8 +10,9 @@ class Api::BlogsController < ApplicationController
   end
 
   def index
-    rec_blogs = [46, 47, 48, 49, 50, 51]
-    @blogs = Blog.all.select {|blog| rec_blogs.include?(blog.owner_id)}
+    rec_blogs = ["music <3", "My Travel Blog", "Quote of the Day", "Coding Rocks!",
+    "san fran fan!", "I <3 Cats!", "nature lover"]
+    @blogs = Blog.all.select {|blog| rec_blogs.include?(blog.title)}
   end
 
   private

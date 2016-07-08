@@ -35960,7 +35960,7 @@
 	var Radar = React.createClass({
 	  displayName: "Radar",
 	  click: function click() {
-	    var url = "blogs/48";
+	    var url = "blogs/3";
 	    hashHistory.push(url);
 	  },
 	
@@ -36013,7 +36013,7 @@
 	  render: function render() {
 	    var _this = this;
 	
-	    var _tags = ["nature", "photo", "travel", "tech", "cats", "SF", "quote", "music", "coding", "funny", "dogs", "news", "silly", "animals"];
+	    var _tags = ["nature", "photo", "travel", "tech", "cats", "SF", "quote", "music", "coding"];
 	
 	    var tags = _tags.map(function (tag) {
 	      return React.createElement(

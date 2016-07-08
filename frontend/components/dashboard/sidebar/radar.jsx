@@ -3,7 +3,7 @@ const hashHistory =require("react-router").hashHistory;
 
 const Radar = React.createClass({
   click() {
-    let url = "blogs/48";
+    let url = "blogs/3";
     hashHistory.push(url);
   },
 

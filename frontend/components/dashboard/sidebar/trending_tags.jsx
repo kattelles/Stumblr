@@ -12,7 +12,7 @@ const PopularTags = React.createClass({
   render: function() {
     let _tags = ["nature", "photo", "travel",
      "tech", "cats", "SF", "quote", "music",
-      "coding", "funny", "dogs", "news", "silly", "animals"];
+      "coding"];
 
     let tags = _tags.map(tag => {
       return (
