@@ -14,6 +14,10 @@ Stumblr is a fully-functional single-page. All of it's content is delivered on o
 
 ### User Authentication
 
+Users can login, sign-up, or enter using a guest account.
+
+![image of splash](https://github.com/kattelles/Stumblr/blob/master/docs/images/splash.png)
+
 ### Blog Creation and Rendering
 
 Upon sign-up, a blog is created for the user. The blog has a default cover photo, title, and description, all of which can be edited by the user. The Blog show page renders that user's posts, with the most recent at the top.
