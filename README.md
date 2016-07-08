@@ -45,7 +45,7 @@ Edit modal:
 
 Delete modal:
 
-![image of delete modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/postdelete.png)
+![image of delete modal](https://github.com/kattelles/Stumblr/blob/master/docs/images/deletemodal.png)
 
 ### Dashboard and Feed
 
@@ -53,12 +53,48 @@ The root page of the app is the user's Dashboard which includes the search featu
 
 ![image of dashboard](https://github.com/kattelles/Stumblr/blob/master/docs/images/dashboard.png)
 
+The NavBar has links the user's blog, an explore page, user settings, and a button to logout.
+
+![image of navbar](https://github.com/kattelles/Stumblr/blob/master/docs/images/navbar.png)
+
+The recommended blogs sidebar displays several default blogs which can be followed.
+
+![image of recblogs](https://github.com/kattelles/Stumblr/blob/master/docs/images/recblogs.png)
+
+Trending tags are buttons for the most recently used tags. On click, these buttons bring you to the search result page for that tag.
+
+![image of tags](https://github.com/kattelles/Stumblr/blob/master/docs/images/tags.png)
+
+The radar section of the sidebar displays a trending post.
+
+![image of radar](https://github.com/kattelles/Stumblr/blob/master/docs/images/radar.png)
+
+The feed is a collection of the user's posts and the posts of the blogs the user follows.
+
+![image of feed](https://github.com/kattelles/Stumblr/blob/master/docs/images/feed.png)
+
 ### Follows
+
+Users are able to follow or unfollow other blogs. When a user follows a blog, the latter's content will appear in that user's feed.
 
 ### Likes
 
-### Tags
+Posts can be liked or unliked. The number of total likes is displayed on each post.
 
-### Search and Explore
+![image of like](https://github.com/kattelles/Stumblr/blob/master/docs/images/like.png)
+
+### Search
+
+Users can search for posts with a specific tag in the search bar at the top of the dashboard. Search results will be displayed upon submit.
+
+![image of search](https://github.com/kattelles/Stumblr/blob/master/docs/images/search.png)
+
+### Explore
+
+The explore page contains the most recent posts made on Stumblr.
+
+![image of explore](https://github.com/kattelles/Stumblr/blob/master/docs/images/explore.png)
 
 ### Future Directions for the Project
+
+I plan to continue working on this project. Future features I'd like to implement include: reblogging, post comments, and notifications.
