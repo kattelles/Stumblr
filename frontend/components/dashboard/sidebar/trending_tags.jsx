@@ -10,9 +10,10 @@ const PopularTags = React.createClass({
   },
 
   render: function() {
-    let _tags = ["nature", "sports", "tech", "cats", "SF", "quotes", "music",
-    "art", "coding", "funny", "dogs", "news", "silly", "animals", "happy"];
-    
+    let _tags = ["nature", "photo", "travel",
+     "tech", "cats", "SF", "quote", "music",
+      "coding", "funny", "dogs", "news", "silly", "animals"];
+
     let tags = _tags.map(tag => {
       return (
         <div key={tag} onClick={this.click.bind(this, tag)}

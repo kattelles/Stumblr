@@ -139,11 +139,13 @@
   padding-top: 10px;
   float: left;
   color: #a2a2a2;
+
 }
 
 #post-toggle {
   padding: 6px 12px;
   float: right;
+  cursor: pointer;
 }
 
 #edit-post {

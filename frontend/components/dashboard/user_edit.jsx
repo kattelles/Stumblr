@@ -51,6 +51,14 @@ const UserEdit = React.createClass({
   },
 
   render() {
+
+    let disabled = "";
+    let value = this.state.username;
+
+    if (this.state.username === "guest") {
+      disabled = "disabled";
+      value = "you cannot edit guest's username :(";
+    }
     return(
       <div>
 
@@ -58,7 +66,8 @@ const UserEdit = React.createClass({
 
         <div id="user-edit-input">
         <div>Username: </div>
-        <input onChange={this.usernameChange} value={this.state.username}/>
+        <input onChange={this.usernameChange} disabled={disabled}
+          value={value}/>
 
         <br/>
 

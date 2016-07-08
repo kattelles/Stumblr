@@ -51,8 +51,10 @@ const TextForm = React.createClass({
       });
 
     } else {
-
-    let tags = this.state.tags.replace(/#/g, "").split(" ");
+    let tags = [];
+    if (this.state.tags.length > 0) {
+      tags = this.state.tags.replace(/#/g, "").split(" ");
+    }
     let id = this.props.user.id;
     PostActions.createPost({
       post: {

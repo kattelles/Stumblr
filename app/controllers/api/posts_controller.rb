@@ -4,7 +4,7 @@ class Api::PostsController < ApplicationController
     tags = ps.delete("tags")
     @post = Post.new(ps)
     if @post.save
-      make_tags(tags, @post.id)
+      make_tags(tags, @post.id) if tags
       render :show
     else
       render json: @post.errors, status: 422
