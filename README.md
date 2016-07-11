@@ -6,7 +6,98 @@
 
 Stumblr is a full-stack web application inspired by Tumblr.  It utilizes Ruby on Rails on the backend, a PostgreSQL database, and React.js with a Flux architectural framework on the frontend.  
 
-## Features & Implementation
+
+## Implementation
+
+## Ruby on Rails Backend
+
+Stumblr uses a PostgreSQL database with the following tables: Users, Blogs, Posts, Follows, Likes, Tags and one  join table: Taggings.
+
+## users
+column name     | data type | details
+----------------|-----------|-----------------------
+id              | integer   | not null, primary key
+username        | string    | not null, indexed, unique
+password_digest | string    | not null
+session_token   | string    | not null, indexed, unique
+profile_pic     | text      |
+
+## blogs
+column name | data type | details
+------------|-----------|-----------------------
+id          | integer   | not null, primary key
+owner_id    | integer   | not null, foreign key (references users), indexed
+title       | string    |
+description | text      |
+cover_photo | text      |
+
+There are Rails models and controllers for each of the tables.
+```ruby
+class Post < ActiveRecord::Base
+
+  belongs_to(
+    :user,
+    :class_name => "User",
+    :foreign_key => :user_id,
+    :primary_key => :id
+    )
+
+  has_many :likes
+
+  has_many :taggings, dependent: :destroy, inverse_of: :post
+  has_many :tags, through: :taggings
+
+  validates :user_id, :post_type, presence: true
+end
+```
+```ruby
+class Api::LikesController < ApplicationController
+  def create
+    @like = Like.new(like_params)
+    if @like.save
+      render :show
+    else
+      render json: @like.errors, status: 422
+    end
+  end
+
+  def destroy
+    @like = Like.find(params[:id])
+    @like.destroy!
+
+    render :show
+  end
+  private
+
+  def like_params
+    params.require(:like).permit(:user_id, :post_id)
+  end
+
+end
+```
+
+I utilized JBuilder to pull information from the database to the frontend.
+
+```ruby
+json.extract! @blog, :title, :description, :owner_id, :id, :cover_photo
+json.avatar @blog.owner.avatar
+json.follows @blog.follows
+```
+
+## React.js Frontend
+
+Stumblr follows the React/Flux framework on the frontend.
+
+![image of flux](https://github.com/kattelles/Stumblr/blob/master/docs/images/flux-diagram.png)
+
+There are stores for the current session (user), blogs, and posts. Information for each blog (followers) is pulled from the database with each blog. Similarly, like and tag data is pulled with each post.
+
+There are four main groups of React Views: the dashboard, the explore page, posts, and blogs. Each main group is broken further into several more sub-components.
+
+The components are interacted with by the user which triggers and action creator. The action creators are responsible for hitting the database and passing that information to the Dispatcher and later the stores.
+
+
+## Features
 
 ### Single-Page App
 
