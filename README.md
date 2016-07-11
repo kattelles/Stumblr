@@ -94,8 +94,7 @@ There are stores for the current session (user), blogs, and posts. Information f
 
 There are four main groups of React Views: the dashboard, the explore page, posts, and blogs. Each main group is broken further into several more sub-components.
 
-The components are interacted with by the user which triggers and action creator. The action creators are responsible for hitting the database and passing that information to the Dispatcher and later the stores.
-
+The components are interacted with by the user which triggers the action creator. The action creators are responsible for hitting the database and passing that information to the Dispatcher and later the stores. The stores feed information to the components, completing the cycle.
 
 ## Features
 
