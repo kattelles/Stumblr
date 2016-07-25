@@ -91,12 +91,12 @@ const LoginForm = React.createClass({
 
 		return (
 			<div className="splash">
-
+				<div className="overlay"></div>
 
 				<form onSubmit={this.handleSubmit} className="login-form">
 
 					<div>
-					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1467593972/Stumblr-logo_3_xwtbzz.png"/>
+					<img id="logo" src="https://res.cloudinary.com/kattelles/image/upload/v1469478923/Stumblr-logo_4_whzlbd.png"/>
 					</div>
 
 					<div className="login-errors">

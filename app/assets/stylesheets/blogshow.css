@@ -64,17 +64,25 @@
   height: 35px;
 }
 
+#home img{
+  cursor: pointer;
+}
+
 .blog-show-edit {
   height: 35px;
   width: 35px;
   border-radius: 3px;
   margin: 5px;
+}
+
+.blog-show-edit-img {
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 }
 
-.blog-show-edit img {
-  width: 30px;
-  height: 30px;
+.blog-show-edit:hover {
+  cursor: pointer;
 }
 
 .blog-show-follow {
@@ -89,6 +97,7 @@
   width: 30px;
   height: 30px;
   margin-right: 5px;
+  cursor: pointer;
 }
 
 #blog-feed {

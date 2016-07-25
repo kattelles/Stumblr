@@ -136,7 +136,7 @@ const BlogShow = React.createClass({
             <div className="blog-show-dashboard"
               className="tooltip" onClick={this.backToDashboard}>
               <span className="tooltiptext">Home</span>
-                <div>
+                <div id="home">
                   <img src="https://res.cloudinary.com/kattelles/image/upload/v1467321223/house-32_pmj1gu.png"/>
                </div>
             </div>

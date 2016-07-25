@@ -5,6 +5,18 @@ const PostActions = require("../../actions/post_actions");
 const ExploreFeed = require("./explore_feed");
 const Search = require("../dashboard/search/search");
 
+const shuffle = function(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+    return a;
+};
+
+
 const Explore  = React.createClass({
 
   getInitialstate() {
@@ -21,7 +33,7 @@ const Explore  = React.createClass({
   },
 
   postsChange() {
-    this.setState({posts: PostStore.allPosts()});
+    this.setState({posts: shuffle(PostStore.allPosts())});
   },
 
   render: function() {
